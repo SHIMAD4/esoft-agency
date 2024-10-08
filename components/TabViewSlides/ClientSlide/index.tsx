@@ -10,8 +10,8 @@ export const ClientSlide = () => {
 
   return (
     <View className="flex-1 mx-6">
-      <Input variant="search" placeholder="Поиск клиента" />
-      <Button variant="add" onPress={onPress} />
+      <Input variant="search" placeholder="Поиск клиента" style={{ marginBottom: 24 }} />
+      <Button variant="add" onPress={onPress} style={{ marginBottom: 16 }} />
     </View>
   );
 };
