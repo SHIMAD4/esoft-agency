@@ -1,0 +1,1 @@
+export { CustomTabViewProps } from './TabView';

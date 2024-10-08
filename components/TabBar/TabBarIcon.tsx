@@ -14,12 +14,12 @@ type iconsType = {
 // Создаем объект, который маппит комбинации значений к соответствующим путям к иконкам
 const icons: iconsType = {
   home: {
-    Filled: require('../../assets/images/icons/homeIcon/homeIconFilled.svg'),
-    Empty: require('../../assets/images/icons/homeIcon/homeIconEmpty.svg'),
+    Filled: require('../../assets/images/icons/homeIcons/homeIconFilled.svg'),
+    Empty: require('../../assets/images/icons/homeIcons/homeIconEmpty.svg'),
   },
   users: {
-    Filled: require('../../assets/images/icons/usersIcon/usersIconFilled.svg'),
-    Empty: require('../../assets/images/icons/usersIcon/usersIconEmpty.svg'),
+    Filled: require('../../assets/images/icons/usersIcons/usersIconFilled.svg'),
+    Empty: require('../../assets/images/icons/usersIcons/usersIconEmpty.svg'),
   },
 };
 
