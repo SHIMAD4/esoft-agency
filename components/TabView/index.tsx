@@ -23,6 +23,9 @@ export const CustomTabView: FC<CustomTabViewProps> = memo(({ navigationState, sc
           indicatorContainerStyle={styles.indicatorContainerStyle}
           tabStyle={styles.tabStyle}
           style={styles.tabBar}
+          android_ripple={{
+            color: 'transparent',
+          }}
           renderLabel={({ route, color }) => (
             <Text style={[styles.labelStyle, { color }]}>{route.title}</Text>
           )}
@@ -44,12 +47,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   tabBar: {
+    width: 220,
+    flexDirection: 'column-reverse',
+    marginHorizontal: 24,
     backgroundColor: 'transparent',
     shadowColor: 'transparent',
-    width: 240,
-    flexDirection: 'column-reverse',
   },
   labelStyle: {
-    margin: 16,
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 15.5,
   },
 });

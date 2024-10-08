@@ -1,9 +1,9 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Header } from '@/components';
 import { View } from 'react-native';
 import { SceneMap } from 'react-native-tab-view';
 import { useState } from 'react';
-import { CustomTabView } from '@/components/TabView';
+import { ClientSlide, Header } from '@/components';
+import { CustomTabView } from '@/components';
 
 export default function UsersPage() {
   const ArrowToLeftIcon = require('../../assets/images/icons/arrowIcons/ArrowToLeftIcon.svg');
@@ -22,7 +22,7 @@ export default function UsersPage() {
       <CustomTabView
         navigationState={{ index, routes }}
         scene={SceneMap({
-          first: () => <View style={{ flex: 1 }} />,
+          first: () => <ClientSlide />,
           second: () => <View style={{ flex: 1 }} />,
         })}
         setFunc={setIndex}
