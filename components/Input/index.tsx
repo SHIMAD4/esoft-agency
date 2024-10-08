@@ -11,6 +11,8 @@ export const Input: FC<InputProps> = ({ variant, placeholder }) => {
   switch (variant) {
     case 'search':
       return <SearchInput placeholder={placeholder} />;
+    default:
+      return null;
   }
 };
 
