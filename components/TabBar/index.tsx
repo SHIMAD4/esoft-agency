@@ -1,5 +1,5 @@
 import { View, TouchableOpacity } from 'react-native';
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { TabBarIcon } from './TabBarIcon';
 import React from 'react';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
 

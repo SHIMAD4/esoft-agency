@@ -8,7 +8,7 @@ export default function HomePage() {
   const UsersIcon = require('../../assets/images/icons/peopleIcon.svg');
 
   return (
-    <SafeAreaView className="flex-1 mx-[24px]">
+    <SafeAreaView className="flex-1 mx-6">
       <View className="w-full h-[56px] flex justify-center items-center mb-9 mt-6">
         <Image source={Logo} className="w-[100px] h-[40px]" />
       </View>
