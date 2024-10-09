@@ -56,3 +56,5 @@ const DeleteIcon = (props: SvgProps) => {
 };
 
 export { SearchIcon, EditIcon, DeleteIcon };
+
+// TODO: Попробовать вытащить сюда все svg

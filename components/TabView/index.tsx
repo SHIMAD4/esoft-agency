@@ -15,12 +15,6 @@ export const CustomTabView: FC<CustomTabViewProps> = memo(({ navigationState, sc
       renderScene={scene}
       onIndexChange={setFunc}
       swipeEnabled={false}
-      // onSwipeStart={() => {
-      //   // TODO: Может быть добавить Redux Toolkit если нуден свайп
-      //   // if (cardSwipeStart) {
-      //   //   // Выключить свайп
-      //   // }
-      // }}
       renderTabBar={(props) => (
         <TabBar
           {...props}

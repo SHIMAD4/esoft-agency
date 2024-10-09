@@ -6,6 +6,8 @@ import { UserCard } from '../UserCard';
 import { Button } from '../Button';
 import { BottomSheet } from '../BottomSheet';
 import { DeleteIcon, EditIcon } from '../Icons';
+import { Link, router } from 'expo-router';
+import { navigate } from 'expo-router/build/global-state/routing';
 
 type UserCardProps = {
   users: User[];
@@ -39,7 +41,7 @@ export const UserCardList: FC<UserCardProps> = ({ users }) => {
         </Button>
         <Button
           variant="edit"
-          onPress={() => console.log('Edit')}
+          onPress={() => router.navigate('../editPage')}
           className="flex justify-center items-center bg-[#01A0FF]"
         >
           <EditIcon />
@@ -61,6 +63,7 @@ export const UserCardList: FC<UserCardProps> = ({ users }) => {
         closeOnRowOpen={true}
         closeOnRowPress={true}
       />
+      {/* TODO: Починить ошибку с ForwardRef */}
       <BottomSheet
         title="Удалить пользователя"
         description="без возможности восстановления?"

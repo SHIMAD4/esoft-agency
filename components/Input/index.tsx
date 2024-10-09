@@ -13,6 +13,12 @@ export const Input: FC<InputProps> = ({ variant, placeholder, ...props }) => {
   switch (variant) {
     case 'search':
       return <SearchInput placeholder={placeholder} {...props} />;
+    case 'text':
+      return <CustomTextInput placeholder={placeholder} {...props} />;
+    case 'tel':
+      return <TelInput placeholder={placeholder} {...props} />;
+    case 'email':
+      return <EmailInput placeholder={placeholder} {...props} />;
     default:
       return null;
   }
@@ -35,5 +41,55 @@ const SearchInput: FC<{ placeholder?: string }> = ({ placeholder, ...props }) =>
         </View>
       </View>
     </SafeAreaView>
+  );
+};
+
+const CustomTextInput: FC<{ placeholder?: string }> = ({ placeholder, ...props }) => {
+  const [text, onChangeText] = useState('');
+
+  return (
+    <View className="flex-row items-center relative" {...props}>
+      <TextInput
+        className="w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]"
+        onChangeText={onChangeText}
+        value={text}
+        inputMode="text"
+        placeholder={placeholder}
+      />
+    </View>
+  );
+};
+
+const TelInput: FC<{ placeholder?: string }> = ({ placeholder, ...props }) => {
+  const [tel, onChangeTel] = useState('');
+
+  // TODO: Добавить валидацию
+  return (
+    <View className="flex-row items-center relative" {...props}>
+      <TextInput
+        className="w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]"
+        onChangeText={onChangeTel}
+        value={tel}
+        inputMode="tel"
+        placeholder={placeholder}
+      />
+    </View>
+  );
+};
+
+const EmailInput: FC<{ placeholder?: string }> = ({ placeholder, ...props }) => {
+  const [email, onChangeEmail] = useState('');
+
+  // TODO: Добавить валидацию
+  return (
+    <View className="flex-row items-center relative" {...props}>
+      <TextInput
+        className="w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]"
+        onChangeText={onChangeEmail}
+        value={email}
+        inputMode="email"
+        placeholder={placeholder}
+      />
+    </View>
   );
 };

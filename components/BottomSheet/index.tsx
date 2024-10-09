@@ -63,7 +63,7 @@ export const BottomSheet: FC<BottomSheetProps> = ({
             <Text className="text-[14px]">{userFullName}</Text>
             <Text className="text-[14px]">{description}</Text>
           </View>
-          {/* TODO: Добавить логику удаления */}
+          {/* TODO: Добавить логику удаления (Жду бэк) */}
           <Button
             variant="default"
             onPress={() => console.log('Удаление')}
