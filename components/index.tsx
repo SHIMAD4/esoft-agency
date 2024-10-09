@@ -6,3 +6,4 @@ export { Input } from './Input';
 export { Button } from './Button';
 export { UserCardList } from './UserCardList';
 export { UserCard } from './UserCard';
+export { BottomSheet } from './BottomSheet';

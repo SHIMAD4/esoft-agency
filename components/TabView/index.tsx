@@ -14,6 +14,13 @@ export const CustomTabView: FC<CustomTabViewProps> = memo(({ navigationState, sc
       navigationState={navigationState}
       renderScene={scene}
       onIndexChange={setFunc}
+      swipeEnabled={false}
+      // onSwipeStart={() => {
+      //   // TODO: Может быть добавить Redux Toolkit если нуден свайп
+      //   // if (cardSwipeStart) {
+      //   //   // Выключить свайп
+      //   // }
+      // }}
       renderTabBar={(props) => (
         <TabBar
           {...props}
@@ -47,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   tabBar: {
-    width: 220,
+    width: 185,
     flexDirection: 'column-reverse',
     marginHorizontal: 24,
     backgroundColor: 'transparent',

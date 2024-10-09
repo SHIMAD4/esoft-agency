@@ -2,8 +2,9 @@ import { View } from 'react-native';
 import { Input } from '../../Input';
 import { Button } from '../../Button';
 import { UserCardList } from '../../UserCardList';
+import { FC } from 'react';
 
-export const ClientSlide = () => {
+export const ClientSlide: FC = () => {
   // TODO: Добавить поведение добавления пользователя
   const onPress = () => {
     console.log('Pressed add');
