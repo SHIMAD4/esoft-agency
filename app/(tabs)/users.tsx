@@ -2,8 +2,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
 import { SceneMap } from 'react-native-tab-view';
 import { useState } from 'react';
-import { ClientSlide, Header } from '@/components';
-import { CustomTabView } from '@/components';
+import { ClientSlide, Header, CustomTabView } from '@/components';
 
 export default function UsersPage() {
   const ArrowToLeftIcon = require('../../assets/images/icons/arrowIcons/ArrowToLeftIcon.svg');

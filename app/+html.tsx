@@ -5,6 +5,9 @@ import { type PropsWithChildren } from 'react';
  * This file is web-only and used to configure the root HTML for every web page during static rendering.
  * The contents of this function only run in Node.js environments and do not have access to the DOM or browser APIs.
  */
+
+// TODO: Исправить импорты во всем проекте, возможно добавлением FSD архитектуры
+// TODO: Добавить компонент типографики
 export default function Root({ children }: PropsWithChildren) {
   return (
     <html lang="en">

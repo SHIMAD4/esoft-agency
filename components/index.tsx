@@ -8,3 +8,4 @@ export { UserCardList } from './UserCardList';
 export { UserCard } from './UserCard';
 export { BottomSheet } from './BottomSheet';
 export { AddClientForm } from './AddClientForm';
+export { EditClientForm } from './EditClientForm';

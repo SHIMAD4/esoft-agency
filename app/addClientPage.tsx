@@ -1,7 +1,6 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Header } from '@/components';
-import { AddClientForm } from '@/components';
+import { Header, AddClientForm } from '@/components';
 
 export default function AddClientPage() {
   const ArrowToLeftIcon = require('../assets/images/icons/arrowIcons/ArrowToLeftIcon.svg');

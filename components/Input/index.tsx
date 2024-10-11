@@ -23,7 +23,10 @@ type InputBaseProps = {
 type SearchInputProps = { placeholder?: string };
 type CustomTextInputProps = InputBaseProps & { placeholder?: string };
 type PhoneInputProps = InputBaseProps & { placeholder?: string; required?: boolean };
-type EmailInputProps = InputBaseProps & { placeholder?: string; required?: boolean };
+type EmailInputProps = InputBaseProps & {
+  placeholder?: string;
+  required?: boolean;
+};
 
 export const Input: FC<InputProps> = ({ variant, placeholder, required, ...props }) => {
   switch (variant) {
@@ -38,6 +41,9 @@ export const Input: FC<InputProps> = ({ variant, placeholder, required, ...props
           {...props}
         />
       );
+    // TODO: Нужно вынести ошибку на required выше
+    // Для того чтобы только одно поле нужно было заполнить
+    // При добавлении пользователя
     case 'phone':
       return (
         <PhoneInput
@@ -149,16 +155,20 @@ const EmailInput: FC<EmailInputProps> = ({ placeholder, required, ...props }) =>
       if (email.length === 0) {
         setError({ value: true, errorText: 'Заполните номер телефона или почту' });
         return;
-      } else {
-        setError({ value: false, errorText: '' });
       }
     }
 
     if (!email.match(EmailValidityMask)) {
-      setError({ value: true, errorText: 'Введите валидный email' });
-      return;
+      if (email.length !== 0) {
+        setError({ value: true, errorText: 'Введите валидный email' });
+        return;
+      }
     }
+
+    setError({ value: false, errorText: '' });
   };
+
+  console.log(error.value);
 
   return (
     <View className="flex" {...props}>
@@ -173,10 +183,10 @@ const EmailInput: FC<EmailInputProps> = ({ placeholder, required, ...props }) =>
         }}
         value={value}
         inputMode="email"
-        placeholderTextColor={error.value ? '#E3002C' : ''}
+        placeholderTextColor={error.value ? '#E3002C' : undefined}
         placeholder={placeholder}
       />
-      {required && error.value && <Text className="mt-1 text-[#FF1644]">{error.errorText}</Text>}
+      {error.value && <Text className="mt-1 text-[#FF1644]">{error.errorText}</Text>}
     </View>
   );
 };
