@@ -3,17 +3,17 @@ import { Input } from '../../Input';
 import { Button } from '../../Button';
 import { UserCardList } from '../../UserCardList';
 import { FC } from 'react';
+import { router } from 'expo-router';
 
 export const ClientSlide: FC = () => {
-  // TODO: Добавить логику добавления пользователя (Жду бэк)
-  const onPress = () => {
-    console.log('Pressed add');
+  const handleAddClientClick = () => {
+    router.navigate('../addClientPage');
   };
 
   return (
     <View className="flex-1 mx-6">
       <Input variant="search" placeholder="Поиск клиента" style={{ marginBottom: 24 }} />
-      <Button variant="add" onPress={onPress} style={{ marginBottom: 16 }} />
+      <Button variant="add" onPress={handleAddClientClick} style={{ marginBottom: 16 }} />
       {/* TODO: Нужно брать пользователей из БД (Жду бэк) */}
       <UserCardList
         users={[

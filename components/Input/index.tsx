@@ -1,30 +1,69 @@
-import React, { FC, useState } from 'react';
-import { SafeAreaView, TextInput, View } from 'react-native';
+import { FC, useState } from 'react';
+import { SafeAreaView, TextInput, View, Text } from 'react-native';
 import { SearchIcon } from '../Icons';
+import MaskInput from 'react-native-mask-input/src/MaskInput';
+import { EmailValidityMask, PhoneInputMask } from '@/scripts/constants';
+import clsx from 'clsx';
 
 type InputProps = {
-  variant: 'search' | string;
+  variant: 'search' | 'text' | 'phone' | 'email' | string;
   placeholder?: string;
+  required?: boolean;
   // Остальные свойства, чтобы компонент мог принимать любые пропсы.
   [key: string]: any;
 };
 
-export const Input: FC<InputProps> = ({ variant, placeholder, ...props }) => {
+type InputBaseProps = {
+  value: string;
+  onChangeText: (text: string) => void;
+  // Остальные свойства, чтобы компонент мог принимать любые пропсы.
+  [key: string]: any;
+};
+
+type SearchInputProps = { placeholder?: string };
+type CustomTextInputProps = InputBaseProps & { placeholder?: string };
+type PhoneInputProps = InputBaseProps & { placeholder?: string; required?: boolean };
+type EmailInputProps = InputBaseProps & { placeholder?: string; required?: boolean };
+
+export const Input: FC<InputProps> = ({ variant, placeholder, required, ...props }) => {
   switch (variant) {
     case 'search':
       return <SearchInput placeholder={placeholder} {...props} />;
     case 'text':
-      return <CustomTextInput placeholder={placeholder} {...props} />;
-    case 'tel':
-      return <TelInput placeholder={placeholder} {...props} />;
+      return (
+        <CustomTextInput
+          placeholder={placeholder}
+          value={props.value}
+          onChangeText={props.onChangeText}
+          {...props}
+        />
+      );
+    case 'phone':
+      return (
+        <PhoneInput
+          placeholder={placeholder}
+          required={required}
+          value={props.value}
+          onChangeText={props.onChangeText}
+          {...props}
+        />
+      );
     case 'email':
-      return <EmailInput placeholder={placeholder} {...props} />;
+      return (
+        <EmailInput
+          placeholder={placeholder}
+          required={required}
+          value={props.value}
+          onChangeText={props.onChangeText}
+          {...props}
+        />
+      );
     default:
       return null;
   }
 };
 
-const SearchInput: FC<{ placeholder?: string }> = ({ placeholder, ...props }) => {
+const SearchInput: FC<SearchInputProps> = ({ placeholder, ...props }) => {
   const [searchText, onChangeSearchText] = useState('');
 
   return (
@@ -44,52 +83,100 @@ const SearchInput: FC<{ placeholder?: string }> = ({ placeholder, ...props }) =>
   );
 };
 
-const CustomTextInput: FC<{ placeholder?: string }> = ({ placeholder, ...props }) => {
-  const [text, onChangeText] = useState('');
-
+const CustomTextInput: FC<CustomTextInputProps> = ({ placeholder, ...props }) => {
   return (
-    <View className="flex-row items-center relative" {...props}>
+    <View className="flex-row items-center relative">
       <TextInput
         className="w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]"
-        onChangeText={onChangeText}
-        value={text}
         inputMode="text"
         placeholder={placeholder}
+        {...props}
       />
     </View>
   );
 };
 
-const TelInput: FC<{ placeholder?: string }> = ({ placeholder, ...props }) => {
-  const [tel, onChangeTel] = useState('');
+const PhoneInput: FC<PhoneInputProps> = ({ placeholder, required, ...props }) => {
+  // TODO: Попробовать исправить валидацию под Formic
+  const { value, onChangeText } = props;
+  const [error, setError] = useState({
+    value: false,
+    errorText: '',
+  });
 
-  // TODO: Добавить валидацию
+  const handleChange = (phone: string) => {
+    if (required) {
+      if (phone?.length === 0) {
+        setError({ value: true, errorText: 'Заполните номер телефона или почту' });
+      } else {
+        setError({ value: false, errorText: '' });
+      }
+    }
+  };
+
   return (
-    <View className="flex-row items-center relative" {...props}>
-      <TextInput
-        className="w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]"
-        onChangeText={onChangeTel}
-        value={tel}
+    <View className="flex" {...props}>
+      <MaskInput
+        className={clsx(
+          'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
+          error.value && 'border-[#E3002C]',
+        )}
+        value={value}
+        onChangeText={(masked, unmasked) => {
+          onChangeText(unmasked);
+          handleChange(unmasked);
+        }}
+        placeholderTextColor={error.value ? '#E3002C' : ''}
+        placeholder={placeholder}
         inputMode="tel"
-        placeholder={placeholder}
+        mask={PhoneInputMask}
       />
+      {required && error.value && <Text className="mt-1 text-[#FF1644]">{error.errorText}</Text>}
     </View>
   );
 };
 
-const EmailInput: FC<{ placeholder?: string }> = ({ placeholder, ...props }) => {
-  const [email, onChangeEmail] = useState('');
+const EmailInput: FC<EmailInputProps> = ({ placeholder, required, ...props }) => {
+  // TODO: Попробовать исправить валидацию под Formic
+  const { value, onChangeText } = props;
+  const [error, setError] = useState({
+    value: false,
+    errorText: '',
+  });
 
-  // TODO: Добавить валидацию
+  const handleChange = (email: string) => {
+    if (required) {
+      if (email.length === 0) {
+        setError({ value: true, errorText: 'Заполните номер телефона или почту' });
+        return;
+      } else {
+        setError({ value: false, errorText: '' });
+      }
+    }
+
+    if (!email.match(EmailValidityMask)) {
+      setError({ value: true, errorText: 'Введите валидный email' });
+      return;
+    }
+  };
+
   return (
-    <View className="flex-row items-center relative" {...props}>
+    <View className="flex" {...props}>
       <TextInput
-        className="w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]"
-        onChangeText={onChangeEmail}
-        value={email}
+        className={clsx(
+          'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
+          error.value && 'border-[#E3002C]',
+        )}
+        onChangeText={(text) => {
+          onChangeText(text);
+          handleChange(text);
+        }}
+        value={value}
         inputMode="email"
+        placeholderTextColor={error.value ? '#E3002C' : ''}
         placeholder={placeholder}
       />
+      {required && error.value && <Text className="mt-1 text-[#FF1644]">{error.errorText}</Text>}
     </View>
   );
 };

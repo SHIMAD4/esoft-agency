@@ -13,11 +13,12 @@ export default function EditPage() {
       </SafeAreaView>
       <KeyboardAwareScrollView>
         <View className="mx-6 gap-y-4">
+          {/* TODO: Исправить под Formic */}
           {/* TODO: Выводить данные выбранного пользователя */}
           <Input variant="text" placeholder="Фамилия" />
           <Input variant="text" placeholder="Имя" />
           <Input variant="text" placeholder="Отчество" />
-          <Input variant="tel" placeholder="Номер" />
+          <Input variant="phone" placeholder="Номер" />
           <Input variant="email" placeholder="Электронная почта" />
           <Button
             variant="default"

@@ -6,8 +6,7 @@ import { UserCard } from '../UserCard';
 import { Button } from '../Button';
 import { BottomSheet } from '../BottomSheet';
 import { DeleteIcon, EditIcon } from '../Icons';
-import { Link, router } from 'expo-router';
-import { navigate } from 'expo-router/build/global-state/routing';
+import { router } from 'expo-router';
 
 type UserCardProps = {
   users: User[];
