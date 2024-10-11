@@ -18,7 +18,7 @@ const AddClientOnSubmitSchema = Yup.object()
       if (isValid) return true;
 
       return this.createError({
-        path: 'atLeastOneRequired',
+        path: 'atLeastOneRequiredError',
         message: 'Заполните номер телефона или почту',
       });
     },

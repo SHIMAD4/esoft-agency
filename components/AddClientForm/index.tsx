@@ -4,6 +4,8 @@ import { Button } from '../Button';
 import { Input } from '../Input';
 import { AddClientOnSubmitSchema } from '@/scripts/helpers';
 import { ExtendedErrorType } from '@/types';
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
 
 export const AddClientForm = () => {
   // TODO: Отправлять данные (Жду бэк)
@@ -14,7 +16,27 @@ export const AddClientForm = () => {
       onSubmit={(data, errors) => !!errors && console.log('submit data: ', data)}
     >
       {({ handleChange, handleSubmit, values, errors }) => {
-        const ExtendedErrors: ExtendedErrorType = errors;
+        const extendedErrors: ExtendedErrorType = errors;
+        const [disabled, setDisabled] = useState(true);
+
+        useEffect(() => {
+          if (
+            (!values.phone && !values.email) ||
+            !!errors.phone ||
+            !!errors.email ||
+            !!extendedErrors.atLeastOneRequiredError
+          ) {
+            setDisabled(true);
+          } else {
+            setDisabled(false);
+          }
+        }, [
+          values.phone,
+          values.email,
+          errors.phone,
+          errors.email,
+          extendedErrors.atLeastOneRequiredError,
+        ]);
 
         return (
           <View className="mx-6 gap-y-4">
@@ -42,7 +64,7 @@ export const AddClientForm = () => {
               value={values.phone}
               onChangeText={handleChange('phone')}
               error={errors.phone}
-              extendedError={ExtendedErrors.atLeastOneRequired}
+              extendedError={extendedErrors.atLeastOneRequiredError}
             />
             <Input
               variant="email"
@@ -50,19 +72,23 @@ export const AddClientForm = () => {
               value={values.email}
               onChangeText={handleChange('email')}
               error={errors.email}
-              extendedError={ExtendedErrors.atLeastOneRequired}
+              extendedError={extendedErrors.atLeastOneRequiredError}
             />
-            {ExtendedErrors.atLeastOneRequired && (
+            {extendedErrors.atLeastOneRequiredError && (
               <Text className="text-[#FF1644] text-center">
-                {ExtendedErrors.atLeastOneRequired}
+                {extendedErrors.atLeastOneRequiredError}
               </Text>
             )}
             <Button
               variant="default"
               text="Создать"
-              buttonClassNames="w-full bg-[#0091EA] flex justify-center items-center py-[14.5px] rounded-[3px]"
-              textClassNames="text-[#FFFFFF] text-[16px]"
+              buttonClassNames={clsx(
+                'w-full bg-[#0091EA] flex justify-center items-center py-[14.5px] rounded-[3px]',
+                disabled && 'bg-[#01A0FF]',
+              )}
+              textClassNames={clsx('text-[#FFFFFF] text-[16px]', disabled && 'text-[#70C9FF]')}
               onPress={handleSubmit}
+              disabled={disabled}
             />
           </View>
         );

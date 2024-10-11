@@ -6,7 +6,7 @@ type ExtendedErrorType = FormikErrors<{
   patronymic?: string;
   phone?: string;
   email?: string;
-  atLeastOneRequired?: string;
+  atLeastOneRequiredError?: string;
 }>;
 
 export { ExtendedErrorType };
