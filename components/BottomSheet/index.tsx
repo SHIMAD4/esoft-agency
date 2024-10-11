@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { View, Text } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { Button } from '../Button';
@@ -31,9 +31,11 @@ export const BottomSheet: FC<BottomSheetProps> = ({
 }) => {
   const refRBSheet = useRef<RBSheetRef>(null);
 
-  if (handleClickToOpen) {
-    refRBSheet.current?.open();
-  }
+  useEffect(() => {
+    if (handleClickToOpen) {
+      refRBSheet.current?.open();
+    }
+  }, [handleClickToOpen]);
 
   return (
     <View className="flex-1">
@@ -80,7 +82,7 @@ export const BottomSheet: FC<BottomSheetProps> = ({
           }}
           text={titleToClose}
           buttonClassNames="flex justify-center items-center w-full bg-[#03BFA5] rounded-[3px]"
-          textClassNames="text-[16px] text-[#FFFFFF] my-[8.5px]"
+          textClassNames="text-[16px] text-[#FFFFFF] py-[8.5px]"
         />
       </RBSheet>
     </View>

@@ -62,7 +62,6 @@ export const UserCardList: FC<UserCardProps> = ({ users }) => {
         closeOnRowOpen={true}
         closeOnRowPress={true}
       />
-      {/* TODO: Починить ошибку с ForwardRef */}
       <BottomSheet
         title="Удалить пользователя"
         description="без возможности восстановления?"
