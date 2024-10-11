@@ -29,6 +29,8 @@ export const BottomSheet: FC<BottomSheetProps> = ({
   handleClickToOpen,
   setIsSheetOpen,
 }) => {
+  // TODO: Добавить логику удаления (Жду бэк)
+  // TODO: Добавить логику чтобы нельзя было удалять связанных пользователей с потребностью или предложением (Жду бэк)
   const refRBSheet = useRef<RBSheetRef>(null);
 
   useEffect(() => {
@@ -65,7 +67,6 @@ export const BottomSheet: FC<BottomSheetProps> = ({
             <Text className="text-[14px]">{userFullName}</Text>
             <Text className="text-[14px]">{description}</Text>
           </View>
-          {/* TODO: Добавить логику удаления (Жду бэк) */}
           <Button
             variant="default"
             onPress={() => console.log('Удаление')}

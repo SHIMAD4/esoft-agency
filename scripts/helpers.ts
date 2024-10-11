@@ -24,4 +24,19 @@ const AddClientOnSubmitSchema = Yup.object()
     },
   });
 
-export { AddClientOnSubmitSchema };
+const setDisabledState = (
+  setDisabled: (state: boolean) => void,
+  phone: string,
+  email: string,
+  ErrorPhone?: string,
+  ErrorEmail?: string,
+  atLeastOneRequiredError?: string,
+) => {
+  if ((!phone && !email) || !!ErrorPhone || !!ErrorEmail || !!atLeastOneRequiredError) {
+    setDisabled(true);
+  } else {
+    setDisabled(false);
+  }
+};
+
+export { AddClientOnSubmitSchema, setDisabledState };

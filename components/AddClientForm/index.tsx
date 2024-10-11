@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import { View, Text } from 'react-native';
 import { Button } from '../Button';
 import { Input } from '../Input';
-import { AddClientOnSubmitSchema } from '@/scripts/helpers';
+import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
 import { ExtendedErrorType } from '@/types';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -20,16 +20,14 @@ export const AddClientForm = () => {
         const [disabled, setDisabled] = useState(true);
 
         useEffect(() => {
-          if (
-            (!values.phone && !values.email) ||
-            !!errors.phone ||
-            !!errors.email ||
-            !!extendedErrors.atLeastOneRequiredError
-          ) {
-            setDisabled(true);
-          } else {
-            setDisabled(false);
-          }
+          setDisabledState(
+            setDisabled,
+            values.phone,
+            values.email,
+            errors.phone,
+            errors.email,
+            extendedErrors.atLeastOneRequiredError,
+          );
         }, [
           values.phone,
           values.email,
