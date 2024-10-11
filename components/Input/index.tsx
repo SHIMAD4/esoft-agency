@@ -2,13 +2,15 @@ import { FC, useState } from 'react';
 import { SafeAreaView, TextInput, View, Text } from 'react-native';
 import { SearchIcon } from '../Icons';
 import MaskInput from 'react-native-mask-input/src/MaskInput';
-import { EmailValidityMask, PhoneInputMask } from '@/scripts/constants';
+import { EMAILVALIDITYMASK, PHONEINPUTMASK } from '@/scripts/constants';
 import clsx from 'clsx';
 
 type InputProps = {
   variant: 'search' | 'text' | 'phone' | 'email' | string;
   placeholder?: string;
   required?: boolean;
+  error?: string;
+  extendedError?: string;
   // Остальные свойства, чтобы компонент мог принимать любые пропсы.
   [key: string]: any;
 };
@@ -28,7 +30,14 @@ type EmailInputProps = InputBaseProps & {
   required?: boolean;
 };
 
-export const Input: FC<InputProps> = ({ variant, placeholder, required, ...props }) => {
+export const Input: FC<InputProps> = ({
+  variant,
+  placeholder,
+  required,
+  error,
+  extendedError,
+  ...props
+}) => {
   switch (variant) {
     case 'search':
       return <SearchInput placeholder={placeholder} {...props} />;
@@ -41,9 +50,6 @@ export const Input: FC<InputProps> = ({ variant, placeholder, required, ...props
           {...props}
         />
       );
-    // TODO: Нужно вынести ошибку на required выше
-    // Для того чтобы только одно поле нужно было заполнить
-    // При добавлении пользователя
     case 'phone':
       return (
         <PhoneInput
@@ -51,6 +57,8 @@ export const Input: FC<InputProps> = ({ variant, placeholder, required, ...props
           required={required}
           value={props.value}
           onChangeText={props.onChangeText}
+          error={error}
+          extendedError={extendedError}
           {...props}
         />
       );
@@ -61,6 +69,8 @@ export const Input: FC<InputProps> = ({ variant, placeholder, required, ...props
           required={required}
           value={props.value}
           onChangeText={props.onChangeText}
+          error={error}
+          extendedError={extendedError}
           {...props}
         />
       );
@@ -102,91 +112,61 @@ const CustomTextInput: FC<CustomTextInputProps> = ({ placeholder, ...props }) =>
   );
 };
 
-const PhoneInput: FC<PhoneInputProps> = ({ placeholder, required, ...props }) => {
-  // TODO: Попробовать исправить валидацию под Formic
+const PhoneInput: FC<PhoneInputProps> = ({
+  placeholder,
+  required,
+  error,
+  extendedError,
+  ...props
+}) => {
   const { value, onChangeText } = props;
-  const [error, setError] = useState({
-    value: false,
-    errorText: '',
-  });
-
-  const handleChange = (phone: string) => {
-    if (required) {
-      if (phone?.length === 0) {
-        setError({ value: true, errorText: 'Заполните номер телефона или почту' });
-      } else {
-        setError({ value: false, errorText: '' });
-      }
-    }
-  };
 
   return (
     <View className="flex" {...props}>
       <MaskInput
         className={clsx(
           'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
-          error.value && 'border-[#E3002C]',
+          error || (extendedError && 'border-[#E3002C]'),
         )}
         value={value}
         onChangeText={(masked, unmasked) => {
           onChangeText(unmasked);
-          handleChange(unmasked);
         }}
-        placeholderTextColor={error.value ? '#E3002C' : ''}
+        placeholderTextColor={error || extendedError ? '#E3002C' : undefined}
         placeholder={placeholder}
         inputMode="tel"
-        mask={PhoneInputMask}
+        mask={PHONEINPUTMASK}
       />
-      {required && error.value && <Text className="mt-1 text-[#FF1644]">{error.errorText}</Text>}
+      {error && <Text className="mt-1 text-[#FF1644]">{error}</Text>}
     </View>
   );
 };
 
-const EmailInput: FC<EmailInputProps> = ({ placeholder, required, ...props }) => {
-  // TODO: Попробовать исправить валидацию под Formic
+const EmailInput: FC<EmailInputProps> = ({
+  placeholder,
+  required,
+  error,
+  extendedError,
+  ...props
+}) => {
   const { value, onChangeText } = props;
-  const [error, setError] = useState({
-    value: false,
-    errorText: '',
-  });
-
-  const handleChange = (email: string) => {
-    if (required) {
-      if (email.length === 0) {
-        setError({ value: true, errorText: 'Заполните номер телефона или почту' });
-        return;
-      }
-    }
-
-    if (!email.match(EmailValidityMask)) {
-      if (email.length !== 0) {
-        setError({ value: true, errorText: 'Введите валидный email' });
-        return;
-      }
-    }
-
-    setError({ value: false, errorText: '' });
-  };
-
-  console.log(error.value);
 
   return (
     <View className="flex" {...props}>
       <TextInput
         className={clsx(
           'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
-          error.value && 'border-[#E3002C]',
+          (error || extendedError) && 'border-[#E3002C]',
         )}
         onChangeText={(text) => {
           onChangeText(text);
-          handleChange(text);
         }}
         value={value}
         inputMode="email"
-        placeholderTextColor={error.value ? '#E3002C' : undefined}
+        placeholderTextColor={error || extendedError ? '#E3002C' : undefined}
         placeholder={placeholder}
       />
-      {error.value && <Text className="mt-1 text-[#FF1644]">{error.errorText}</Text>}
+      {error && <Text className="mt-1 text-[#FF1644]">{error}</Text>}
     </View>
   );
 };
