@@ -1,11 +1,10 @@
 import { Text, View } from 'react-native';
 import { Link } from 'expo-router';
-import { Image } from 'expo-image';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 type HeaderTypes = {
   title: string;
-  icon: string;
+  icon: ReactNode;
   link: string;
 };
 
@@ -15,7 +14,7 @@ export const Header: FC<HeaderTypes> = ({ title, icon, link }) => (
       href={{ pathname: link }}
       className="border-[1px] border-[#CFD8DB] w-12 h-12 p-4 rounded-[3px]"
     >
-      <Image source={icon} className="w-4 h-4" />
+      {icon}
     </Link>
     <Text className="text-[#37464F] text-2xl font-[700]">{title}</Text>
   </View>

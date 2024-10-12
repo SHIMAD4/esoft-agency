@@ -3,10 +3,9 @@ import { View } from 'react-native';
 import { SceneMap } from 'react-native-tab-view';
 import { useState } from 'react';
 import { ClientSlide, Header, CustomTabView } from '@/components';
+import { ArrowIcon } from '@/components/Icons';
 
 export default function UsersPage() {
-  const ArrowToLeftIcon = require('../../assets/images/icons/arrowIcons/ArrowToLeftIcon.svg');
-
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'first', title: 'Клиент' },
@@ -16,7 +15,7 @@ export default function UsersPage() {
   return (
     <>
       <SafeAreaView className="mx-6 mt-6 mb-9">
-        <Header title="Пользователи" icon={ArrowToLeftIcon} link="/(tabs)" />
+        <Header title="Пользователи" icon={<ArrowIcon rotateToLeft={true} />} link="/(tabs)" />
       </SafeAreaView>
       <CustomTabView
         navigationState={{ index, routes }}

@@ -1,10 +1,16 @@
 import Svg, { Path } from 'react-native-svg';
 import React from 'react';
+import clsx from 'clsx';
 
 type SvgProps = {
   width?: number;
   height?: number;
   fill?: string;
+};
+
+type RotateSvg = {
+  rotateToLeft?: boolean;
+  rotateToRight?: boolean;
 };
 
 const SearchIcon = (props: SvgProps) => {
@@ -55,6 +61,25 @@ const DeleteIcon = (props: SvgProps) => {
   );
 };
 
-export { SearchIcon, EditIcon, DeleteIcon };
+const ArrowIcon = (props: SvgProps & RotateSvg) => {
+  const { width = 16, height = 16, fill = 'none' } = props;
+  const { rotateToLeft, rotateToRight } = props;
+  return (
+    <Svg
+      width={width}
+      height={height}
+      viewBox="0 0 6 8"
+      fill={fill}
+      className={clsx(rotateToLeft && 'rotate-0', rotateToRight && 'rotate-180')}
+    >
+      <Path
+        d="M5.2735 0.94L4.3335 0L0.333496 4L4.3335 8L5.2735 7.06L2.22016 4L5.2735 0.94Z"
+        fill="#78909C"
+      />
+    </Svg>
+  );
+};
+
+export { SearchIcon, EditIcon, DeleteIcon, ArrowIcon };
 
 // TODO: Попробовать вытащить сюда все svg
