@@ -1,30 +1,17 @@
-import { Image } from 'expo-image';
+import { HomeIcon, UsersIcon } from '../Icons';
 
 type TabBarIconType = {
-  name: string;
+  fill: boolean;
   title: string;
 };
 
-type iconsType = {
-  [key in string]: {
-    [key in string]: string;
-  };
-};
-
-// Создаем объект, который маппит комбинации значений к соответствующим путям к иконкам
-const icons: iconsType = {
-  home: {
-    Filled: require('../../assets/images/icons/homeIcons/homeIconFilled.svg'),
-    Empty: require('../../assets/images/icons/homeIcons/homeIconEmpty.svg'),
-  },
-  users: {
-    Filled: require('../../assets/images/icons/usersIcons/usersIconFilled.svg'),
-    Empty: require('../../assets/images/icons/usersIcons/usersIconEmpty.svg'),
-  },
-};
-
-export function TabBarIcon({ name, title }: TabBarIconType) {
-  const Icon = icons[title][name];
-
-  return <Image source={Icon} className="w-9 h-9" />;
+export function TabBarIcon({ fill, title }: TabBarIconType) {
+  switch (title) {
+    case 'home':
+      return <HomeIcon width={36} height={36} fill={fill ? '#0281D1' : 'none'} />;
+    case 'users':
+      return <UsersIcon width={36} height={36} fill={fill ? '#0281D1' : 'none'} />;
+    default:
+      return null;
+  }
 }

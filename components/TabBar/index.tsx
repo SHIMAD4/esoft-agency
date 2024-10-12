@@ -47,7 +47,7 @@ export const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) =>
             key={route.key}
             className="flex-1 justify-center items-center h-[90px]"
           >
-            <TabBarIcon title={label as string} name={isFocused ? 'Filled' : 'Empty'} />
+            <TabBarIcon title={label as string} fill={isFocused} />
           </TouchableOpacity>
         );
       })}
