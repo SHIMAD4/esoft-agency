@@ -5,25 +5,24 @@ import { CardList } from '../../CardList';
 import { FC } from 'react';
 import { router } from 'expo-router';
 
-export const ClientSlide: FC = () => {
+export const RealtorSlide: FC = () => {
   const handleAddClientClick = () => {
-    router.navigate('../client/addPage');
+    router.navigate('../realtor/addPage');
   };
 
   return (
     <View className="flex-1 mx-6">
-      <Input variant="search" placeholder="Поиск клиента" style={{ marginBottom: 24 }} />
+      <Input variant="search" placeholder="Поиск риэлтора" style={{ marginBottom: 24 }} />
       <Button variant="add" onPress={handleAddClientClick} style={{ marginBottom: 16 }} />
       {/* TODO: Нужно брать пользователей из БД (Жду бэк) */}
       <CardList
-        entity="user"
+        entity="realtor"
         users={[
-          { id: 1, fullName: 'User#1', telephone: '+ 7 (965) 433 - 55 - 55' },
+          { id: 1, fullName: 'Максимов Андрей Юрьевич', percent: 30 },
           {
             id: 2,
-            fullName: 'Мелихова Ева-София',
-            telephone: '+ 7 (965) 433 - 55 - 55',
-            email: 'sshuulje@vk.com',
+            fullName: 'Каматалина Юлия Сергеевна',
+            percent: 20,
           },
         ]}
       />

@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { Text, View } from 'react-native';
-import { Button } from '../Button';
-import { Input } from '../Input';
+import { Button } from '../../Button';
+import { Input } from '../../Input';
 import { ExtendedErrorType } from '@/types';
 import { useEffect, useState } from 'react';
 import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
@@ -20,14 +20,17 @@ export const EditClientForm = () => {
         const [disabled, setDisabled] = useState(true);
 
         useEffect(() => {
-          setDisabledState(
-            setDisabled,
-            values.phone,
-            values.email,
-            errors.phone,
-            errors.email,
-            extendedErrors.atLeastOneRequiredError,
-          );
+          setDisabledState(setDisabled, {
+            fields: {
+              phone: values.phone,
+              email: values.email,
+            },
+            errors: {
+              phone: errors.phone,
+              email: errors.email,
+            },
+            atLeastOneRequiredError: extendedErrors.atLeastOneRequiredError,
+          });
         }, [
           values.phone,
           values.email,

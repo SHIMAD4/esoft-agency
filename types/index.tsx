@@ -1,3 +1,3 @@
 export { CustomTabViewProps } from './TabView';
-export { User } from './User';
+export { User, Realtor } from './Entity';
 export { ExtendedErrorType } from './Forms';

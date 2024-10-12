@@ -1,39 +1,42 @@
 import { Formik } from 'formik';
-import { View, Text } from 'react-native';
-import { Button } from '../Button';
-import { Input } from '../Input';
-import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
-import { ExtendedErrorType } from '@/types';
+import { View } from 'react-native';
+import { Button } from '../../Button';
+import { Input } from '../../Input';
+import { AddRealtorOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
-export const AddClientForm = () => {
+export const AddRealtorForm = () => {
   // TODO: Отправлять данные (Жду бэк)
   return (
     <Formik
-      initialValues={{ surname: '', firstname: '', patronymic: '', phone: '', email: '' }}
-      validationSchema={AddClientOnSubmitSchema}
+      initialValues={{ surname: '', firstname: '', patronymic: '', percent: '' }}
       onSubmit={(data, errors) => !!errors && console.log('submit data: ', data)}
+      validationSchema={AddRealtorOnSubmitSchema}
     >
       {({ handleChange, handleSubmit, values, errors }) => {
-        const extendedErrors: ExtendedErrorType = errors;
         const [disabled, setDisabled] = useState(true);
 
         useEffect(() => {
-          setDisabledState(
-            setDisabled,
-            values.phone,
-            values.email,
-            errors.phone,
-            errors.email,
-            extendedErrors.atLeastOneRequiredError,
-          );
+          setDisabledState(setDisabled, {
+            fields: {
+              surname: values.surname,
+              firstname: values.firstname,
+              patronymic: values.patronymic,
+            },
+            errors: {
+              surname: errors.surname,
+              firstname: errors.firstname,
+              patronymic: errors.patronymic,
+            },
+          });
         }, [
-          values.phone,
-          values.email,
-          errors.phone,
-          errors.email,
-          extendedErrors.atLeastOneRequiredError,
+          values.surname,
+          values.firstname,
+          values.patronymic,
+          errors.surname,
+          errors.firstname,
+          errors.patronymic,
         ]);
 
         return (
@@ -43,40 +46,30 @@ export const AddClientForm = () => {
               placeholder="Фамилия"
               value={values.surname}
               onChangeText={handleChange('surname')}
+              error={errors.surname}
             />
             <Input
               variant="text"
               placeholder="Имя"
               value={values.firstname}
               onChangeText={handleChange('firstname')}
+              error={errors.firstname}
             />
             <Input
               variant="text"
               placeholder="Отчество"
               value={values.patronymic}
               onChangeText={handleChange('patronymic')}
+              error={errors.patronymic}
             />
             <Input
-              variant="phone"
-              placeholder="Номер"
-              value={values.phone}
-              onChangeText={handleChange('phone')}
-              error={errors.phone}
-              extendedError={extendedErrors.atLeastOneRequiredError}
+              variant="number"
+              placeholder="Процентная ставка"
+              value={values.percent}
+              onChangeText={handleChange('percent')}
+              min={0}
+              max={100}
             />
-            <Input
-              variant="email"
-              placeholder="Электронная почта"
-              value={values.email}
-              onChangeText={handleChange('email')}
-              error={errors.email}
-              extendedError={extendedErrors.atLeastOneRequiredError}
-            />
-            {extendedErrors.atLeastOneRequiredError && (
-              <Text className="text-[#FF1644] text-center">
-                {extendedErrors.atLeastOneRequiredError}
-              </Text>
-            )}
             <Button
               variant="default"
               text="Создать"

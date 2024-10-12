@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Icons } from '../Icons';
 
 type InputProps = {
-  variant: 'search' | 'text' | 'phone' | 'email' | string;
+  variant: 'search' | 'text' | 'number' | 'phone' | 'email' | string;
   placeholder?: string;
   required?: boolean;
   error?: string;
@@ -47,6 +47,19 @@ export const Input: FC<InputProps> = ({
           placeholder={placeholder}
           value={props.value}
           onChangeText={props.onChangeText}
+          error={error}
+          {...props}
+        />
+      );
+    case 'number':
+      return (
+        <NumberInput
+          placeholder={placeholder}
+          required={required}
+          value={props.value}
+          onChangeText={props.onChangeText}
+          error={error}
+          extendedError={extendedError}
           {...props}
         />
       );
@@ -99,13 +112,60 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder, ...props }) => {
   );
 };
 
-const CustomTextInput: FC<CustomTextInputProps> = ({ placeholder, ...props }) => {
+const CustomTextInput: FC<CustomTextInputProps> = ({ placeholder, error, ...props }) => {
+  return (
+    <View className="flex">
+      <TextInput
+        className={clsx(
+          'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
+          error && 'border-[#E3002C]',
+        )}
+        inputMode="text"
+        placeholder={placeholder}
+        placeholderTextColor={error ? '#E3002C' : undefined}
+        {...props}
+      />
+      {error && <Text className="mt-1 text-[#FF1644]">{error}</Text>}
+    </View>
+  );
+};
+
+const NumberInput: FC<PhoneInputProps> = ({
+  placeholder,
+  required,
+  error,
+  extendedError,
+  onChangeText,
+  ...props
+}) => {
+  const handleTextChange = (text: string) => {
+    let numericValue = parseInt(text, 10);
+
+    if (isNaN(numericValue)) {
+      numericValue = 0;
+    } else if (numericValue > 100) {
+      numericValue = 100;
+    } else if (numericValue < 0) {
+      numericValue = 0;
+    }
+
+    if (onChangeText) {
+      onChangeText(numericValue.toString());
+    }
+  };
+
   return (
     <View className="flex-row items-center relative">
       <TextInput
-        className="w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]"
-        inputMode="text"
+        className={clsx(
+          'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
+          extendedError && 'border-[#E3002C]',
+        )}
+        inputMode="numeric"
+        keyboardType={'number-pad'}
         placeholder={placeholder}
+        placeholderTextColor={extendedError ? '#E3002C' : undefined}
+        onChangeText={handleTextChange}
         {...props}
       />
     </View>
@@ -126,7 +186,7 @@ const PhoneInput: FC<PhoneInputProps> = ({
       <MaskInput
         className={clsx(
           'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
-          error || (extendedError && 'border-[#E3002C]'),
+          (error || extendedError) && 'border-[#E3002C]',
         )}
         value={value}
         onChangeText={(masked, unmasked) => {

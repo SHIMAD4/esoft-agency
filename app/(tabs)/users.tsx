@@ -1,8 +1,7 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View } from 'react-native';
 import { SceneMap } from 'react-native-tab-view';
 import { useState } from 'react';
-import { ClientSlide, Header, CustomTabView, Icons } from '@/components';
+import { ClientSlide, RealtorSlide, Header, CustomTabView, Icons } from '@/components';
 
 export default function UsersPage() {
   const [index, setIndex] = useState(0);
@@ -24,7 +23,7 @@ export default function UsersPage() {
         navigationState={{ index, routes }}
         scene={SceneMap({
           first: () => <ClientSlide />,
-          second: () => <View style={{ flex: 1 }} />,
+          second: () => <RealtorSlide />,
         })}
         setFunc={setIndex}
       />

@@ -1,12 +1,12 @@
 export { TabBar } from './TabBar';
 export { Header } from './Header';
 export { CustomTabView } from './TabView';
-export { ClientSlide } from './TabViewSlides/ClientSlide';
+export { ClientSlide, RealtorSlide } from './TabViewSlides';
 export { Input } from './Input';
 export { Button } from './Button';
-export { UserCardList } from './UserCardList';
-export { UserCard } from './UserCard';
+export { CardList } from './CardList';
+export { Card } from './Card';
 export { BottomSheet } from './BottomSheet';
-export { AddClientForm } from './AddClientForm';
-export { EditClientForm } from './EditClientForm';
+export { AddClientForm, EditClientForm } from './Client';
+export { AddRealtorForm, EditRealtorForm } from './Realtor';
 export { Icons } from './Icons';

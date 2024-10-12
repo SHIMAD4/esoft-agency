@@ -1,34 +1,60 @@
 import { FC, useState } from 'react';
 import { View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { User } from '@/types';
-import { UserCard } from '../UserCard';
+import { Realtor, User } from '@/types';
+import { Card } from '../Card';
 import { Button } from '../Button';
 import { BottomSheet } from '../BottomSheet';
 import { router } from 'expo-router';
 import { Icons } from '../Icons';
 
 type UserCardProps = {
-  users: User[];
+  users: User[] | Realtor[];
+  entity: 'user' | 'realtor';
 };
 
-export const UserCardList: FC<UserCardProps> = ({ users }) => {
+export const CardList: FC<UserCardProps> = ({ users, entity }) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedUserFullName, setSelectedUserFullName] = useState('');
 
-  const renderItem = ({ item: user, index }: { item: User; index: number }) => {
-    return (
-      <UserCard
-        user={{
-          ...user,
-          fullName: user.fullName || `User#${index + 1}`,
-        }}
-        onPress={() => setSelectedUserFullName(user.fullName)}
-      />
-    );
+  const renderItem = ({ item: user, index }: { item: User | Realtor; index: number }) => {
+    switch (entity) {
+      case 'user':
+        user = user as User;
+        return (
+          <Card
+            entity={entity}
+            user={{
+              ...user,
+              fullName: user.fullName || `User#${index + 1}`,
+            }}
+            onPress={() => setSelectedUserFullName(user.fullName)}
+          />
+        );
+      case 'realtor':
+        user = user as Realtor;
+        return (
+          <Card
+            entity={entity}
+            user={{
+              ...user,
+              percent: user.percent || 0,
+            }}
+            onPress={() => setSelectedUserFullName(user.fullName)}
+          />
+        );
+    }
   };
 
   const renderHiddenItem = () => {
+    let navigateURL: string;
+
+    if (entity === 'user') {
+      navigateURL = '../client/editPage';
+    } else {
+      navigateURL = '../realtor/editPage';
+    }
+
     return (
       <View className="flex w-full h-full flex-row-reverse items-center pb-[8px]">
         <Button
@@ -40,7 +66,7 @@ export const UserCardList: FC<UserCardProps> = ({ users }) => {
         </Button>
         <Button
           variant="edit"
-          onPress={() => router.navigate('../client/editPage')}
+          onPress={() => router.navigate(navigateURL)}
           className="flex justify-center items-center bg-[#01A0FF]"
         >
           <Icons.EditIcon />
