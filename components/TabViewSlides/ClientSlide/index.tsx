@@ -7,7 +7,7 @@ import { router } from 'expo-router';
 
 export const ClientSlide: FC = () => {
   const handleAddClientClick = () => {
-    router.navigate('../addClientPage');
+    router.navigate('../client/addPage');
   };
 
   return (

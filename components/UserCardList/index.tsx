@@ -40,7 +40,7 @@ export const UserCardList: FC<UserCardProps> = ({ users }) => {
         </Button>
         <Button
           variant="edit"
-          onPress={() => router.navigate('../editPage')}
+          onPress={() => router.navigate('../client/editPage')}
           className="flex justify-center items-center bg-[#01A0FF]"
         >
           <Icons.EditIcon />

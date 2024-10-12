@@ -25,8 +25,8 @@ export default function RootLayout() {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="editPage" options={{ headerShown: false }} />
-      <Stack.Screen name="addClientPage" options={{ headerShown: false }} />
+      <Stack.Screen name="client/editPage" options={{ headerShown: false }} />
+      <Stack.Screen name="client/addPage" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>
   );
