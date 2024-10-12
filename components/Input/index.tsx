@@ -1,9 +1,9 @@
 import { FC, useState } from 'react';
 import { SafeAreaView, TextInput, View, Text } from 'react-native';
-import { SearchIcon } from '../Icons';
 import MaskInput from 'react-native-mask-input/src/MaskInput';
-import { EMAILVALIDITYMASK, PHONEINPUTMASK } from '@/scripts/constants';
+import { PHONEINPUTMASK } from '@/scripts/constants';
 import clsx from 'clsx';
+import { Icons } from '../Icons';
 
 type InputProps = {
   variant: 'search' | 'text' | 'phone' | 'email' | string;
@@ -92,7 +92,7 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder, ...props }) => {
           placeholder={placeholder}
         />
         <View className="absolute left-4">
-          <SearchIcon />
+          <Icons.SearchIcon />
         </View>
       </View>
     </SafeAreaView>

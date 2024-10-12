@@ -12,7 +12,7 @@ export const Header: FC<HeaderTypes> = ({ title, icon, link }) => (
   <View className="w-full flex flex-row justify-between items-center">
     <Link
       href={{ pathname: link }}
-      className="border-[1px] border-[#CFD8DB] w-12 h-12 p-4 rounded-[3px]"
+      className="border-[1px] border-[#CFD8DB] w-12 h-12 p-5 rounded-[3px]"
     >
       {icon}
     </Link>

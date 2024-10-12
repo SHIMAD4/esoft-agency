@@ -1,7 +1,6 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Header, AddClientForm } from '@/components';
-import { ArrowIcon } from '@/components/Icons';
+import { Header, AddClientForm, Icons } from '@/components';
 
 export default function AddClientPage() {
   return (
@@ -9,7 +8,7 @@ export default function AddClientPage() {
       <SafeAreaView className="mx-6 mt-6 mb-9">
         <Header
           title="Добавить клиента"
-          icon={<ArrowIcon rotateToLeft={true} />}
+          icon={<Icons.ArrowIcon rotateToLeft={true} size={16} />}
           link="/(tabs)/users"
         />
       </SafeAreaView>

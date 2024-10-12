@@ -5,8 +5,8 @@ import { User } from '@/types';
 import { UserCard } from '../UserCard';
 import { Button } from '../Button';
 import { BottomSheet } from '../BottomSheet';
-import { DeleteIcon, EditIcon } from '../Icons';
 import { router } from 'expo-router';
+import { Icons } from '../Icons';
 
 type UserCardProps = {
   users: User[];
@@ -36,14 +36,14 @@ export const UserCardList: FC<UserCardProps> = ({ users }) => {
           onPress={() => setIsSheetOpen(true)}
           className="flex justify-center items-center bg-[#FE4A6D] rounded-r-[3px]"
         >
-          <DeleteIcon />
+          <Icons.DeleteIcon />
         </Button>
         <Button
           variant="edit"
           onPress={() => router.navigate('../editPage')}
           className="flex justify-center items-center bg-[#01A0FF]"
         >
-          <EditIcon />
+          <Icons.EditIcon />
         </Button>
       </View>
     );

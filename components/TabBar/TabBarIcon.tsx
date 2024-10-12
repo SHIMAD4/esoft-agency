@@ -1,4 +1,4 @@
-import { HomeIcon, UsersIcon } from '../Icons';
+import { Icons } from '../Icons';
 
 type TabBarIconType = {
   fill: boolean;
@@ -8,9 +8,9 @@ type TabBarIconType = {
 export function TabBarIcon({ fill, title }: TabBarIconType) {
   switch (title) {
     case 'home':
-      return <HomeIcon width={36} height={36} fill={fill ? '#0281D1' : 'none'} />;
+      return <Icons.HomeIcon size={36} fill={fill ? '#0281D1' : 'none'} />;
     case 'users':
-      return <UsersIcon width={36} height={36} fill={fill ? '#0281D1' : 'none'} />;
+      return <Icons.UsersIcon size={36} fill={fill ? '#0281D1' : 'none'} />;
     default:
       return null;
   }

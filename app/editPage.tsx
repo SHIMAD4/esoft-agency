@@ -1,7 +1,6 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { EditClientForm, Header } from '@/components';
+import { EditClientForm, Header, Icons } from '@/components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ArrowIcon } from '@/components/Icons';
 
 export default function EditPage() {
   return (
@@ -9,7 +8,7 @@ export default function EditPage() {
       <SafeAreaView className="mx-6 mt-6 mb-9">
         <Header
           title="Редактирование"
-          icon={<ArrowIcon rotateToLeft={true} />}
+          icon={<Icons.ArrowIcon rotateToLeft={true} size={16} />}
           link="/(tabs)/users"
         />
       </SafeAreaView>
