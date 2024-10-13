@@ -10,6 +10,7 @@ export default function UsersPage() {
     { key: 'second', title: 'Риэлтор' },
   ]);
 
+  // TODO: Нужно брать пользователей из БД (Жду бэк)
   return (
     <>
       <SafeAreaView className="mx-6 mt-6 mb-9">
@@ -22,8 +23,37 @@ export default function UsersPage() {
       <CustomTabView
         navigationState={{ index, routes }}
         scene={SceneMap({
-          first: () => <ClientSlide />,
-          second: () => <RealtorSlide />,
+          first: () => (
+            <ClientSlide
+              users={[
+                { id: 1, fullName: 'User#1', telephone: '+ 7 (965) 433 - 55 - 55' },
+                {
+                  id: 2,
+                  fullName: 'Мелихова Ева-София',
+                  telephone: '+ 7 (965) 433 - 55 - 55',
+                  email: 'sshuulje@vk.com',
+                },
+                {
+                  id: 3,
+                  fullName: 'Старцев Виталий',
+                  telephone: '+ 7 (936) 272 - 82 - 98',
+                  email: 'startcev.viy@gmail.com',
+                },
+              ]}
+            />
+          ),
+          second: () => (
+            <RealtorSlide
+              users={[
+                { id: 1, fullName: 'Максимов Андрей Юрьевич', percent: 30 },
+                {
+                  id: 2,
+                  fullName: 'Каматалина Юлия Сергеевна',
+                  percent: 20,
+                },
+              ]}
+            />
+          ),
         })}
         setFunc={setIndex}
       />

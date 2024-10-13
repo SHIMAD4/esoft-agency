@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { SafeAreaView, TextInput, View, Text } from 'react-native';
 import MaskInput from 'react-native-mask-input/src/MaskInput';
 import { PHONEINPUTMASK } from '@/scripts/constants';
@@ -16,13 +16,15 @@ type InputProps = {
 };
 
 type InputBaseProps = {
-  value: string;
+  value?: string;
   onChangeText: (text: string) => void;
   // Остальные свойства, чтобы компонент мог принимать любые пропсы.
   [key: string]: any;
 };
 
-type SearchInputProps = { placeholder?: string };
+type SearchInputProps = InputBaseProps & {
+  placeholder?: string;
+};
 type CustomTextInputProps = InputBaseProps & { placeholder?: string };
 type PhoneInputProps = InputBaseProps & { placeholder?: string; required?: boolean };
 type EmailInputProps = InputBaseProps & {
@@ -40,7 +42,7 @@ export const Input: FC<InputProps> = ({
 }) => {
   switch (variant) {
     case 'search':
-      return <SearchInput placeholder={placeholder} {...props} />;
+      return <SearchInput placeholder={placeholder} onChangeText={props.onChangeText} {...props} />;
     case 'text':
       return (
         <CustomTextInput
@@ -92,25 +94,20 @@ export const Input: FC<InputProps> = ({
   }
 };
 
-const SearchInput: FC<SearchInputProps> = ({ placeholder, ...props }) => {
-  const [searchText, onChangeSearchText] = useState('');
-
-  return (
-    <SafeAreaView {...props}>
-      <View className="flex-row items-center relative mt-6">
-        <TextInput
-          className="w-full border-[1px] border-[#CFD8DB] pt-[18px] pb-[18px] pl-[40px] rounded-[3px]"
-          onChangeText={onChangeSearchText}
-          value={searchText}
-          placeholder={placeholder}
-        />
-        <View className="absolute left-4">
-          <Icons.SearchIcon />
-        </View>
+const SearchInput: FC<SearchInputProps> = ({ placeholder, onChange, ...props }) => (
+  <SafeAreaView {...props}>
+    <View className="flex-row items-center relative mt-6">
+      <TextInput
+        className="w-full border-[1px] border-[#CFD8DB] pt-[18px] pb-[18px] pl-[40px] rounded-[3px]"
+        onChangeText={(text) => onChange(text)}
+        placeholder={placeholder}
+      />
+      <View className="absolute left-4">
+        <Icons.SearchIcon />
       </View>
-    </SafeAreaView>
-  );
-};
+    </View>
+  </SafeAreaView>
+);
 
 const CustomTextInput: FC<CustomTextInputProps> = ({ placeholder, error, ...props }) => {
   return (

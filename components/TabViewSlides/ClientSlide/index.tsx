@@ -1,32 +1,58 @@
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Input } from '../../Input';
 import { Button } from '../../Button';
 import { CardList } from '../../CardList';
-import { FC } from 'react';
+import { FC, SetStateAction, useState } from 'react';
 import { router } from 'expo-router';
+import { User } from '@/types';
 
-export const ClientSlide: FC = () => {
+type ClientSlideProps = {
+  users: User[];
+};
+
+export const ClientSlide: FC<ClientSlideProps> = ({ users }) => {
+  const [searchUsers, setSearchUsers] = useState(users);
+
+  const searchUser = (query: string) => {
+    if (!query) {
+      setSearchUsers(users);
+      return;
+    }
+
+    query = query.toLowerCase();
+
+    const result: SetStateAction<User[]> = [];
+    users.forEach((user) => {
+      if (
+        user.fullName.toLowerCase().indexOf(query) !== -1 ||
+        (user.email && user.email.includes(query))
+      ) {
+        result.push(user);
+      }
+    });
+
+    setSearchUsers(result);
+  };
+
   const handleAddClientClick = () => {
     router.navigate('../client/addPage');
   };
 
   return (
     <View className="flex-1 mx-6">
-      <Input variant="search" placeholder="Поиск клиента" style={{ marginBottom: 24 }} />
-      <Button variant="add" onPress={handleAddClientClick} style={{ marginBottom: 16 }} />
-      {/* TODO: Нужно брать пользователей из БД (Жду бэк) */}
-      <CardList
-        entity="user"
-        users={[
-          { id: 1, fullName: 'User#1', telephone: '+ 7 (965) 433 - 55 - 55' },
-          {
-            id: 2,
-            fullName: 'Мелихова Ева-София',
-            telephone: '+ 7 (965) 433 - 55 - 55',
-            email: 'sshuulje@vk.com',
-          },
-        ]}
+      {/* TODO: Нужно сделать нечетный поиск Левенштейна */}
+      <Input
+        variant="search"
+        placeholder="Поиск клиента"
+        style={{ marginBottom: 24 }}
+        onChange={searchUser}
       />
+      <Button variant="add" onPress={handleAddClientClick} style={{ marginBottom: 16 }} />
+      {searchUsers.length !== 0 ? (
+        <CardList entity="user" users={searchUsers} />
+      ) : (
+        <Text className="text-center">Ничего не найдено</Text>
+      )}
     </View>
   );
 };
