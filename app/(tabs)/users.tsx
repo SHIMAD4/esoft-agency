@@ -33,12 +33,6 @@ export default function UsersPage() {
                   telephone: '+ 7 (965) 433 - 55 - 55',
                   email: 'sshuulje@vk.com',
                 },
-                {
-                  id: 3,
-                  fullName: 'Старцев Виталий',
-                  telephone: '+ 7 (936) 272 - 82 - 98',
-                  email: 'startcev.viy@gmail.com',
-                },
               ]}
             />
           ),

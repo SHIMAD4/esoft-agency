@@ -38,17 +38,18 @@ export const Input: FC<InputProps> = ({
   required,
   error,
   extendedError,
+  onChangeText = () => {},
   ...props
 }) => {
   switch (variant) {
     case 'search':
-      return <SearchInput placeholder={placeholder} onChangeText={props.onChangeText} {...props} />;
+      return <SearchInput placeholder={placeholder} onChangeText={onChangeText} {...props} />;
     case 'text':
       return (
         <CustomTextInput
           placeholder={placeholder}
           value={props.value}
-          onChangeText={props.onChangeText}
+          onChangeText={onChangeText}
           error={error}
           {...props}
         />
@@ -59,7 +60,7 @@ export const Input: FC<InputProps> = ({
           placeholder={placeholder}
           required={required}
           value={props.value}
-          onChangeText={props.onChangeText}
+          onChangeText={onChangeText}
           error={error}
           extendedError={extendedError}
           {...props}
@@ -71,7 +72,7 @@ export const Input: FC<InputProps> = ({
           placeholder={placeholder}
           required={required}
           value={props.value}
-          onChangeText={props.onChangeText}
+          onChangeText={onChangeText}
           error={error}
           extendedError={extendedError}
           {...props}
@@ -83,7 +84,7 @@ export const Input: FC<InputProps> = ({
           placeholder={placeholder}
           required={required}
           value={props.value}
-          onChangeText={props.onChangeText}
+          onChangeText={onChangeText}
           error={error}
           extendedError={extendedError}
           {...props}
@@ -94,12 +95,12 @@ export const Input: FC<InputProps> = ({
   }
 };
 
-const SearchInput: FC<SearchInputProps> = ({ placeholder, onChange, ...props }) => (
+const SearchInput: FC<SearchInputProps> = ({ placeholder, onChangeText, ...props }) => (
   <SafeAreaView {...props}>
     <View className="flex-row items-center relative mt-6">
       <TextInput
         className="w-full border-[1px] border-[#CFD8DB] pt-[18px] pb-[18px] pl-[40px] rounded-[3px]"
-        onChangeText={(text) => onChange(text)}
+        onChangeText={(text) => onChangeText(text)}
         placeholder={placeholder}
       />
       <View className="absolute left-4">
