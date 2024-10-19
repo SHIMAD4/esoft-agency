@@ -31,11 +31,77 @@ const AddRealtorOnSubmitSchema = Yup.object().shape({
   percent: Yup.string(),
 });
 
+const AddEstateOnSubmitSchema = Yup.object()
+  .shape({
+    type: Yup.string(),
+    city: Yup.string(),
+    street: Yup.string(),
+    house: Yup.string(),
+    apartment: Yup.string(),
+    latitude: Yup.string(),
+    longitude: Yup.string(),
+    floor: Yup.string(),
+    rooms: Yup.string(),
+    square: Yup.string(),
+  })
+  .test({
+    name: 'atLeastOneRequired',
+    test: function (values: { latitude?: string; longitude?: string }) {
+      const isValid = ['latitude', 'longitude'].every(
+        (field) =>
+          values[field as keyof typeof values] !== undefined &&
+          values[field as keyof typeof values]?.length !== 0,
+      );
+
+      if (isValid) return true;
+
+      return this.createError({
+        path: 'allFieldsRequired',
+        message: 'Заполните координаты',
+      });
+    },
+  })
+  .test({
+    name: 'latitude',
+    test: function (values: { latitude?: string }) {
+      if (!values.latitude) return true;
+
+      const latitude = Number(values.latitude);
+
+      if (isNaN(latitude) || latitude < -90 || latitude > 90) {
+        return this.createError({
+          path: 'latitude',
+          message: 'Широта принимает значение от -90 до +90',
+        });
+      }
+
+      return true;
+    },
+  })
+  .test({
+    name: 'longitude',
+    test: function (values: { longitude?: string }) {
+      if (!values.longitude) return true;
+
+      const longitude = Number(values.longitude);
+
+      if (isNaN(longitude) || longitude < -180 || longitude > 180) {
+        return this.createError({
+          path: 'longitude',
+          message: 'Долгота принимает значение от -180 до +180',
+        });
+      }
+
+      return true;
+    },
+  });
+
 interface ValidationParams {
-  fields: { [key: string]: string };                // Поля для проверки (например, phone, email)
-  errors?: { [key: string]: string | undefined };   // Ошибки для этих полей
-  allFieldsRequired?: boolean;                      // Флаг, если нужно все поля заполнить
-  atLeastOneRequiredError?: string;                 // Общая ошибка, если одно из полей обязательно
+  fields: { [key: string]: string }; // Поля для проверки (например, phone, email)
+  errors?: { [key: string]: string | undefined }; // Ошибки для этих полей
+  coordinates?: string;
+  allFieldsRequired?: boolean; // Флаг, если нужно все поля заполнить
+  atLeastOneRequiredError?: string; // Общая ошибка, если одно из полей обязательно
 }
 
 const setDisabledState = (
@@ -57,13 +123,14 @@ const setDisabledState = (
 
   // Проверяем, есть ли ошибки для этих полей
   const hasErrors = Object.keys(fields).some((key) => !!errors[key]);
+  console.log('hasErrors', hasErrors);
 
   // Условие блокировки: если требуется все поля, проверяем их заполненность, иначе - хотя бы одно поле
   if (
-    (allFieldsRequired && !areAllFieldsFilled) ||   // Если нужно заполнить все поля
-    (!allFieldsRequired && !isAnyFieldFilled) ||    // Если нужно хотя бы одно поле
-    hasErrors ||                                    // Если есть ошибки
-    atLeastOneRequiredError                         // Если есть ошибка обязательности одного из полей
+    (allFieldsRequired && !areAllFieldsFilled) || // Если нужно заполнить все поля
+    (!allFieldsRequired && !isAnyFieldFilled) || // Если нужно хотя бы одно поле
+    hasErrors || // Если есть ошибки
+    atLeastOneRequiredError // Если есть ошибка обязательности одного из полей
   ) {
     setDisabled(true);
   } else {
@@ -71,4 +138,9 @@ const setDisabledState = (
   }
 };
 
-export { AddClientOnSubmitSchema, AddRealtorOnSubmitSchema, setDisabledState };
+export {
+  AddClientOnSubmitSchema,
+  AddRealtorOnSubmitSchema,
+  AddEstateOnSubmitSchema,
+  setDisabledState,
+};

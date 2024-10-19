@@ -1,34 +1,41 @@
 import { View, Text } from 'react-native';
 import { FC } from 'react';
-import { User, Realtor } from '@/types';
+import { User, Realtor, Estate } from '@/types';
 
 type CardProps = {
-  user: User | Realtor;
+  data: User | Realtor | Estate;
   onPress: () => void;
-  entity: 'user' | 'realtor';
+  entity: 'user' | 'realtor' | 'estate';
 };
 
 type UserCardProps = {
-  user: User;
+  data: User;
   onPress: () => void;
 };
 
 type RealtorCardProps = {
-  user: Realtor;
+  data: Realtor;
   onPress: () => void;
 };
 
-export const Card: FC<CardProps> = ({ user, onPress, entity }) => {
+type EstateCardProps = {
+  data: Estate;
+  onPress: () => void;
+};
+
+export const Card: FC<CardProps> = ({ data, onPress, entity }) => {
   switch (entity) {
     case 'user':
-      return <UserCard user={user as User} onPress={onPress} />;
+      return <UserCard data={data as User} onPress={onPress} />;
     case 'realtor':
-      return <RealtorCard user={user as Realtor} onPress={onPress} />;
+      return <RealtorCard data={data as Realtor} onPress={onPress} />;
+    case 'estate':
+      return <EstateCard data={data as Estate} onPress={onPress} />;
   }
 };
 
-const UserCard: FC<UserCardProps> = ({ user, onPress }) => {
-  const { fullName, telephone, email } = user;
+const UserCard: FC<UserCardProps> = ({ data, onPress }) => {
+  const { fullName, telephone, email } = data;
 
   return (
     <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
@@ -39,13 +46,42 @@ const UserCard: FC<UserCardProps> = ({ user, onPress }) => {
   );
 };
 
-const RealtorCard: FC<RealtorCardProps> = ({ user, onPress }) => {
-  const { fullName, percent } = user;
+const RealtorCard: FC<RealtorCardProps> = ({ data, onPress }) => {
+  const { fullName, percent } = data;
 
   return (
     <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
       <Text className="text-[16px] font-semibold mb-4">{fullName}</Text>
       <Text className="text-[#546E7A] text-[12px] font-[400]">Комиссия: {percent}%</Text>
+    </View>
+  );
+};
+
+const EstateCard: FC<EstateCardProps> = ({ data, onPress }) => {
+  const { id, type } = data;
+  const { city, street, house, apartment } = data;
+  const { latitude, longitude } = data;
+  const { floor, rooms } = data;
+  const { area } = data;
+
+  return (
+    <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
+      <Text className="text-[16px] font-semibold mb-4">{street ?? `Недвижимость#${id}`}</Text>
+      {type && <Text className="text-[#546E7A] text-[12px] font-[400]">Тип: {type}</Text>}
+      <Text className="text-[#546E7A] text-[12px] font-[400]">
+        Координаты: {latitude}, {longitude}
+      </Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400]">
+        Адрес: {city}
+        {street && `, ул. ${street}`}
+        {house && `, дом ${house}`}
+        {apartment && `, кв. ${apartment}`}
+      </Text>
+      {floor && <Text className="text-[#546E7A] text-[12px] font-[400]">Этаж: {floor}</Text>}
+      {rooms && (
+        <Text className="text-[#546E7A] text-[12px] font-[400]">Количество комнат: {rooms}</Text>
+      )}
+      {area && <Text className="text-[#546E7A] text-[12px] font-[400]">Площадь: {area}</Text>}
     </View>
   );
 };

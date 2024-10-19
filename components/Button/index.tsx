@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import clsx from 'clsx';
+import { Icons } from '../Icons';
 
 type ButtonProps = {
   variant: 'default' | 'add' | 'edit' | 'delete' | string;
@@ -19,6 +20,8 @@ export const Button: FC<ButtonProps> = ({ variant, onPress, ...props }) => {
       return <EditButtonSquare onPress={onPress} {...props} />;
     case 'delete':
       return <DeleteButtonSquare onPress={onPress} {...props} />;
+    case 'filter':
+      return <FilterButtonSquare onPress={onPress} {...props} />;
     default:
       return null;
   }
@@ -79,6 +82,18 @@ const EditButtonSquare: FC<{ onPress?: () => void; children?: string; className?
       {...props}
     >
       <Text>{children}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const FilterButtonSquare: FC<{ onPress?: () => void }> = ({ onPress, ...props }) => {
+  return (
+    <TouchableOpacity
+      className="flex justify-center items-center w-10 h-10 border-[1px] border-[#37464F] rounded-[3px]"
+      onPress={onPress}
+      {...props}
+    >
+      <Icons.FilterIcon />
     </TouchableOpacity>
   );
 };

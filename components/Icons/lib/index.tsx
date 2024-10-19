@@ -3,6 +3,8 @@ import React, { ReactElement } from 'react';
 type RotateSvg = {
   rotateToLeft?: boolean;
   rotateToRight?: boolean;
+  rotateToTop?: boolean;
+  rotateToBottom?: boolean;
 };
 
 type IconProps<T> = {

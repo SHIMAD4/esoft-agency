@@ -32,6 +32,10 @@ export default function RootLayout() {
       {/* Realtor */}
       <Stack.Screen name="realtor/editPage" options={{ headerShown: false }} />
       <Stack.Screen name="realtor/addPage" options={{ headerShown: false }} />
+      {/* Estate */}
+      <Stack.Screen name="estate/editPage" options={{ headerShown: false }} />
+      <Stack.Screen name="estate/addPage" options={{ headerShown: false }} />
+      <Stack.Screen name="estate/filterPage" options={{ headerShown: false }} />
       {/* Not Found */}
       <Stack.Screen name="+not-found" />
     </Stack>

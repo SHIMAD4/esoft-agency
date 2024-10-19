@@ -26,12 +26,27 @@ export default function UsersPage() {
           first: () => (
             <ClientSlide
               users={[
-                { id: 1, fullName: 'User#1', telephone: '+ 7 (965) 433 - 55 - 55' },
+                { id: 1, fullName: 'User#1', telephone: '+ 7 (965) 433 - 55 - 55', entity: 'user' },
                 {
                   id: 2,
                   fullName: 'Мелихова Ева-София',
                   telephone: '+ 7 (965) 433 - 55 - 55',
                   email: 'sshuulje@vk.com',
+                  entity: 'user',
+                },
+                {
+                  id: 3,
+                  fullName: 'Мелихова Ева-София',
+                  telephone: '+ 7 (965) 433 - 55 - 55',
+                  email: 'sshuulje@vk.com',
+                  entity: 'user',
+                },
+                {
+                  id: 4,
+                  fullName: 'Мелихова Ева-София',
+                  telephone: '+ 7 (965) 433 - 55 - 55',
+                  email: 'sshuulje@vk.com',
+                  entity: 'user',
                 },
               ]}
             />
@@ -39,11 +54,12 @@ export default function UsersPage() {
           second: () => (
             <RealtorSlide
               users={[
-                { id: 1, fullName: 'Максимов Андрей Юрьевич', percent: 30 },
+                { id: 1, fullName: 'Максимов Андрей Юрьевич', percent: 30, entity: 'realtor' },
                 {
                   id: 2,
                   fullName: 'Каматалина Юлия Сергеевна',
                   percent: 20,
+                  entity: 'realtor',
                 },
               ]}
             />

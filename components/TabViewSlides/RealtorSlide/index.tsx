@@ -20,7 +20,7 @@ export const RealtorSlide: FC<RealtorSlideProps> = ({ users }) => {
       {/* TODO: Нужно сделать поиск через бэк (Жду бэк) */}
       <Input variant="search" placeholder="Поиск риэлтора" style={{ marginBottom: 24 }} />
       <Button variant="add" onPress={handleAddClientClick} style={{ marginBottom: 16 }} />
-      <CardList entity="realtor" users={users} />
+      <CardList entity="realtor" data={users} />
     </View>
   );
 };

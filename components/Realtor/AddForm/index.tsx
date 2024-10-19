@@ -67,8 +67,7 @@ export const AddRealtorForm = () => {
               placeholder="Процентная ставка"
               value={values.percent}
               onChangeText={handleChange('percent')}
-              min={0}
-              max={100}
+              limitation={[0, 100]}
             />
             <Button
               variant="default"

@@ -8,6 +8,8 @@ type ExtendedErrorType = FormikErrors<{
   email?: string;
   allFieldsRequired?: string;
   atLeastOneRequiredError?: string;
+  latitude?: string;
+  longitude?: string;
 }>;
 
 export { ExtendedErrorType };

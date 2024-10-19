@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { Icons } from '@/components';
+import { HomeCard } from '@/components/HomeCard';
 
 export default function HomePage() {
   const Logo = require('../../assets/images/logo.png');
@@ -15,15 +16,14 @@ export default function HomePage() {
       <Text className="text-2xl text-center font-bold mb-9">
         {'Добро пожаловать,\nв агенство недвижимости'}
       </Text>
-      <TouchableHighlight
-        underlayColor="transparent"
-        onPress={() => router.navigate('/(tabs)/users')}
-      >
-        <View className="w-[160px] h-[100px] flex flex-col justify-center gap-2 py-6 px-4 bg-[#01A0FF] rounded-[3px]">
-          <Icons.PeopleIcon size={26} />
-          <Text className="text-[#ffffff]">Пользователи</Text>
-        </View>
-      </TouchableHighlight>
+      <View className="flex flex-row justify-between">
+        <HomeCard title="Пользователи" path="/(tabs)/users" icon={<Icons.PeopleIcon size={26} />} />
+        <HomeCard
+          title="Недвижимость"
+          path="/(tabs)/estate"
+          icon={<Icons.EstateIcon size={26} />}
+        />
+      </View>
     </SafeAreaView>
   );
 }

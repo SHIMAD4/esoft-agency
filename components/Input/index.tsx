@@ -1,12 +1,14 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { SafeAreaView, TextInput, View, Text } from 'react-native';
 import MaskInput from 'react-native-mask-input/src/MaskInput';
 import { PHONEINPUTMASK } from '@/scripts/constants';
 import clsx from 'clsx';
 import { Icons } from '../Icons';
+import Dropdown from 'react-native-input-select';
 
 type InputProps = {
-  variant: 'search' | 'text' | 'number' | 'phone' | 'email' | string;
+  variant: 'search' | 'text' | 'number' | 'phone' | 'email' | 'select' | string;
+  label?: string;
   placeholder?: string;
   required?: boolean;
   error?: string;
@@ -25,11 +27,20 @@ type InputBaseProps = {
 type SearchInputProps = InputBaseProps & {
   placeholder?: string;
 };
-type CustomTextInputProps = InputBaseProps & { placeholder?: string };
+type CustomTextInputProps = InputBaseProps & { placeholder?: string; containerClassNames?: string };
 type PhoneInputProps = InputBaseProps & { placeholder?: string; required?: boolean };
+type NumberInputProps = InputBaseProps & {
+  placeholder?: string;
+  required?: boolean;
+  limitation?: [number, number];
+};
 type EmailInputProps = InputBaseProps & {
   placeholder?: string;
   required?: boolean;
+};
+type SelectInputProps = InputBaseProps & {
+  placeholder?: string;
+  data: { key: number; label: string; value: string }[];
 };
 
 export const Input: FC<InputProps> = ({
@@ -90,6 +101,18 @@ export const Input: FC<InputProps> = ({
           {...props}
         />
       );
+    case 'select':
+      return (
+        <SelectInput
+          data={props.data}
+          placeholder={placeholder}
+          required={required}
+          onChangeText={onChangeText}
+          error={error}
+          extendedError={extendedError}
+          {...props}
+        />
+      );
     default:
       return null;
   }
@@ -110,9 +133,16 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder, onChangeText, ...props
   </SafeAreaView>
 );
 
-const CustomTextInput: FC<CustomTextInputProps> = ({ placeholder, error, ...props }) => {
+const CustomTextInput: FC<CustomTextInputProps> = ({
+  placeholder,
+  error,
+  label,
+  containerClassNames,
+  ...props
+}) => {
   return (
-    <View className="flex">
+    <View className={clsx('flex', containerClassNames)}>
+      {label && <Text className="mb-2 text-[16px] font-bold">{label}</Text>}
       <TextInput
         className={clsx(
           'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
@@ -128,44 +158,33 @@ const CustomTextInput: FC<CustomTextInputProps> = ({ placeholder, error, ...prop
   );
 };
 
-const NumberInput: FC<PhoneInputProps> = ({
+const NumberInput: FC<NumberInputProps> = ({
+  label,
   placeholder,
   required,
   error,
   extendedError,
   onChangeText,
+  limitation,
+  containerClassNames,
   ...props
 }) => {
-  const handleTextChange = (text: string) => {
-    let numericValue = parseInt(text, 10);
-
-    if (isNaN(numericValue)) {
-      numericValue = 0;
-    } else if (numericValue > 100) {
-      numericValue = 100;
-    } else if (numericValue < 0) {
-      numericValue = 0;
-    }
-
-    if (onChangeText) {
-      onChangeText(numericValue.toString());
-    }
-  };
-
   return (
-    <View className="flex-row items-center relative">
+    <View className={clsx('flex', containerClassNames)}>
+      {label && <Text className="mb-2 text-[16px] font-bold">{label}</Text>}
       <TextInput
         className={clsx(
           'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
-          extendedError && 'border-[#E3002C]',
+          extendedError && 'border-[#E3002C] text-[#E3002C]',
         )}
         inputMode="numeric"
         keyboardType={'number-pad'}
         placeholder={placeholder}
         placeholderTextColor={extendedError ? '#E3002C' : undefined}
-        onChangeText={handleTextChange}
+        onChangeText={onChangeText}
         {...props}
       />
+      {error && <Text className="text-[#FF1644]">{error}</Text>}
     </View>
   );
 };
@@ -225,6 +244,35 @@ const EmailInput: FC<EmailInputProps> = ({
         placeholder={placeholder}
       />
       {error && <Text className="mt-1 text-[#FF1644]">{error}</Text>}
+    </View>
+  );
+};
+
+const SelectInput: FC<SelectInputProps> = ({
+  placeholder,
+  required,
+  error,
+  extendedError,
+  data,
+  label,
+  ...props
+}) => {
+  const { value, onChangeText } = props;
+
+  return (
+    <View className="flex" {...props}>
+      <Dropdown
+        options={data}
+        label={label}
+        labelStyle={{ marginBottom: 8, color: '#000000', fontSize: 16, fontWeight: 'bold' }}
+        placeholder={placeholder}
+        placeholderStyle={{ color: '#78909C' }}
+        selectedValue={value}
+        onValueChange={(value) => onChangeText(value as string)}
+        dropdownContainerStyle={{ marginBottom: 0 }}
+        dropdownStyle={{ borderColor: '#CFD8DB', borderRadius: 3 }}
+        dropdownIcon={<Icons.ArrowIcon size={16} rotateToBottom={true} />}
+      />
     </View>
   );
 };

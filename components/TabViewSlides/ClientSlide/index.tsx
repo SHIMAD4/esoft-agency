@@ -20,7 +20,7 @@ export const ClientSlide: FC<ClientSlideProps> = ({ users }) => {
       {/* TODO: Нужно сделать поиск через бэк (Жду бэк) */}
       <Input variant="search" placeholder="Поиск клиента" style={{ marginBottom: 24 }} />
       <Button variant="add" onPress={handleAddClientClick} style={{ marginBottom: 16 }} />
-      <CardList entity="user" users={users} />
+      <CardList entity="user" data={users} />
     </View>
   );
 };

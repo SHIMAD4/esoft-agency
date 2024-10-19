@@ -9,4 +9,5 @@ export { Card } from './Card';
 export { BottomSheet } from './BottomSheet';
 export { AddClientForm, EditClientForm } from './Client';
 export { AddRealtorForm, EditRealtorForm } from './Realtor';
+export { AddEstateForm, EditEstateForm, AddFilterForm } from './Estate';
 export { Icons } from './Icons';

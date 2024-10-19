@@ -1,58 +1,75 @@
 import { FC, useState } from 'react';
 import { View } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view';
-import { Realtor, User } from '@/types';
+import { Realtor, User, Estate } from '@/types';
 import { Card } from '../Card';
 import { Button } from '../Button';
 import { BottomSheet } from '../BottomSheet';
 import { router } from 'expo-router';
 import { Icons } from '../Icons';
+import { SwipeListView } from 'react-native-swipe-list-view';
+
+type Entity = User | Realtor | Estate;
 
 type UserCardProps = {
-  users: User[] | Realtor[];
-  entity: 'user' | 'realtor';
+  data: Entity[];
+  entity: 'user' | 'realtor' | 'estate';
 };
 
-export const CardList: FC<UserCardProps> = ({ users, entity }) => {
+export const CardList: FC<UserCardProps> = ({ data }) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [selectedUserFullName, setSelectedUserFullName] = useState('');
+  const [selectedTitle, setSelectedTitle] = useState('');
 
-  const renderItem = ({ item: user, index }: { item: User | Realtor; index: number }) => {
-    switch (entity) {
+  const renderItem = ({ item, index }: { item: Entity; index: number }) => {
+    switch (item.entity) {
       case 'user':
-        user = user as User;
         return (
           <Card
-            entity={entity}
-            user={{
-              ...user,
-              fullName: user.fullName || `User#${index + 1}`,
+            entity={item.entity}
+            data={{
+              ...item,
+              fullName: item.fullName || `User#${index + 1}`,
             }}
-            onPress={() => setSelectedUserFullName(user.fullName)}
+            onPress={() => setSelectedTitle(item.fullName)}
           />
         );
       case 'realtor':
-        user = user as Realtor;
         return (
           <Card
-            entity={entity}
-            user={{
-              ...user,
-              percent: user.percent || 0,
+            entity={item.entity}
+            data={{
+              ...item,
+              percent: item.percent || 0,
             }}
-            onPress={() => setSelectedUserFullName(user.fullName)}
+            onPress={() => setSelectedTitle(item.fullName)}
+          />
+        );
+      case 'estate':
+        return (
+          <Card
+            entity={item.entity}
+            data={{
+              ...item,
+              street: item.street || `Недвижимость#${index + 1}`,
+            }}
+            onPress={() => setSelectedTitle(item.street || `Недвижимость#${index + 1}`)}
           />
         );
     }
   };
 
-  const renderHiddenItem = () => {
-    let navigateURL: string;
+  const renderHiddenItem = (item: Entity) => {
+    let navigateURL = '';
 
-    if (entity === 'user') {
-      navigateURL = '../client/editPage';
-    } else {
-      navigateURL = '../realtor/editPage';
+    switch (item.entity) {
+      case 'user':
+        navigateURL = '../client/editPage';
+        break;
+      case 'realtor':
+        navigateURL = '../realtor/editPage';
+        break;
+      case 'estate':
+        navigateURL = '../estate/editPage';
+        break;
     }
 
     return (
@@ -78,10 +95,10 @@ export const CardList: FC<UserCardProps> = ({ users, entity }) => {
   return (
     <View className="flex flex-col">
       <SwipeListView
-        data={users}
+        data={data}
         renderItem={renderItem}
-        renderHiddenItem={renderHiddenItem}
-        keyExtractor={(item: User) => item.id.toString()}
+        renderHiddenItem={({ item }) => renderHiddenItem(item)}
+        keyExtractor={(item: Entity) => item.id.toString()}
         rightOpenValue={-115}
         disableRightSwipe={true}
         swipeToOpenPercent={1}
@@ -91,7 +108,7 @@ export const CardList: FC<UserCardProps> = ({ users, entity }) => {
       <BottomSheet
         title="Удалить пользователя"
         description="без возможности восстановления?"
-        userFullName={selectedUserFullName}
+        userFullName={selectedTitle}
         titleToClose="Отмена"
         titleToDelete="Удалить"
         handleClickToOpen={isSheetOpen}
