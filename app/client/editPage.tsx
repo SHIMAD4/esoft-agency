@@ -13,7 +13,6 @@ export default function EditPage() {
         />
       </SafeAreaView>
       <KeyboardAwareScrollView>
-        {/* TODO: Выводить данные выбранного пользователя */}
         <EditClientForm />
       </KeyboardAwareScrollView>
     </>

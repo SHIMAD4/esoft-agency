@@ -8,6 +8,7 @@ import { AddEstateOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
 import clsx from 'clsx';
 
 export const EditEstateForm = () => {
+  // TODO: Выводить данные выбранной недвижимости
   // TODO: Отправлять изменения (Жду бэк)
   return (
     <Formik

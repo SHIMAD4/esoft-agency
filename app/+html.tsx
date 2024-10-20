@@ -6,7 +6,6 @@ import { type PropsWithChildren } from 'react';
  * The contents of this function only run in Node.js environments and do not have access to the DOM or browser APIs.
  */
 
-// TODO: Исправить добавление индекста для пустого поля
 // TODO: Попробовать сократить кол-во компонентов и вариантность
 // TODO: Исправить импорты во всем проекте, возможно добавлением FSD архитектуры
 // TODO: Добавить компонент типографики
