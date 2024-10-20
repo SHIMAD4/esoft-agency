@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
-import { View } from 'react-native';
-import { Realtor, User, Estate } from '@/types';
+import { ListRenderItemInfo, View } from 'react-native';
+import { Realtor, Client /*Estate*/ } from '@/shared/types';
 import { Card } from '../Card';
 import { Button } from '../Button';
 import { BottomSheet } from '../BottomSheet';
@@ -8,68 +8,74 @@ import { router } from 'expo-router';
 import { Icons } from '../Icons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
-type Entity = User | Realtor | Estate;
+type Entity = Client | Realtor /*| Estate */;
 
 type UserCardProps = {
   data: Entity[];
-  entity: 'user' | 'realtor' | 'estate';
 };
 
 export const CardList: FC<UserCardProps> = ({ data }) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState('');
 
-  const renderItem = ({ item, index }: { item: Entity; index: number }) => {
-    switch (item.entity) {
-      case 'user':
+  const renderItem = ({ item }: ListRenderItemInfo<Entity>) => {
+    let fullName = '';
+
+    switch (item.type) {
+      case 'Client':
+        item = item as Client;
+        fullName = `${item.firstName} ${item.lastName} ${item.middleName}`;
+
         return (
           <Card
-            entity={item.entity}
+            entity={item.type}
             data={{
               ...item,
-              fullName: item.fullName || `User#${index + 1}`,
+              firstName: item.firstName,
+              lastName: item.lastName,
+              middleName: item.middleName,
             }}
-            onPress={() => setSelectedTitle(item.fullName)}
+            onPress={() => setSelectedTitle(fullName)}
           />
         );
-      case 'realtor':
+      case 'Realtor':
+        item = item as Realtor;
+        fullName = `${item.firstName} ${item.lastName} ${item.middleName}`;
+
         return (
           <Card
-            entity={item.entity}
+            entity={item.type}
             data={{
               ...item,
-              percent: item.percent || 0,
+              firstName: item.firstName,
+              lastName: item.lastName,
+              middleName: item.middleName,
+              dealShare: item.dealShare,
             }}
-            onPress={() => setSelectedTitle(item.fullName)}
+            onPress={() => setSelectedTitle(fullName)}
           />
         );
-      case 'estate':
-        return (
-          <Card
-            entity={item.entity}
-            data={{
-              ...item,
-              street: item.street || `Недвижимость#${index + 1}`,
-            }}
-            onPress={() => setSelectedTitle(item.street || `Недвижимость#${index + 1}`)}
-          />
-        );
+      default:
+        return null;
     }
   };
 
-  const renderHiddenItem = (item: Entity) => {
+  const renderHiddenItem = (rowData: ListRenderItemInfo<Entity>) => {
+    const { item } = rowData;
     let navigateURL = '';
 
-    switch (item.entity) {
-      case 'user':
+    switch (item.type) {
+      case 'Client':
         navigateURL = '../client/editPage';
         break;
-      case 'realtor':
+      case 'Realtor':
         navigateURL = '../realtor/editPage';
         break;
-      case 'estate':
-        navigateURL = '../estate/editPage';
-        break;
+      // case 'estate':
+      //   navigateURL = '../estate/editPage';
+      //   break;
+      default:
+        return null; // Ensure we return null if no case matches
     }
 
     return (
@@ -97,8 +103,8 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
       <SwipeListView
         data={data}
         renderItem={renderItem}
-        renderHiddenItem={({ item }) => renderHiddenItem(item)}
-        keyExtractor={(item: Entity) => item.id.toString()}
+        renderHiddenItem={(rowData) => renderHiddenItem(rowData)}
+        keyExtractor={(item: Entity) => item.user.id}
         rightOpenValue={-115}
         disableRightSwipe={true}
         swipeToOpenPercent={1}

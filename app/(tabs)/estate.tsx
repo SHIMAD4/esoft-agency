@@ -1,7 +1,7 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header, Icons, Input, Button, CardList } from '@/components';
 import { router } from 'expo-router';
-import { Estate } from '@/types';
+import { Estate } from '@/shared/types';
 import { View } from 'react-native';
 
 export default function EstatePage() {

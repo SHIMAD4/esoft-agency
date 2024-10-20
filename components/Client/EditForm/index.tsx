@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import { Text, View } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
-import { ExtendedErrorType } from '@/types';
+import { ExtendedErrorType } from '@/shared/types';
 import { useEffect, useState } from 'react';
 import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
 import clsx from 'clsx';

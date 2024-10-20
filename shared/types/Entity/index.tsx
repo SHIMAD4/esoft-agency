@@ -1,16 +1,27 @@
-type User = {
-  id: number;
-  fullName: string;
-  telephone: string;
-  email?: string;
-  entity: 'user';
+type Client = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  phone: string;
+  type: string;
+  user: {
+    id: string;
+    role: string;
+  };
 };
 
 type Realtor = {
-  id: number;
+  type: string;
   fullName: string;
-  percent: number;
-  entity: 'realtor';
+  dealShare: number;
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  user: {
+    id: string;
+    role: string;
+  };
 };
 
 type Estate = {
@@ -32,4 +43,4 @@ type Estate = {
   entity: 'estate';
 };
 
-export { User, Realtor, Estate };
+export { Client, Realtor, Estate };

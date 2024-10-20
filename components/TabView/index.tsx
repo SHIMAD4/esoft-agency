@@ -1,7 +1,7 @@
 import React, { FC, memo } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
-import { CustomTabViewProps } from '@/types';
+import { CustomTabViewProps } from '@/shared/types';
 
 enum Colors {
   Active = '#0281D1',

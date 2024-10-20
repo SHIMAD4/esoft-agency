@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
-import { ExtendedErrorType } from '@/types';
+import { ExtendedErrorType } from '@/shared/types';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
