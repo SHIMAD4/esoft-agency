@@ -1,9 +1,9 @@
 import { FormikErrors } from 'formik';
 
 type ExtendedErrorType = FormikErrors<{
-  surname?: string;
-  firstname?: string;
-  patronymic?: string;
+  lastName?: string;
+  firstName?: string;
+  middleName?: string;
   phone?: string;
   email?: string;
   allFieldsRequired?: string;

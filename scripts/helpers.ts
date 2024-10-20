@@ -3,6 +3,9 @@ import { EMAILVALIDITYMASK } from './constants';
 
 const AddClientOnSubmitSchema = Yup.object()
   .shape({
+    firstName: Yup.string(),
+    lastName: Yup.string(),
+    middleName: Yup.string(),
     phone: Yup.string(),
     email: Yup.string().matches(EMAILVALIDITYMASK, 'Введите валидный email'),
   })

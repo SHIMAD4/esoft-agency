@@ -6,14 +6,31 @@ import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
 import { ExtendedErrorType } from '@/shared/types';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
+import { API } from '@/shared/api';
+import { router } from 'expo-router';
+import { handleSaveClients } from '@/shared/slices/clientSlice';
+import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 
 export const AddClientForm = () => {
-  // TODO: Отправлять данные (Жду бэк)
+  const dispatch = useAppDispatch();
+
   return (
     <Formik
-      initialValues={{ surname: '', firstname: '', patronymic: '', phone: '', email: '' }}
+      initialValues={{ lastName: '', firstName: '', middleName: '', phone: '', email: '' }}
       validationSchema={AddClientOnSubmitSchema}
-      onSubmit={(data, errors) => !!errors && console.log('submit data: ', data)}
+      onSubmit={(data, errors) => {
+        if (!!errors) {
+          API.clientBlock.addClient(data).then((data) => console.log(data));
+
+          setTimeout(() => {
+            router.navigate('/users/');
+
+            API.clientBlock
+              .getAllUsers()
+              .then(({ data }) => dispatch(handleSaveClients({ clients: data })));
+          }, 150);
+        }
+      }}
     >
       {({ handleChange, handleSubmit, values, errors }) => {
         const extendedErrors: ExtendedErrorType = errors;
@@ -44,20 +61,20 @@ export const AddClientForm = () => {
             <Input
               variant="text"
               placeholder="Фамилия"
-              value={values.surname}
-              onChangeText={handleChange('surname')}
+              value={values.lastName}
+              onChangeText={handleChange('lastName')}
             />
             <Input
               variant="text"
               placeholder="Имя"
-              value={values.firstname}
-              onChangeText={handleChange('firstname')}
+              value={values.firstName}
+              onChangeText={handleChange('firstName')}
             />
             <Input
               variant="text"
               placeholder="Отчество"
-              value={values.patronymic}
-              onChangeText={handleChange('patronymic')}
+              value={values.middleName}
+              onChangeText={handleChange('middleName')}
             />
             <Input
               variant="phone"

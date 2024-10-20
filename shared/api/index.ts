@@ -11,6 +11,13 @@ const appBlock = {
 
 const clientBlock = {
   getAllUsers: () => ApiInstance.get('/users/search?role=CLIENT'),
+  addClient: (data: {
+    firstName: string;
+    lastName: string;
+    middleName: string;
+    email: string;
+    phone: string;
+  }) => ApiInstance.post('/users/client', data),
 };
 
 const realtorBlock = {

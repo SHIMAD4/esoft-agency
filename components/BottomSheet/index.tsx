@@ -48,13 +48,15 @@ export const BottomSheet: FC<BottomSheetProps> = ({
   const handleDelete = (id: string) => {
     API.appBlock.deleteUserById(id).then((data) => console.log(data));
 
-    API.clientBlock
-      .getAllUsers()
-      .then(({ data }) => dispatch(handleSaveClients({ clients: data })));
+    setTimeout(() => {
+      API.clientBlock
+        .getAllUsers()
+        .then(({ data }) => dispatch(handleSaveClients({ clients: data })));
 
-    API.realtorBlock
-      .getAllUsers()
-      .then(({ data }) => dispatch(handleSaveRealtors({ realtors: data })));
+      API.realtorBlock
+        .getAllUsers()
+        .then(({ data }) => dispatch(handleSaveRealtors({ realtors: data })));
+    }, 150);
 
     refRBSheet.current?.close();
   };
