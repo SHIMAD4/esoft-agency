@@ -22,6 +22,12 @@ const clientBlock = {
 
 const realtorBlock = {
   getAllUsers: () => ApiInstance.get('/users/search?role=REALTOR'),
+  addRealtor: (data: {
+    firstName: string;
+    lastName: string;
+    middleName: string;
+    dealShare: string;
+  }) => ApiInstance.post('/users/realtor', data),
 };
 
 export const API = {

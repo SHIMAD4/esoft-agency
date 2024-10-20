@@ -28,10 +28,10 @@ const AddClientOnSubmitSchema = Yup.object()
   });
 
 const AddRealtorOnSubmitSchema = Yup.object().shape({
-  surname: Yup.string().required('Обязательное поле'),
-  firstname: Yup.string().required('Обязательное поле'),
-  patronymic: Yup.string().required('Обязательное поле'),
-  percent: Yup.string(),
+  lastName: Yup.string().required('Обязательное поле'),
+  firstName: Yup.string().required('Обязательное поле'),
+  middleName: Yup.string().required('Обязательное поле'),
+  dealShare: Yup.string(),
 });
 
 const AddEstateOnSubmitSchema = Yup.object()
