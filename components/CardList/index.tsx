@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ListRenderItemInfo, View } from 'react-native';
 import { Realtor, Client /*Estate*/ } from '@/shared/types';
 import { Card } from '../Card';
@@ -17,6 +17,7 @@ type UserCardProps = {
 export const CardList: FC<UserCardProps> = ({ data }) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState('');
+  const [selectedEntity, setSelectedEntity] = useState('');
 
   const renderItem = ({ item }: ListRenderItemInfo<Entity>) => {
     let fullName = '';
@@ -62,6 +63,8 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
 
   const renderHiddenItem = (rowData: ListRenderItemInfo<Entity>) => {
     const { item } = rowData;
+    const entityId = item.user.id;
+
     let navigateURL = '';
 
     switch (item.type) {
@@ -75,21 +78,27 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
       //   navigateURL = '../estate/editPage';
       //   break;
       default:
-        return null; // Ensure we return null if no case matches
+        return null;
     }
 
     return (
       <View className="flex w-full h-full flex-row-reverse items-center pb-[8px]">
         <Button
           variant="delete"
-          onPress={() => setIsSheetOpen(true)}
+          onPress={() => {
+            setSelectedEntity(entityId);
+            setIsSheetOpen(true);
+          }}
           className="flex justify-center items-center bg-[#FE4A6D] rounded-r-[3px]"
         >
           <Icons.DeleteIcon />
         </Button>
         <Button
           variant="edit"
-          onPress={() => router.navigate(navigateURL)}
+          onPress={() => {
+            setSelectedEntity(entityId);
+            router.push(`${navigateURL}?id=${entityId}`);
+          }}
           className="flex justify-center items-center bg-[#01A0FF]"
         >
           <Icons.EditIcon />
@@ -117,6 +126,7 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
         userFullName={selectedTitle}
         titleToClose="Отмена"
         titleToDelete="Удалить"
+        entityToDeleteID={selectedEntity}
         handleClickToOpen={isSheetOpen}
         setIsSheetOpen={setIsSheetOpen}
       />

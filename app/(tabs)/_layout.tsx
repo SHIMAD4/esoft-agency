@@ -24,12 +24,12 @@ export default function TabLayout() {
           title: 'users',
         }}
       />
-      <Tabs.Screen
-        name="estate"
-        options={{
-          title: 'estate',
-        }}
-      />
+      {/*<Tabs.Screen*/}
+      {/*  name="estate"*/}
+      {/*  options={{*/}
+      {/*    title: 'estate',*/}
+      {/*  }}*/}
+      {/*/>*/}
     </Tabs>
   );
 }

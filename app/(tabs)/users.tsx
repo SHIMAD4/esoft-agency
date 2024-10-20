@@ -3,21 +3,16 @@ import { SceneMap } from 'react-native-tab-view';
 import { useEffect, useState } from 'react';
 import { ClientSlide, RealtorSlide, Header, CustomTabView, Icons } from '@/components';
 import { API } from '@/shared/api';
-import { Client } from '@/shared/types';
+import { useAppSelector } from '@/shared/hooks/useAppSelector';
 
 export default function UsersPage() {
-  const [clients, setClients] = useState<Client[]>([]);
-  const [realtors, setRealtors] = useState([]);
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'first', title: 'Клиент' },
     { key: 'second', title: 'Риэлтор' },
   ]);
-
-  useEffect(() => {
-    API.clientBlock.getAllUsers().then(({ data }) => setClients(data));
-    API.realtorBlock.getAllUsers().then(({ data }) => setRealtors(data));
-  }, []);
+  const { clients } = useAppSelector((state) => state.clientSlice);
+  const { realtors } = useAppSelector((state) => state.realtorSlice);
 
   return (
     <>

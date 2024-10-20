@@ -7,6 +7,7 @@ import { AddRealtorOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
 import clsx from 'clsx';
 
 export const EditRealtorForm = () => {
+  // TODO: Показывать поля которые уже есть (Жду бэк)
   // TODO: Отправлять изменения (Жду бэк)
   return (
     <Formik

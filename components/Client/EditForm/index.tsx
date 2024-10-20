@@ -5,10 +5,19 @@ import { Input } from '../../Input';
 import { ExtendedErrorType } from '@/shared/types';
 import { useEffect, useState } from 'react';
 import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
+import { useGlobalSearchParams } from 'expo-router';
 import clsx from 'clsx';
+import { API } from '@/shared/api';
 
 export const EditClientForm = () => {
+  const { id } = useGlobalSearchParams();
+
+  // TODO: Показывать поля которые уже есть (Жду бэк)
   // TODO: Отправлять изменения (Жду бэк)
+  useEffect(() => {
+    API.appBlock.getUserById(id as string).then((res) => console.log(res));
+  }, [id]);
+
   return (
     <Formik
       initialValues={{ surname: '', firstname: '', patronymic: '', phone: '', email: '' }}

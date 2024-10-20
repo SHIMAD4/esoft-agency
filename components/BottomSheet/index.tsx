@@ -2,6 +2,10 @@ import { FC, useEffect, useRef } from 'react';
 import { View, Text } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { Button } from '../Button';
+import { API } from '@/shared/api';
+import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
+import { handleSaveClients } from '@/shared/slices/clientSlice';
+import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
 
 type BottomSheetProps = {
   title: string;
@@ -10,6 +14,7 @@ type BottomSheetProps = {
   titleToClose: string;
   titleToDelete: string;
   userFullName: string;
+  entityToDeleteID: string;
   handleClickToOpen: boolean;
   setIsSheetOpen: (state: boolean) => void;
 };
@@ -28,16 +33,31 @@ export const BottomSheet: FC<BottomSheetProps> = ({
   userFullName,
   handleClickToOpen,
   setIsSheetOpen,
+  entityToDeleteID,
 }) => {
-  // TODO: Добавить логику удаления (Жду бэк)
   // TODO: Добавить логику чтобы нельзя было удалять связанных пользователей с потребностью или предложением (Жду бэк)
   const refRBSheet = useRef<RBSheetRef>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (handleClickToOpen) {
       refRBSheet.current?.open();
     }
   }, [handleClickToOpen]);
+
+  const handleDelete = (id: string) => {
+    API.appBlock.deleteUserById(id).then((data) => console.log(data));
+
+    API.clientBlock
+      .getAllUsers()
+      .then(({ data }) => dispatch(handleSaveClients({ clients: data })));
+
+    API.realtorBlock
+      .getAllUsers()
+      .then(({ data }) => dispatch(handleSaveRealtors({ realtors: data })));
+
+    refRBSheet.current?.close();
+  };
 
   return (
     <View className="flex-1">
@@ -69,7 +89,7 @@ export const BottomSheet: FC<BottomSheetProps> = ({
           </View>
           <Button
             variant="default"
-            onPress={() => console.log('Удаление')}
+            onPress={() => handleDelete(entityToDeleteID)}
             text={titleToDelete}
             buttonClassNames="flex justify-center items-center w-full bg-[#FF1644] rounded-[3px]"
             textClassNames="text-[16px] text-[#FFFFFF] py-[8.5px]"
