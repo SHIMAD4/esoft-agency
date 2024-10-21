@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { ListRenderItemInfo, View } from 'react-native';
 import { Realtor, Client /*Estate*/ } from '@/shared/types';
 import { Card } from '../Card';

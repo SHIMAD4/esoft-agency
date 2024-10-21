@@ -122,7 +122,6 @@ export const AddEstateForm = () => {
                   error={errors.latitude}
                   extendedError={extendedErrors.latitude}
                   containerClassNames="mb-4"
-                  limitation={[-90, 90]}
                 />
                 <Input
                   variant="number"
@@ -133,7 +132,6 @@ export const AddEstateForm = () => {
                   error={errors.longitude}
                   extendedError={extendedErrors.longitude}
                   containerClassNames="mb-4"
-                  limitation={[-180, 180]}
                 />
                 {extendedErrors.allFieldsRequired && (
                   <Text className="text-[#FF1644] text-center">

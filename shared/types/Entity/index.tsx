@@ -14,7 +14,7 @@ type Client = {
 type Realtor = {
   type: string;
   fullName: string;
-  dealShare: number;
+  dealShare: string;
   firstName: string;
   lastName: string;
   middleName: string;

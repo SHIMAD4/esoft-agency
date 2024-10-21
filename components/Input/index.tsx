@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { SafeAreaView, TextInput, View, Text } from 'react-native';
 import MaskInput from 'react-native-mask-input/src/MaskInput';
 import { PHONEINPUTMASK } from '@/scripts/constants';
@@ -32,7 +32,6 @@ type PhoneInputProps = InputBaseProps & { placeholder?: string; required?: boole
 type NumberInputProps = InputBaseProps & {
   placeholder?: string;
   required?: boolean;
-  limitation?: [number, number];
 };
 type EmailInputProps = InputBaseProps & {
   placeholder?: string;
@@ -165,7 +164,6 @@ const NumberInput: FC<NumberInputProps> = ({
   error,
   extendedError,
   onChangeText,
-  limitation,
   containerClassNames,
   ...props
 }) => {
@@ -175,12 +173,12 @@ const NumberInput: FC<NumberInputProps> = ({
       <TextInput
         className={clsx(
           'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
-          extendedError && 'border-[#E3002C] text-[#E3002C]',
+          (extendedError || error) && 'border-[#E3002C] text-[#E3002C]',
         )}
         inputMode="numeric"
         keyboardType={'number-pad'}
         placeholder={placeholder}
-        placeholderTextColor={extendedError ? '#E3002C' : undefined}
+        placeholderTextColor={extendedError || error ? '#E3002C' : undefined}
         onChangeText={onChangeText}
         {...props}
       />

@@ -27,12 +27,30 @@ const AddClientOnSubmitSchema = Yup.object()
     },
   });
 
-const AddRealtorOnSubmitSchema = Yup.object().shape({
-  lastName: Yup.string().required('Обязательное поле'),
-  firstName: Yup.string().required('Обязательное поле'),
-  middleName: Yup.string().required('Обязательное поле'),
-  dealShare: Yup.string(),
-});
+const AddRealtorOnSubmitSchema = Yup.object()
+  .shape({
+    lastName: Yup.string().required('Обязательное поле'),
+    firstName: Yup.string().required('Обязательное поле'),
+    middleName: Yup.string().required('Обязательное поле'),
+    dealShare: Yup.string(),
+  })
+  .test({
+    name: 'dealShare',
+    test: function (values: { dealShare?: string }) {
+      if (!values.dealShare) return true;
+
+      const dealShare = Number(values.dealShare);
+
+      if (isNaN(dealShare) || dealShare < 0 || dealShare > 100) {
+        return this.createError({
+          path: 'dealShare',
+          message: 'Процентная ставка должна быть от 0 до 100',
+        });
+      }
+
+      return true;
+    },
+  });
 
 const AddEstateOnSubmitSchema = Yup.object()
   .shape({
@@ -126,7 +144,6 @@ const setDisabledState = (
 
   // Проверяем, есть ли ошибки для этих полей
   const hasErrors = Object.keys(fields).some((key) => !!errors[key]);
-  console.log('hasErrors', hasErrors);
 
   // Условие блокировки: если требуется все поля, проверяем их заполненность, иначе - хотя бы одно поле
   if (

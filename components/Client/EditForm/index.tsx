@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import { Text, View } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
-import { ExtendedErrorType } from '@/shared/types';
+import { Client, ExtendedErrorType } from '@/shared/types';
 import { useEffect, useState } from 'react';
 import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
 import { useGlobalSearchParams } from 'expo-router';
@@ -11,16 +11,34 @@ import { API } from '@/shared/api';
 
 export const EditClientForm = () => {
   const { id } = useGlobalSearchParams();
+  const [user, setUser] = useState<Client>({
+    type: '',
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    phone: '',
+    email: '',
+    user: {
+      id: '',
+      role: '',
+    },
+  });
 
-  // TODO: Показывать поля которые уже есть (Жду бэк)
   // TODO: Отправлять изменения (Жду бэк)
   useEffect(() => {
-    API.appBlock.getUserById(id as string).then((res) => console.log(res));
+    API.appBlock.getUserById(id as string).then(({ data }) => setUser(data));
   }, [id]);
 
   return (
     <Formik
-      initialValues={{ surname: '', firstname: '', patronymic: '', phone: '', email: '' }}
+      initialValues={{
+        lastName: user.lastName || '',
+        firstName: user.firstName || '',
+        middleName: user.middleName || '',
+        phone: user.phone || '',
+        email: user.email || '',
+      }}
+      enableReinitialize={true}
       onSubmit={(data) => console.log('edit data: ', data)}
       validationSchema={AddClientOnSubmitSchema}
     >
@@ -53,20 +71,20 @@ export const EditClientForm = () => {
             <Input
               variant="text"
               placeholder="Фамилия"
-              value={values.surname}
-              onChangeText={handleChange('surname')}
+              value={values.firstName}
+              onChangeText={handleChange('firstName')}
             />
             <Input
               variant="text"
               placeholder="Имя"
-              value={values.firstname}
-              onChangeText={handleChange('firstname')}
+              value={values.middleName}
+              onChangeText={handleChange('middleName')}
             />
             <Input
               variant="text"
               placeholder="Отчество"
-              value={values.patronymic}
-              onChangeText={handleChange('patronymic')}
+              value={values.lastName}
+              onChangeText={handleChange('lastName')}
             />
             <Input
               variant="phone"

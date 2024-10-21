@@ -5,13 +5,39 @@ import { Input } from '../../Input';
 import { useEffect, useState } from 'react';
 import { AddRealtorOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
 import clsx from 'clsx';
+import { Realtor } from '@/shared/types';
+import { API } from '@/shared/api';
+import { useGlobalSearchParams } from 'expo-router';
 
 export const EditRealtorForm = () => {
-  // TODO: Показывать поля которые уже есть (Жду бэк)
+  const { id } = useGlobalSearchParams();
+  const [user, setUser] = useState<Realtor>({
+    type: '',
+    fullName: '',
+    dealShare: '',
+    firstName: '',
+    lastName: '',
+    middleName: '',
+    user: {
+      id: '',
+      role: '',
+    },
+  });
+
+  useEffect(() => {
+    API.appBlock.getUserById(id as string).then(({ data }) => setUser(data));
+  }, [id]);
+
   // TODO: Отправлять изменения (Жду бэк)
   return (
     <Formik
-      initialValues={{ surname: '', firstname: '', patronymic: '', percent: '' }}
+      initialValues={{
+        lastName: user.lastName || '',
+        firstName: user.firstName || '',
+        middleName: user.middleName || '',
+        dealShare: user.dealShare.toString() || '',
+      }}
+      enableReinitialize={true}
       onSubmit={(data, errors) => !!errors && console.log('edit data: ', data)}
       validationSchema={AddRealtorOnSubmitSchema}
     >
@@ -21,23 +47,23 @@ export const EditRealtorForm = () => {
         useEffect(() => {
           setDisabledState(setDisabled, {
             fields: {
-              surname: values.surname,
-              firstname: values.firstname,
-              patronymic: values.patronymic,
+              lastName: values.lastName,
+              firstName: values.firstName,
+              middleName: values.middleName,
             },
             errors: {
-              surname: errors.surname,
-              firstname: errors.firstname,
-              patronymic: errors.patronymic,
+              lastName: errors.lastName,
+              firstName: errors.firstName,
+              middleName: errors.middleName,
             },
           });
         }, [
-          values.surname,
-          values.firstname,
-          values.patronymic,
-          errors.surname,
-          errors.firstname,
-          errors.patronymic,
+          values.lastName,
+          values.firstName,
+          values.middleName,
+          errors.lastName,
+          errors.firstName,
+          errors.middleName,
         ]);
 
         return (
@@ -45,30 +71,29 @@ export const EditRealtorForm = () => {
             <Input
               variant="text"
               placeholder="Фамилия"
-              value={values.surname}
-              onChangeText={handleChange('surname')}
-              error={errors.surname}
+              value={values.firstName}
+              onChangeText={handleChange('firstName')}
+              error={errors.firstName}
             />
             <Input
               variant="text"
               placeholder="Имя"
-              value={values.firstname}
-              onChangeText={handleChange('firstname')}
-              error={errors.firstname}
+              value={values.middleName}
+              onChangeText={handleChange('middleName')}
+              error={errors.middleName}
             />
             <Input
               variant="text"
               placeholder="Отчество"
-              value={values.patronymic}
-              onChangeText={handleChange('patronymic')}
-              error={errors.patronymic}
+              value={values.lastName}
+              onChangeText={handleChange('lastName')}
+              error={errors.lastName}
             />
             <Input
               variant="number"
               placeholder="Процентная ставка"
-              value={values.percent}
+              value={values.dealShare}
               onChangeText={handleChange('percent')}
-              limitation={[0, 100]}
             />
             <Button
               variant="default"

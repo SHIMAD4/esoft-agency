@@ -84,7 +84,7 @@ export const AddRealtorForm = () => {
               placeholder="Процентная ставка"
               value={values.dealShare}
               onChangeText={handleChange('dealShare')}
-              limitation={[0, 100]}
+              error={errors.dealShare}
             />
             <Button
               variant="default"
