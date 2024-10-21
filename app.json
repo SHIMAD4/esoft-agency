@@ -11,7 +11,15 @@
     },
     "android": {},
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-font",
+        {
+          "custom": {
+            "Roboto": "./assets/fonts/Roboto-Regular.ttf"
+          }
+        }
+      ]
     ],
     "extra": {
       "eas": {

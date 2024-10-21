@@ -1,7 +1,7 @@
-// import { useFonts } from 'expo-font';
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 import 'react-native-reanimated';
 import store from '@/app/store';
 import { Provider } from 'react-redux';
@@ -10,19 +10,21 @@ import { Provider } from 'react-redux';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  // const [loaded] = useFonts({
-  //   SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  // });
+  const [loaded, error] = useFonts({
+    Roboto: require('../assets/fonts/Roboto-Regular.ttf'),
+  });
 
-  // useEffect(() => {
-  //   if (loaded) {
-  //     SplashScreen.hideAsync();
-  //   }
-  // }, [loaded]);
-  //
-  // if (!loaded) {
-  //   return null;
-  // }
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    } else if (error) {
+      console.error('Error loading font: ', error);
+    }
+  }, [loaded, error]);
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
     <Provider store={store}>
