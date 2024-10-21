@@ -7,9 +7,12 @@ import { AddRealtorOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
 import clsx from 'clsx';
 import { Realtor } from '@/shared/types';
 import { API } from '@/shared/api';
-import { useGlobalSearchParams } from 'expo-router';
+import { router, useGlobalSearchParams } from 'expo-router';
+import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
+import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 
 export const EditRealtorForm = () => {
+  const dispatch = useAppDispatch();
   const { id } = useGlobalSearchParams();
   const [user, setUser] = useState<Realtor>({
     type: '',
@@ -28,7 +31,6 @@ export const EditRealtorForm = () => {
     API.appBlock.getUserById(id as string).then(({ data }) => setUser(data));
   }, [id]);
 
-  // TODO: Отправлять изменения (Жду бэк)
   return (
     <Formik
       initialValues={{
@@ -38,7 +40,19 @@ export const EditRealtorForm = () => {
         dealShare: user.dealShare.toString() || '',
       }}
       enableReinitialize={true}
-      onSubmit={(data, errors) => !!errors && console.log('edit data: ', data)}
+      onSubmit={(data, errors) => {
+        if (!!errors) {
+          API.realtorBlock.editRealtor(id as string, data).then((data) => console.log(data));
+
+          setTimeout(() => {
+            router.navigate('/users/');
+
+            API.realtorBlock
+              .getAllUsers()
+              .then(({ data }) => dispatch(handleSaveRealtors({ realtors: data })));
+          }, 150);
+        }
+      }}
       validationSchema={AddRealtorOnSubmitSchema}
     >
       {({ handleChange, handleSubmit, values, errors }) => {
@@ -93,7 +107,7 @@ export const EditRealtorForm = () => {
               variant="number"
               placeholder="Процентная ставка"
               value={values.dealShare}
-              onChangeText={handleChange('percent')}
+              onChangeText={handleChange('dealShare')}
             />
             <Button
               variant="default"

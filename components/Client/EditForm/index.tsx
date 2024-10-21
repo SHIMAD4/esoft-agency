@@ -5,11 +5,14 @@ import { Input } from '../../Input';
 import { Client, ExtendedErrorType } from '@/shared/types';
 import { useEffect, useState } from 'react';
 import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
-import { useGlobalSearchParams } from 'expo-router';
+import { router, useGlobalSearchParams } from 'expo-router';
 import clsx from 'clsx';
 import { API } from '@/shared/api';
+import { handleSaveClients } from '@/shared/slices/clientSlice';
+import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 
 export const EditClientForm = () => {
+  const dispatch = useAppDispatch();
   const { id } = useGlobalSearchParams();
   const [user, setUser] = useState<Client>({
     type: '',
@@ -39,7 +42,19 @@ export const EditClientForm = () => {
         email: user.email || '',
       }}
       enableReinitialize={true}
-      onSubmit={(data) => console.log('edit data: ', data)}
+      onSubmit={(data, errors) => {
+        if (!!errors) {
+          API.clientBlock.editClient(id as string, data).then((data) => console.log(data));
+
+          setTimeout(() => {
+            router.navigate('/users/');
+
+            API.clientBlock
+              .getAllUsers()
+              .then(({ data }) => dispatch(handleSaveClients({ clients: data })));
+          }, 150);
+        }
+      }}
       validationSchema={AddClientOnSubmitSchema}
     >
       {({ handleChange, handleSubmit, values, errors }) => {

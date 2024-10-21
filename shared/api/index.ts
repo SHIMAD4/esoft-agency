@@ -18,6 +18,16 @@ const clientBlock = {
     email: string;
     phone: string;
   }) => ApiInstance.post('/users/client', data),
+  editClient: (
+    id: string,
+    data: {
+      firstName: string;
+      lastName: string;
+      middleName: string;
+      email: string;
+      phone: string;
+    },
+  ) => ApiInstance.put(`/users/client/${id}`, data),
 };
 
 const realtorBlock = {
@@ -28,6 +38,15 @@ const realtorBlock = {
     middleName: string;
     dealShare: string;
   }) => ApiInstance.post('/users/realtor', data),
+  editRealtor: (
+    id: string,
+    data: {
+      firstName: string;
+      lastName: string;
+      middleName: string;
+      dealShare: string;
+    },
+  ) => ApiInstance.put(`/users/realtor/${id}`, data),
 };
 
 export const API = {
