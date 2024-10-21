@@ -11,6 +11,7 @@ const appBlock = {
 
 const clientBlock = {
   getAllUsers: () => ApiInstance.get('/users/search?role=CLIENT'),
+  searchClient: (query: string) => ApiInstance.get(`/users/search?query=${query}&role=CLIENT`),
   addClient: (data: {
     firstName: string;
     lastName: string;
@@ -32,6 +33,7 @@ const clientBlock = {
 
 const realtorBlock = {
   getAllUsers: () => ApiInstance.get('/users/search?role=REALTOR'),
+  searchRealtor: (query: string) => ApiInstance.get(`/users/search?query=${query}&role=REALTOR`),
   addRealtor: (data: {
     firstName: string;
     lastName: string;

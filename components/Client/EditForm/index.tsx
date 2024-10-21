@@ -27,7 +27,6 @@ export const EditClientForm = () => {
     },
   });
 
-  // TODO: Отправлять изменения (Жду бэк)
   useEffect(() => {
     API.appBlock.getUserById(id as string).then(({ data }) => setUser(data));
   }, [id]);

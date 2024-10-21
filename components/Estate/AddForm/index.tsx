@@ -51,9 +51,6 @@ export const AddEstateForm = () => {
           extendedErrors.allFieldsRequired,
         ]);
 
-        console.log('values', values.latitude);
-        console.log('values', values.longitude);
-
         return (
           <View className="mx-6 gap-y-4 mb-8">
             <Input
