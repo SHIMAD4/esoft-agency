@@ -16,15 +16,12 @@ export const EditClientForm = () => {
   const { id } = useGlobalSearchParams();
   const [user, setUser] = useState<Client>({
     type: '',
+    id: '',
     lastName: '',
     firstName: '',
     middleName: '',
     phone: '',
     email: '',
-    user: {
-      id: '',
-      role: '',
-    },
   });
 
   useEffect(() => {

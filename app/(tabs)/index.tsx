@@ -33,11 +33,11 @@ export default function HomePage() {
       </Text>
       <View className="flex flex-row justify-between">
         <HomeCard title="Пользователи" path="/(tabs)/users" icon={<Icons.PeopleIcon size={26} />} />
-        {/*<HomeCard*/}
-        {/*  title="Недвижимость"*/}
-        {/*  path="/(tabs)/estate"*/}
-        {/*  icon={<Icons.EstateIcon size={26} />}*/}
-        {/*/>*/}
+        <HomeCard
+          title="Недвижимость"
+          path="/(tabs)/estate"
+          icon={<Icons.EstateIcon size={26} />}
+        />
       </View>
     </SafeAreaView>
   );

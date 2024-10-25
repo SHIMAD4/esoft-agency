@@ -1,41 +1,42 @@
 import { View, Text } from 'react-native';
 import { FC } from 'react';
 import { Client, Realtor, Estate } from '@/shared/types';
+import { EntityType } from '@/scripts/constants';
 
 type CardProps = {
-  data: Client | Realtor /*| Estate*/;
+  dt: Client | Realtor | Estate;
   onPress: () => void;
   entity: string;
 };
 
 type UserCardProps = {
-  data: Client;
+  dt: Client;
   onPress: () => void;
 };
 
 type RealtorCardProps = {
-  data: Realtor;
+  dt: Realtor;
   onPress: () => void;
 };
 
-// type EstateCardProps = {
-//   data: Estate;
-//   onPress: () => void;
-// };
+type EstateCardProps = {
+  dt: Estate;
+  onPress: () => void;
+};
 
-export const Card: FC<CardProps> = ({ data, onPress, entity }) => {
+export const Card: FC<CardProps> = ({ dt, onPress, entity }) => {
   switch (entity) {
-    case 'Client':
-      return <UserCard data={data as Client} onPress={onPress} />;
-    case 'Realtor':
-      return <RealtorCard data={data as Realtor} onPress={onPress} />;
-    // case 'estate':
-    //   return <EstateCard data={data as Estate} onPress={onPress} />;
+    case EntityType.CLIENT:
+      return <UserCard dt={dt as Client} onPress={onPress} />;
+    case EntityType.REALTOR:
+      return <RealtorCard dt={dt as Realtor} onPress={onPress} />;
+    case EntityType.ESTATE:
+      return <EstateCard dt={dt as Estate} onPress={onPress} />;
   }
 };
 
-const UserCard: FC<UserCardProps> = ({ data, onPress }) => {
-  const { firstName, lastName, middleName, phone, email } = data;
+const UserCard: FC<UserCardProps> = ({ dt, onPress }) => {
+  const { firstName, lastName, middleName, phone, email } = dt;
   const fullName = `${firstName} ${middleName} ${lastName}`;
 
   return (
@@ -47,8 +48,8 @@ const UserCard: FC<UserCardProps> = ({ data, onPress }) => {
   );
 };
 
-const RealtorCard: FC<RealtorCardProps> = ({ data, onPress }) => {
-  const { firstName, lastName, middleName, dealShare } = data;
+const RealtorCard: FC<RealtorCardProps> = ({ dt, onPress }) => {
+  const { firstName, lastName, middleName, dealShare } = dt;
   const fullName = `${firstName} ${middleName} ${lastName}`;
 
   return (
@@ -59,31 +60,35 @@ const RealtorCard: FC<RealtorCardProps> = ({ data, onPress }) => {
   );
 };
 
-// const EstateCard: FC<EstateCardProps> = ({ data, onPress }) => {
-//   const { id, type } = data;
-//   const { city, street, house, apartment } = data;
-//   const { latitude, longitude } = data;
-//   const { floor, rooms } = data;
-//   const { area } = data;
-//
-//   return (
-//     <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
-//       <Text className="text-[16px] font-semibold mb-4">{street ?? `Недвижимость#${id}`}</Text>
-//       {type && <Text className="text-[#546E7A] text-[12px] font-[400]">Тип: {type}</Text>}
-//       <Text className="text-[#546E7A] text-[12px] font-[400]">
-//         Координаты: {latitude}, {longitude}
-//       </Text>
-//       <Text className="text-[#546E7A] text-[12px] font-[400]">
-//         Адрес: {city}
-//         {street && `, ул. ${street}`}
-//         {house && `, дом ${house}`}
-//         {apartment && `, кв. ${apartment}`}
-//       </Text>
-//       {floor && <Text className="text-[#546E7A] text-[12px] font-[400]">Этаж: {floor}</Text>}
-//       {rooms && (
-//         <Text className="text-[#546E7A] text-[12px] font-[400]">Количество комнат: {rooms}</Text>
-//       )}
-//       {area && <Text className="text-[#546E7A] text-[12px] font-[400]">Площадь: {area}</Text>}
-//     </View>
-//   );
-// };
+const EstateCard: FC<EstateCardProps> = ({ dt, onPress }) => {
+  const { id, addressCity, addressHouse, addressNumber, addressStreet, latitude, longitude, data } =
+    dt;
+  const { floor, totalArea, totalRooms, type } = data;
+
+  return (
+    <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
+      <Text className="text-[16px] font-semibold mb-4">
+        {addressStreet ?? `Недвижимость#${id}`}
+      </Text>
+      {type && <Text className="text-[#546E7A] text-[12px] font-[400]">Тип: {type}</Text>}
+      <Text className="text-[#546E7A] text-[12px] font-[400]">
+        Координаты: {latitude.toFixed()}, {longitude.toFixed()}
+      </Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400]">
+        Адрес: {addressCity}
+        {addressStreet && `, ул. ${addressStreet}`}
+        {addressHouse && `, дом ${addressHouse}`}
+        {addressNumber && `, кв. ${addressNumber}`}
+      </Text>
+      {floor && <Text className="text-[#546E7A] text-[12px] font-[400]">Этаж: {floor}</Text>}
+      {totalRooms && (
+        <Text className="text-[#546E7A] text-[12px] font-[400]">
+          Количество комнат: {totalRooms}
+        </Text>
+      )}
+      {totalArea && (
+        <Text className="text-[#546E7A] text-[12px] font-[400]">Площадь: {totalArea}</Text>
+      )}
+    </View>
+  );
+};

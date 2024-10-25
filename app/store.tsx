@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import ClientReducer from '@/shared/slices/clientSlice';
 import RealtorReducer from '@/shared/slices/realtorSlice';
+import EstatesReducer from '@/shared/slices/estatesSlice';
 
 const store = configureStore({
   reducer: {
     clientSlice: ClientReducer,
     realtorSlice: RealtorReducer,
+    estateSlice: EstatesReducer,
   },
 });
 

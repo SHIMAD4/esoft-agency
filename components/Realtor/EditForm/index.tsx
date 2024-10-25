@@ -16,15 +16,12 @@ export const EditRealtorForm = () => {
   const { id } = useGlobalSearchParams();
   const [user, setUser] = useState<Realtor>({
     type: '',
+    id: '',
     fullName: '',
     dealShare: '',
     firstName: '',
     lastName: '',
     middleName: '',
-    user: {
-      id: '',
-      role: '',
-    },
   });
 
   useEffect(() => {

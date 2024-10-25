@@ -51,8 +51,13 @@ const realtorBlock = {
   ) => ApiInstance.put(`/users/realtor/${id}`, data),
 };
 
+const estateBlock = {
+  getAllEstates: () => ApiInstance.get('/real-state/search?'),
+};
+
 export const API = {
   appBlock,
   clientBlock,
   realtorBlock,
+  estateBlock,
 };
