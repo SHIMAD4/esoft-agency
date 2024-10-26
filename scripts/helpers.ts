@@ -55,15 +55,17 @@ const AddRealtorOnSubmitSchema = Yup.object()
 const AddEstateOnSubmitSchema = Yup.object()
   .shape({
     type: Yup.string(),
-    city: Yup.string(),
-    street: Yup.string(),
-    house: Yup.string(),
-    apartment: Yup.string(),
+    addressCity: Yup.string(),
+    addressStreet: Yup.string(),
+    addressHouse: Yup.string(),
+    addressNumber: Yup.string(),
     latitude: Yup.string(),
     longitude: Yup.string(),
     floor: Yup.string(),
-    rooms: Yup.string(),
-    square: Yup.string(),
+    totalFloors: Yup.string(),
+    totalRooms: Yup.string(),
+    totalArea: Yup.string(),
+    dataType: Yup.string(),
   })
   .test({
     name: 'atLeastOneRequired',

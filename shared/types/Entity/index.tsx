@@ -30,6 +30,7 @@ type Estate = {
   addressStreet: string;
   data: {
     floor: number;
+    totalFloors: number;
     totalArea: number;
     totalRooms: number;
     type: string;

@@ -7,6 +7,7 @@ export const ApiInstance = axios.create({
 const appBlock = {
   getUserById: (id: string) => ApiInstance.get(`/users/${id}`),
   deleteUserById: (id: string) => ApiInstance.delete(`/users/${id}`),
+  getEstateById: (id: string) => ApiInstance.get(`/real-state/${id}`),
 };
 
 const clientBlock = {
@@ -53,6 +54,41 @@ const realtorBlock = {
 
 const estateBlock = {
   getAllEstates: () => ApiInstance.get('/real-state/search?'),
+  editEstate: (
+    id: string,
+    data: {
+      type: string;
+      addressCity: string;
+      addressStreet: string;
+      addressHouse: string;
+      addressNumber: string;
+      latitude: number;
+      longitude: number;
+      floor: number;
+      totalFloors: number;
+      totalRooms: number;
+      totalArea: number;
+      dataType: string;
+    },
+  ) => {
+    const formattedData = {
+      type: data.dataType,
+      addressCity: data.addressCity,
+      addressStreet: data.addressStreet,
+      addressHouse: data.addressHouse,
+      addressNumber: data.addressNumber,
+      latitude: data.latitude,
+      longitude: data.longitude,
+      floor: data.floor,
+      totalFloors: data.totalFloors,
+      totalRooms: data.totalRooms,
+      totalArea: data.totalArea,
+    };
+
+    console.log(formattedData);
+
+    return ApiInstance.put(`/real-state/${id}`, formattedData);
+  },
 };
 
 export const API = {
