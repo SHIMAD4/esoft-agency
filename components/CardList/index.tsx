@@ -19,6 +19,7 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState('');
   const [selectedEntity, setSelectedEntity] = useState('');
+  const [selectedLabel, setSelectedLabel] = useState('');
 
   const renderItem = ({ item }: ListRenderItemInfo<Entity>) => {
     let fullName: string;
@@ -37,7 +38,10 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
               lastName: item.lastName,
               middleName: item.middleName,
             }}
-            onPress={() => setSelectedTitle(fullName)}
+            onPress={() => {
+              setSelectedLabel(EntityType.CLIENT);
+              setSelectedTitle(fullName);
+            }}
           />
         );
       case EntityType.REALTOR:
@@ -54,7 +58,10 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
               middleName: item.middleName,
               dealShare: item.dealShare,
             }}
-            onPress={() => setSelectedTitle(fullName)}
+            onPress={() => {
+              setSelectedLabel(EntityType.REALTOR);
+              setSelectedTitle(fullName);
+            }}
           />
         );
       case EntityType.ESTATE:
@@ -65,7 +72,10 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
           <Card
             entity={EntityType.ESTATE}
             dt={{ ...item }}
-            onPress={() => setSelectedTitle(addressStreet)}
+            onPress={() => {
+              setSelectedLabel(EntityType.ESTATE);
+              setSelectedTitle(addressStreet);
+            }}
           />
         );
       default:
@@ -138,6 +148,7 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
         userFullName={selectedTitle}
         titleToClose="Отмена"
         titleToDelete="Удалить"
+        entityToDeleteLabel={selectedLabel}
         entityToDeleteID={selectedEntity}
         handleClickToOpen={isSheetOpen}
         setIsSheetOpen={setIsSheetOpen}

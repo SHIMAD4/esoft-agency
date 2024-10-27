@@ -1,11 +1,8 @@
 import { Formik } from 'formik';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
-import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
-import { ExtendedErrorType } from '@/shared/types';
-import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { EstateType } from '@/scripts/constants';
 
 export const AddFilterForm = () => {
   // TODO: Разобраться с районами и сортировкой
@@ -15,7 +12,7 @@ export const AddFilterForm = () => {
       initialValues={{ type: '', district: '', sort: '' }}
       onSubmit={(data, errors) => !!errors && console.log('submit data: ', data)}
     >
-      {({ handleChange, handleSubmit, values, errors }) => {
+      {({ handleChange, handleSubmit, values }) => {
         return (
           <View className="mx-6 gap-y-4">
             <Input
@@ -25,14 +22,9 @@ export const AddFilterForm = () => {
               value={values.type}
               onChangeText={handleChange('type')}
               data={[
-                {
-                  id: 1,
-                  label: 'Обычная недвижимость',
-                  value: 'Обычная недвижимость',
-                },
-                { id: 2, label: 'Квартира', value: 'Квартира' },
-                { id: 3, label: 'Дом', value: 'Дом' },
-                { id: 4, label: 'Земля', value: 'Земля' },
+                { id: 1, label: 'Квартира', value: EstateType.APARTMENT },
+                { id: 2, label: 'Дом', value: EstateType.HOUSE },
+                { id: 3, label: 'Земля', value: EstateType.LAND },
               ]}
             />
             <Input

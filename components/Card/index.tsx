@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import { FC } from 'react';
 import { Client, Realtor, Estate } from '@/shared/types';
-import { EntityType } from '@/scripts/constants';
+import { EntityType, EstateType } from '@/scripts/constants';
 
 type CardProps = {
   dt: Client | Realtor | Estate;
@@ -70,9 +70,16 @@ const EstateCard: FC<EstateCardProps> = ({ dt, onPress }) => {
       <Text className="text-[16px] font-semibold mb-4">
         {addressStreet ?? `Недвижимость#${id}`}
       </Text>
-      {type && <Text className="text-[#546E7A] text-[12px] font-[400]">Тип: {type}</Text>}
+      {type && (
+        <Text className="text-[#546E7A] text-[12px] font-[400]">
+          Тип:{' '}
+          {(type === EstateType.APARTMENT && 'Квартира') ||
+            (type === EstateType.HOUSE && 'Дом') ||
+            (type === EstateType.LAND && 'Земля')}
+        </Text>
+      )}
       <Text className="text-[#546E7A] text-[12px] font-[400]">
-        Координаты: {latitude.toFixed()}, {longitude.toFixed()}
+        Координаты: {latitude}, {longitude}
       </Text>
       <Text className="text-[#546E7A] text-[12px] font-[400]">
         Адрес: {addressCity}

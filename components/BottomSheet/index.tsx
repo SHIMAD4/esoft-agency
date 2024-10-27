@@ -6,6 +6,8 @@ import { API } from '@/shared/api';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { handleSaveClients } from '@/shared/slices/clientSlice';
 import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
+import { handleSaveEstates } from '@/shared/slices/estatesSlice';
+import { EntityType } from '@/scripts/constants';
 
 type BottomSheetProps = {
   title: string;
@@ -14,6 +16,7 @@ type BottomSheetProps = {
   titleToClose: string;
   titleToDelete: string;
   userFullName: string;
+  entityToDeleteLabel: string;
   entityToDeleteID: string;
   handleClickToOpen: boolean;
   setIsSheetOpen: (state: boolean) => void;
@@ -33,9 +36,10 @@ export const BottomSheet: FC<BottomSheetProps> = ({
   userFullName,
   handleClickToOpen,
   setIsSheetOpen,
+  entityToDeleteLabel,
   entityToDeleteID,
 }) => {
-  // TODO: Добавить логику чтобы нельзя было удалять связанных пользователей с потребностью или предложением (Жду бэк)
+  // TODO: Добавить уведомление что нельзя удалять связанных пользователей с потребностью или предложением (Жду бэк)
   const refRBSheet = useRef<RBSheetRef>(null);
   const dispatch = useAppDispatch();
 
@@ -45,7 +49,17 @@ export const BottomSheet: FC<BottomSheetProps> = ({
     }
   }, [handleClickToOpen]);
 
-  const handleDelete = (id: string) => {
+  const handleDeleteEstate = (id: string) => {
+    API.appBlock.deleteEstateById(id).then((data) => console.log(data));
+
+    setTimeout(() => {
+      API.estateBlock
+        .getAllEstates()
+        .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
+    }, 150);
+  };
+
+  const handleDeleteUser = (id: string) => {
     API.appBlock.deleteUserById(id).then((data) => console.log(data));
 
     setTimeout(() => {
@@ -57,6 +71,14 @@ export const BottomSheet: FC<BottomSheetProps> = ({
         .getAllUsers()
         .then(({ data }) => dispatch(handleSaveRealtors({ realtors: data })));
     }, 150);
+  };
+
+  const handleDelete = (id: string) => {
+    if (entityToDeleteLabel === EntityType.ESTATE) {
+      handleDeleteEstate(id);
+    } else {
+      handleDeleteUser(id);
+    }
 
     refRBSheet.current?.close();
   };

@@ -10,6 +10,7 @@ import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { router, useGlobalSearchParams } from 'expo-router';
 import { API } from '@/shared/api';
 import { handleSaveEstates } from '@/shared/slices/estatesSlice';
+import { EstateType } from '@/scripts/constants';
 
 export const EditEstateForm = () => {
   const dispatch = useAppDispatch();
@@ -102,9 +103,9 @@ export const EditEstateForm = () => {
               value={values.dataType}
               onChangeText={handleChange('type')}
               data={[
-                { id: 1, label: 'Квартира', value: 'APARTMENT' },
-                { id: 2, label: 'Дом', value: 'HOUSE' },
-                { id: 3, label: 'Земля', value: 'LAND' },
+                { id: 1, label: 'Квартира', value: EstateType.APARTMENT },
+                { id: 2, label: 'Дом', value: EstateType.HOUSE },
+                { id: 3, label: 'Земля', value: EstateType.LAND },
               ]}
             />
             {values.dataType && (
@@ -127,7 +128,7 @@ export const EditEstateForm = () => {
                   containerClassNames="mb-4"
                 />
                 <Input
-                  variant="number"
+                  variant="text"
                   label="Дом"
                   placeholder="Введите номер дома"
                   value={values.addressHouse}
@@ -135,23 +136,19 @@ export const EditEstateForm = () => {
                   containerClassNames="mb-4"
                 />
                 <Input
-                  variant="number"
+                  variant="text"
                   label="Квартира"
                   placeholder="Введите номер квартиры"
                   value={values.addressNumber}
                   onChangeText={handleChange('addressNumber')}
                   containerClassNames="mb-4"
                 />
-              </>
-            )}
-            {values.dataType && (
-              <>
                 <Text className="text-[18px] font-bold text-center mb-4 mt-9">Координаты</Text>
                 <Input
                   variant="number"
                   label="Широта"
                   placeholder="Введите широту"
-                  value={values.latitude.toString()}
+                  value={values.latitude !== 0 ? values.latitude.toString() : ''}
                   onChangeText={handleChange('latitude')}
                   error={errors.latitude}
                   extendedError={extendedErrors.latitude}
@@ -162,7 +159,7 @@ export const EditEstateForm = () => {
                   variant="number"
                   label="Долгота"
                   placeholder="Введите долготу"
-                  value={values.longitude.toString()}
+                  value={values.longitude !== 0 ? values.longitude.toString() : ''}
                   onChangeText={handleChange('longitude')}
                   error={errors.longitude}
                   extendedError={extendedErrors.longitude}
@@ -176,14 +173,14 @@ export const EditEstateForm = () => {
                 )}
               </>
             )}
-            {values.dataType === 'APARTMENT' && (
+            {values.dataType === EstateType.APARTMENT && (
               <>
                 <Text className="text-[18px] font-bold text-center mb-4 mt-9">Квартира</Text>
                 <Input
                   variant="number"
                   label="Этаж"
                   placeholder="Введите этаж"
-                  value={values.floor.toString()}
+                  value={values.floor !== 0 ? values.floor.toString() : ''}
                   onChangeText={handleChange('floor')}
                   containerClassNames="mb-4"
                 />
@@ -191,7 +188,7 @@ export const EditEstateForm = () => {
                   variant="number"
                   label="Количество комнат"
                   placeholder="Введите количество комнат"
-                  value={values.totalRooms.toString()}
+                  value={values.totalRooms !== 0 ? values.totalRooms.toString() : ''}
                   onChangeText={handleChange('totalRooms')}
                   containerClassNames="mb-4"
                 />
@@ -199,20 +196,20 @@ export const EditEstateForm = () => {
                   variant="number"
                   label="Площадь"
                   placeholder="Введите площадь"
-                  value={values.totalArea.toString()}
+                  value={values.totalArea !== 0 ? values.totalArea.toString() : ''}
                   onChangeText={handleChange('totalArea')}
                   containerClassNames="mb-4"
                 />
               </>
             )}
-            {values.dataType === 'HOUSE' && (
+            {values.dataType === EstateType.HOUSE && (
               <>
                 <Text className="text-[18px] font-bold text-center mb-4 mt-9">Дом</Text>
                 <Input
                   variant="number"
                   label="Этажность дома"
                   placeholder="Введите кол-во этажей"
-                  value={values.totalFloors.toString()}
+                  value={values.totalFloors !== 0 ? values.totalFloors.toString() : ''}
                   onChangeText={handleChange('totalFloors')}
                   containerClassNames="mb-4"
                 />
@@ -220,7 +217,7 @@ export const EditEstateForm = () => {
                   variant="number"
                   label="Количество комнат"
                   placeholder="Введите количество комнат"
-                  value={values.totalRooms.toString()}
+                  value={values.totalRooms !== 0 ? values.totalRooms.toString() : ''}
                   onChangeText={handleChange('totalRooms')}
                   containerClassNames="mb-4"
                 />
@@ -228,20 +225,20 @@ export const EditEstateForm = () => {
                   variant="number"
                   label="Площадь"
                   placeholder="Введите площадь"
-                  value={values.totalArea.toString()}
+                  value={values.totalArea !== 0 ? values.totalArea.toString() : ''}
                   onChangeText={handleChange('totalArea')}
                   containerClassNames="mb-4"
                 />
               </>
             )}
-            {values.dataType === 'LAND' && (
+            {values.dataType === EstateType.LAND && (
               <>
                 <Text className="text-[18px] font-bold text-center mb-4 mt-9">Земля</Text>
                 <Input
                   variant="text"
                   label="Площадь"
                   placeholder="Введите площадь"
-                  value={values.totalArea.toString()}
+                  value={values.totalArea !== 0 ? values.totalArea.toString() : ''}
                   onChangeText={handleChange('totalArea')}
                   containerClassNames="mb-4"
                 />
