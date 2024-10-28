@@ -123,9 +123,8 @@ const estateBlock = {
 
     return ApiInstance.put(`/real-state/${id}`, formattedData);
   },
-  getFilters: () => {
-    return ApiInstance.get('/real-state/filters');
-  },
+  searchEstate: (query: string) => ApiInstance.get(`/real-state/search?${query}`),
+  getFilters: () => ApiInstance.get('/real-state/filters'),
 };
 
 export const API = {

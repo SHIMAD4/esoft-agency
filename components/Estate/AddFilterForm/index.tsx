@@ -4,6 +4,10 @@ import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { useEffect, useState } from 'react';
 import { API } from '@/shared/api';
+import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
+import { handleSaveEstates } from '@/shared/slices/estatesSlice';
+import { ObjectToQueryString } from '@/scripts/helpers';
+import { router } from 'expo-router';
 
 type FiltersType = {
   districts: { id: number; name: string }[];
@@ -11,20 +15,29 @@ type FiltersType = {
   types: string[];
 };
 
-type LabelsType = {
-  [key in string]: string;
+type LabelsType = { [key in string]: string };
+
+type SubmitDataType = {
+  district: string;
+  type: string;
+  'sort-by': string;
+  'sort-direction': number;
 };
 
 export const AddFilterForm = () => {
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<FiltersType>({
     districts: [],
     sortVariants: [],
     types: [],
   });
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
+    API.estateBlock
+      .getAllEstates()
+      .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
+
     API.estateBlock
       .getFilters()
       .then(({ data }) => {
@@ -42,7 +55,6 @@ export const AddFilterForm = () => {
     HOUSE: 'Дом',
     LAND: 'Земля',
   };
-
   const sortVariantLabels: LabelsType = {
     ADDRESS: 'Адрес',
     HOUSE: 'Номер дома',
@@ -114,7 +126,7 @@ export const AddFilterForm = () => {
   if (loading) {
     return (
       <View className="flex justify-center items-center">
-        <Text>Loading...</Text>
+        <Text>Загрузка...</Text>
       </View>
     );
   }
@@ -127,14 +139,22 @@ export const AddFilterForm = () => {
           const sortBy = data.sortVariant.split('_')[0];
           const sortDirection = data.sortVariant.split('_')[1];
 
-          const formattedData = {
+          const formattedData: SubmitDataType = {
             district: data.district,
             type: data.type,
             'sort-by': sortBy,
             'sort-direction': sortDirection === 'ASC' ? 0 : -1,
           };
 
-          console.log('submit data: ', formattedData);
+          const filtersQuery = ObjectToQueryString(formattedData);
+
+          setTimeout(() => {
+            router.navigate('/estate/');
+
+            API.estateBlock
+              .searchEstate(filtersQuery)
+              .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
+          }, 150);
         }
       }}
     >

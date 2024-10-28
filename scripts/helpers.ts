@@ -160,9 +160,20 @@ const setDisabledState = (
   }
 };
 
+function ObjectToQueryString(params: { [key in string]: string | number }) {
+  return Object.entries(params)
+    .map(([key, value]) => {
+      if (value === undefined || value === '') return;
+
+      return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+    })
+    .join('&');
+}
+
 export {
   AddClientOnSubmitSchema,
   AddRealtorOnSubmitSchema,
   AddEstateOnSubmitSchema,
   setDisabledState,
+  ObjectToQueryString,
 };
