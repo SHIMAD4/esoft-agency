@@ -146,13 +146,13 @@ export const AddFilterForm = () => {
             'sort-direction': sortDirection === 'ASC' ? 0 : -1,
           };
 
-          const filtersQuery = ObjectToQueryString(formattedData);
+          const filtersParameters = ObjectToQueryString(formattedData);
 
           setTimeout(() => {
             router.navigate('/estate/');
 
             API.estateBlock
-              .searchEstate(filtersQuery)
+              .searchEstateByParameters(filtersParameters)
               .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
           }, 150);
         }

@@ -112,7 +112,9 @@ const estateBlock = {
 
     return ApiInstance.put(`/real-state/${id}`, formattedData);
   },
-  searchEstate: (query: string) => ApiInstance.get(`/real-state/search?${query}`),
+  searchEstateByParameters: (parameters: string) =>
+    ApiInstance.get(`/real-state/search?${parameters}`),
+  searchEstate: (query: string) => ApiInstance.get(`/real-state/search?query=${query}`),
   getFilters: () => ApiInstance.get('/real-state/filters'),
 };
 
