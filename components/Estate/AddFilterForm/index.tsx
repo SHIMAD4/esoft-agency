@@ -1,16 +1,142 @@
 import { Formik } from 'formik';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
-import { EstateType } from '@/scripts/constants';
+import { useEffect, useState } from 'react';
+import { API } from '@/shared/api';
+
+type FiltersType = {
+  districts: { id: number; name: string }[];
+  sortVariants: string[];
+  types: string[];
+};
+
+type LabelsType = {
+  [key in string]: string;
+};
 
 export const AddFilterForm = () => {
-  // TODO: Разобраться с районами и сортировкой
-  // TODO: Отправлять данные (Жду бэк)
+  const [filters, setFilters] = useState<FiltersType>({
+    districts: [],
+    sortVariants: [],
+    types: [],
+  });
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    API.estateBlock
+      .getFilters()
+      .then(({ data }) => {
+        setFilters(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Failed to load filters:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  const typeLabels: LabelsType = {
+    APARTMENT: 'Квартира',
+    HOUSE: 'Дом',
+    LAND: 'Земля',
+  };
+
+  const sortVariantLabels: LabelsType = {
+    ADDRESS: 'Адрес',
+    HOUSE: 'Номер дома',
+    NUMBER: 'Номер квартиры',
+  };
+
+  const formattedSortVariants = () => {
+    if (!filters.sortVariants) return [];
+
+    const variants: { id: number; label: string; value: string; sortDirection: string }[] = [];
+
+    filters.sortVariants.forEach((variant, index) => {
+      if (sortVariantLabels[variant]) {
+        if (variant === 'ADDRESS') {
+          variants.push(
+            {
+              id: index * 2 + 3,
+              label: `От А до Я (${sortVariantLabels[variant]})`,
+              value: `${variant}_ASC`,
+              sortDirection: '0',
+            },
+            {
+              id: index * 2 + 4,
+              label: `От Я до А (${sortVariantLabels[variant]})`,
+              value: `${variant}_DESC`,
+              sortDirection: '-1',
+            },
+          );
+        } else {
+          variants.push({
+            id: index * 2 + 1,
+            label: `По возрастанию (${sortVariantLabels[variant]})`,
+            value: `${variant}_ASC`,
+            sortDirection: '0',
+          });
+          variants.push({
+            id: index * 2 + 2,
+            label: `По убыванию (${sortVariantLabels[variant]})`,
+            value: `${variant}_DESC`,
+            sortDirection: '-1',
+          });
+        }
+      }
+    });
+
+    return variants;
+  };
+
+  const formattedDistricts = () => {
+    if (!filters.districts) return [];
+
+    return filters.districts.map((district) => ({
+      id: district.id,
+      label: district.name,
+      value: district.id.toString(),
+    }));
+  };
+
+  const formattedTypes = () => {
+    if (!filters.types) return [];
+
+    return filters.types.map((type, index) => ({
+      id: index + 1,
+      label: typeLabels[type] || type,
+      value: type,
+    }));
+  };
+
+  if (loading) {
+    return (
+      <View className="flex justify-center items-center">
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <Formik
-      initialValues={{ type: '', district: '', sort: '' }}
-      onSubmit={(data, errors) => !!errors && console.log('submit data: ', data)}
+      initialValues={{ type: '', district: '', sortVariant: '' }}
+      onSubmit={(data, errors) => {
+        if (!!errors) {
+          const sortBy = data.sortVariant.split('_')[0];
+          const sortDirection = data.sortVariant.split('_')[1];
+
+          const formattedData = {
+            district: data.district,
+            type: data.type,
+            'sort-by': sortBy,
+            'sort-direction': sortDirection === 'ASC' ? 0 : -1,
+          };
+
+          console.log('submit data: ', formattedData);
+        }
+      }}
     >
       {({ handleChange, handleSubmit, values }) => {
         return (
@@ -21,11 +147,7 @@ export const AddFilterForm = () => {
               placeholder="Выберите тип"
               value={values.type}
               onChangeText={handleChange('type')}
-              data={[
-                { id: 1, label: 'Квартира', value: EstateType.APARTMENT },
-                { id: 2, label: 'Дом', value: EstateType.HOUSE },
-                { id: 3, label: 'Земля', value: EstateType.LAND },
-              ]}
+              data={formattedTypes()}
             />
             <Input
               variant="select"
@@ -33,39 +155,15 @@ export const AddFilterForm = () => {
               placeholder="Выберите район"
               value={values.district}
               onChangeText={handleChange('district')}
-              data={[
-                { id: 1, label: 'Район 1', value: 'Район 1' },
-                { id: 2, label: 'Район 2', value: 'Район 2' },
-                { id: 3, label: 'Район 3', value: 'Район 3' },
-                { id: 4, label: 'Район 4', value: 'Район 4' },
-              ]}
+              data={formattedDistricts()}
             />
             <Input
               variant="select"
               label="Сортировка"
               placeholder="Выберите тип сортировки"
-              value={values.sort}
-              onChangeText={handleChange('sort')}
-              data={[
-                { id: 1, label: 'По алфавиту (адреса)', value: 'По алфавиту' },
-                { id: 2, label: 'По алфавиту реверс (адреса)', value: 'По алфавиту реверс' },
-                {
-                  id: 3,
-                  label: 'По возрастанию (номер дома)',
-                  value: 'По возрастанию (номер дома)',
-                },
-                { id: 4, label: 'По убыванию (номер дома)', value: 'По убыванию (номер дома)' },
-                {
-                  id: 5,
-                  label: 'По возрастанию (номер квартиры)',
-                  value: 'По возрастанию (номер квартиры)',
-                },
-                {
-                  id: 6,
-                  label: 'По убыванию (номер квартиры)',
-                  value: 'По убыванию (номер квартиры)',
-                },
-              ]}
+              value={values.sortVariant}
+              onChangeText={handleChange('sortVariant')}
+              data={formattedSortVariants()}
             />
             <Button
               variant="default"

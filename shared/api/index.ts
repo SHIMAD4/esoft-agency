@@ -123,6 +123,9 @@ const estateBlock = {
 
     return ApiInstance.put(`/real-state/${id}`, formattedData);
   },
+  getFilters: () => {
+    return ApiInstance.get('/real-state/filters');
+  },
 };
 
 export const API = {
