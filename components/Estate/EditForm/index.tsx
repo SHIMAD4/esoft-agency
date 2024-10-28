@@ -4,13 +4,14 @@ import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { Estate, ExtendedErrorType } from '@/shared/types';
 import { useEffect, useState } from 'react';
-import { AddEstateOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
+import { setDisabledState } from '@/scripts/helpers';
 import clsx from 'clsx';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { router, useGlobalSearchParams } from 'expo-router';
 import { API } from '@/shared/api';
 import { handleSaveEstates } from '@/shared/slices/estatesSlice';
 import { EstateType } from '@/scripts/constants';
+import { AddEstateOnSubmitSchema } from '@/scripts/submitingSchemes';
 
 export const EditEstateForm = () => {
   const dispatch = useAppDispatch();

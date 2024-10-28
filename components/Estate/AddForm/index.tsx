@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import { View, Text } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
-import { AddEstateOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
+import { setDisabledState } from '@/scripts/helpers';
 import { Estate, ExtendedErrorType } from '@/shared/types';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { API } from '@/shared/api';
 import { EstateType } from '@/scripts/constants';
 import { router } from 'expo-router';
 import { handleSaveEstates } from '@/shared/slices/estatesSlice';
+import { AddEstateOnSubmitSchema } from '@/scripts/submitingSchemes';
 
 export const AddEstateForm = () => {
   const dispatch = useAppDispatch();

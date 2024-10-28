@@ -4,12 +4,13 @@ import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { Client, ExtendedErrorType } from '@/shared/types';
 import { useEffect, useState } from 'react';
-import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
+import { setDisabledState } from '@/scripts/helpers';
 import { router, useGlobalSearchParams } from 'expo-router';
 import clsx from 'clsx';
 import { API } from '@/shared/api';
 import { handleSaveClients } from '@/shared/slices/clientSlice';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
+import { AddClientOnSubmitSchema } from '@/scripts/submitingSchemes';
 
 export const EditClientForm = () => {
   const dispatch = useAppDispatch();

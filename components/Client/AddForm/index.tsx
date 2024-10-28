@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import { View, Text } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
-import { AddClientOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
+import { setDisabledState } from '@/scripts/helpers';
 import { ExtendedErrorType } from '@/shared/types';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import { API } from '@/shared/api';
 import { router } from 'expo-router';
 import { handleSaveClients } from '@/shared/slices/clientSlice';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
+import { AddClientOnSubmitSchema } from '@/scripts/submitingSchemes';
 
 export const AddClientForm = () => {
   const dispatch = useAppDispatch();

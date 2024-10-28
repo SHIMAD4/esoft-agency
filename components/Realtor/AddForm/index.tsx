@@ -2,13 +2,14 @@ import { Formik } from 'formik';
 import { View } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
-import { AddRealtorOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
+import { setDisabledState } from '@/scripts/helpers';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { API } from '@/shared/api';
 import { router } from 'expo-router';
 import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
+import { AddRealtorOnSubmitSchema } from '@/scripts/submitingSchemes';
 
 export const AddRealtorForm = () => {
   const dispatch = useAppDispatch();

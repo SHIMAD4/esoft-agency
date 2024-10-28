@@ -11,53 +11,40 @@ const appBlock = {
   deleteEstateById: (id: string) => ApiInstance.delete(`/real-state/${id}`),
 };
 
-// === Client ===
+// ====== Client ======
+
+type ClientData = {
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  email: string;
+  phone: string;
+};
 
 const clientBlock = {
   getAllUsers: () => ApiInstance.get('/users/search?role=CLIENT'),
   searchClient: (query: string) => ApiInstance.get(`/users/search?query=${query}&role=CLIENT`),
-  addClient: (data: {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    email: string;
-    phone: string;
-  }) => ApiInstance.post('/users/client', data),
-  editClient: (
-    id: string,
-    data: {
-      firstName: string;
-      lastName: string;
-      middleName: string;
-      email: string;
-      phone: string;
-    },
-  ) => ApiInstance.put(`/users/client/${id}`, data),
+  addClient: (data: ClientData) => ApiInstance.post('/users/client', data),
+  editClient: (id: string, data: ClientData) => ApiInstance.put(`/users/client/${id}`, data),
 };
 
-// === Realtor ===
+// ====== Realtor ======
+
+type RealtorData = {
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  dealShare: string;
+};
 
 const realtorBlock = {
   getAllUsers: () => ApiInstance.get('/users/search?role=REALTOR'),
   searchRealtor: (query: string) => ApiInstance.get(`/users/search?query=${query}&role=REALTOR`),
-  addRealtor: (data: {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    dealShare: string;
-  }) => ApiInstance.post('/users/realtor', data),
-  editRealtor: (
-    id: string,
-    data: {
-      firstName: string;
-      lastName: string;
-      middleName: string;
-      dealShare: string;
-    },
-  ) => ApiInstance.put(`/users/realtor/${id}`, data),
+  addRealtor: (data: RealtorData) => ApiInstance.post('/users/realtor', data),
+  editRealtor: (id: string, data: RealtorData) => ApiInstance.put(`/users/realtor/${id}`, data),
 };
 
-// === Estate ===
+// ====== Estate ======
 
 type EstateData = {
   type: string;
@@ -74,22 +61,24 @@ type EstateData = {
   dataType: string;
 };
 
+type EstateFormattedData = {
+  type: string;
+  addressCity: string;
+  addressStreet: string;
+  addressHouse: string;
+  addressNumber: string;
+  latitude: number;
+  longitude: number;
+  floor?: number;
+  totalFloors?: number;
+  totalRooms?: number;
+  totalArea?: number;
+};
+
 const estateBlock = {
   getAllEstates: () => ApiInstance.get('/real-state/search'),
   addEstate: (data: EstateData) => {
-    const formattedData: {
-      type: string;
-      addressCity: string;
-      addressStreet: string;
-      addressHouse: string;
-      addressNumber: string;
-      latitude: number;
-      longitude: number;
-      floor?: number;
-      totalFloors?: number;
-      totalRooms?: number;
-      totalArea?: number;
-    } = {
+    const formattedData: EstateFormattedData = {
       type: data.dataType,
       addressCity: data.addressCity,
       addressStreet: data.addressStreet,
@@ -107,7 +96,7 @@ const estateBlock = {
     return ApiInstance.post('/real-state', formattedData);
   },
   editEstate: (id: string, data: EstateData) => {
-    const formattedData = {
+    const formattedData: EstateFormattedData = {
       type: data.dataType,
       addressCity: data.addressCity,
       addressStreet: data.addressStreet,

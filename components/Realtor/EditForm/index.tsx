@@ -3,13 +3,14 @@ import { View } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { useEffect, useState } from 'react';
-import { AddRealtorOnSubmitSchema, setDisabledState } from '@/scripts/helpers';
+import { setDisabledState } from '@/scripts/helpers';
 import clsx from 'clsx';
 import { Realtor } from '@/shared/types';
 import { API } from '@/shared/api';
 import { router, useGlobalSearchParams } from 'expo-router';
 import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
+import { AddRealtorOnSubmitSchema } from '@/scripts/submitingSchemes';
 
 export const EditRealtorForm = () => {
   const dispatch = useAppDispatch();
