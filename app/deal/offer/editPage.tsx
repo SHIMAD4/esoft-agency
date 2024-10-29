@@ -7,7 +7,7 @@ export default function EditPage() {
     <>
       <SafeAreaView className="mx-6 mt-6 mb-9">
         <Header
-          title="Редактирование offer"
+          title="Редактирование"
           icon={<Icons.ArrowIcon rotateToLeft={true} size={16} />}
           link="/(tabs)/deal"
         />
