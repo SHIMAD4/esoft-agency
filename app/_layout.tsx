@@ -32,15 +32,22 @@ export default function RootLayout() {
         {/* Tabs */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         {/* Client */}
-        <Stack.Screen name="client/editPage" options={{ headerShown: false }} />
         <Stack.Screen name="client/addPage" options={{ headerShown: false }} />
+        <Stack.Screen name="client/editPage" options={{ headerShown: false }} />
         {/* Realtor */}
-        <Stack.Screen name="realtor/editPage" options={{ headerShown: false }} />
         <Stack.Screen name="realtor/addPage" options={{ headerShown: false }} />
+        <Stack.Screen name="realtor/editPage" options={{ headerShown: false }} />
         {/* Estate */}
-        <Stack.Screen name="estate/editPage" options={{ headerShown: false }} />
         <Stack.Screen name="estate/addPage" options={{ headerShown: false }} />
+        <Stack.Screen name="estate/editPage" options={{ headerShown: false }} />
         <Stack.Screen name="estate/filterPage" options={{ headerShown: false }} />
+        {/* Deal */}
+        {/* Offer */}
+        <Stack.Screen name="deal/offer/addPage" options={{ headerShown: false }} />
+        <Stack.Screen name="deal/offer/editPage" options={{ headerShown: false }} />
+        {/* Demand */}
+        <Stack.Screen name="deal/demand/addPage" options={{ headerShown: false }} />
+        <Stack.Screen name="deal/demand/editPage" options={{ headerShown: false }} />
         {/* Not Found */}
         <Stack.Screen name="+not-found" />
       </Stack>

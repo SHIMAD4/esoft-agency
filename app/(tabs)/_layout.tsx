@@ -30,6 +30,12 @@ export default function TabLayout() {
           title: 'estate',
         }}
       />
+      <Tabs.Screen
+        name="deal"
+        options={{
+          title: 'deal',
+        }}
+      />
     </Tabs>
   );
 }

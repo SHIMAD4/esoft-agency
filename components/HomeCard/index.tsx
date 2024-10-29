@@ -1,17 +1,19 @@
 import { Text, TouchableHighlight, View } from 'react-native';
 import { router } from 'expo-router';
 import { FC, ReactNode } from 'react';
+import clsx from 'clsx';
 
 type HomeCard = {
   title: string;
   path: string;
   icon: ReactNode;
+  containerClassName?: string;
 };
 
-export const HomeCard: FC<HomeCard> = ({ title, path, icon }) => {
+export const HomeCard: FC<HomeCard> = ({ title, path, icon, containerClassName }) => {
   return (
     <TouchableHighlight
-      className="w-[160px] h-[100px]"
+      className={clsx('w-[160px] h-[100px]', containerClassName)}
       underlayColor="transparent"
       onPress={() => router.navigate(path)}
     >

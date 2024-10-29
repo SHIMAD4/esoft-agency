@@ -32,6 +32,7 @@ type PhoneInputProps = InputBaseProps & { placeholder?: string; required?: boole
 type NumberInputProps = InputBaseProps & {
   placeholder?: string;
   required?: boolean;
+  labelClassNames?: string;
 };
 type EmailInputProps = InputBaseProps & {
   placeholder?: string;
@@ -165,11 +166,14 @@ const NumberInput: FC<NumberInputProps> = ({
   extendedError,
   onChangeText,
   containerClassNames,
+  labelClassNames,
   ...props
 }) => {
   return (
     <View className={clsx('flex', containerClassNames)}>
-      {label && <Text className="mb-2 text-[16px] font-bold">{label}</Text>}
+      {label && (
+        <Text className={clsx('mb-2 text-[16px] font-bold', labelClassNames)}>{label}</Text>
+      )}
       <TextInput
         className={clsx(
           'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
@@ -264,13 +268,19 @@ const SelectInput: FC<SelectInputProps> = ({
         label={label}
         labelStyle={{ marginBottom: 8, color: '#000000', fontSize: 16, fontWeight: 'bold' }}
         placeholder={placeholder}
-        placeholderStyle={{ color: '#78909C' }}
+        placeholderStyle={{
+          color: extendedError || error ? '#E3002C' : '#78909C',
+        }}
         selectedValue={value}
         onValueChange={(value) => onChangeText(value as string)}
         dropdownContainerStyle={{ marginBottom: 0 }}
-        dropdownStyle={{ borderColor: '#CFD8DB', borderRadius: 3 }}
+        dropdownStyle={{
+          borderColor: extendedError || error ? '#E3002C' : '#CFD8DB',
+          borderRadius: 3,
+        }}
         dropdownIcon={<Icons.ArrowIcon size={16} rotateToBottom={true} />}
       />
+      {error && <Text className="text-[#FF1644]">{error}</Text>}
     </View>
   );
 };

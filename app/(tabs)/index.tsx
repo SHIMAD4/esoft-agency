@@ -8,6 +8,8 @@ import { API } from '@/shared/api';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { handleSaveClients } from '@/shared/slices/clientSlice';
 import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
+import { handleSaveOffers } from '@/shared/slices/offerSlice';
+import { handleSaveEstates } from '@/shared/slices/estatesSlice';
 
 export default function HomePage() {
   const Logo = require('../../assets/images/logo.png');
@@ -21,6 +23,12 @@ export default function HomePage() {
     API.realtorBlock
       .getAllUsers()
       .then(({ data }) => dispatch(handleSaveRealtors({ realtors: data })));
+
+    API.estateBlock
+      .getAllEstates()
+      .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
+
+    API.offerBlock.getAllOffers().then((data) => dispatch(handleSaveOffers({ offers: data })));
   }, []);
 
   return (
@@ -31,13 +39,30 @@ export default function HomePage() {
       <Text className="text-2xl text-center font-bold mb-9">
         {'Добро пожаловать,\nв агенство недвижимости'}
       </Text>
-      <View className="flex flex-row justify-between">
-        <HomeCard title="Пользователи" path="/(tabs)/users" icon={<Icons.PeopleIcon size={26} />} />
-        <HomeCard
-          title="Недвижимость"
-          path="/(tabs)/estate"
-          icon={<Icons.EstateIcon size={26} />}
-        />
+      <View className="flex flex-wrap">
+        <View className="w-full flex flex-row justify-center mb-[18px]">
+          <HomeCard
+            containerClassName="mr-4"
+            title="Пользователи"
+            path="/(tabs)/users"
+            icon={<Icons.PeopleIcon size={26} />}
+          />
+          <HomeCard
+            title="Недвижимость"
+            path="/(tabs)/estate"
+            icon={<Icons.EstateIcon size={26} />}
+          />
+        </View>
+        <View className="w-full flex flex-row justify-center mb-[18px]">
+          <HomeCard
+            containerClassName="mr-4"
+            title="Сделки"
+            path="/(tabs)/deal"
+            icon={<Icons.DealIcon size={26} />}
+          />
+          {/* Временный контейнер для центрирования контента */}
+          <View className="w-[160px] h-[100px]"></View>
+        </View>
       </View>
     </SafeAreaView>
   );

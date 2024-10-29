@@ -10,6 +10,10 @@ type ExtendedErrorType = FormikErrors<{
   atLeastOneRequiredError?: string;
   latitude?: string;
   longitude?: string;
+  client?: string;
+  realtor?: string;
+  realState?: string;
+  price?: string;
 }>;
 
 export { ExtendedErrorType };

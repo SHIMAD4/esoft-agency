@@ -68,7 +68,7 @@ const AddEstateOnSubmitSchema = Yup.object()
     dataType: Yup.string(),
   })
   .test({
-    name: 'atLeastOneRequired',
+    name: 'allFieldsRequired',
     test: function (values: { latitude?: string; longitude?: string }) {
       const isValid = ['latitude', 'longitude'].every(
         (field) =>
@@ -119,4 +119,39 @@ const AddEstateOnSubmitSchema = Yup.object()
     },
   });
 
-export { AddClientOnSubmitSchema, AddRealtorOnSubmitSchema, AddEstateOnSubmitSchema };
+const AddOfferOnSubmitSchema = Yup.object()
+  .shape({
+    client: Yup.string().required('Обязательное поле'),
+    realtor: Yup.string().required('Обязательное поле'),
+    realState: Yup.string().required('Обязательное поле'),
+    price: Yup.string().required('Обязательное поле'),
+  })
+  .test({
+    name: 'allFieldsRequired',
+    test: function (values: {
+      client?: string;
+      realtor?: string;
+      realState?: string;
+      price?: string;
+    }) {
+      const isValid = ['client', 'realtor', 'realState', 'price'].every(
+        (field) =>
+          values[field as keyof typeof values] !== undefined &&
+          values[field as keyof typeof values]?.length !== 0,
+      );
+
+      if (isValid) return true;
+
+      return this.createError({
+        path: 'allFieldsRequired',
+        message: 'Заполните все поля',
+      });
+    },
+  });
+
+export {
+  AddClientOnSubmitSchema,
+  AddRealtorOnSubmitSchema,
+  AddEstateOnSubmitSchema,
+  AddOfferOnSubmitSchema,
+};

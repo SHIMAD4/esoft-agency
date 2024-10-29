@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native';
 import { FC } from 'react';
-import { Client, Realtor, Estate } from '@/shared/types';
+import { Client, Realtor, Estate, Offer } from '@/shared/types';
 import { EntityType, EstateType } from '@/scripts/constants';
 
 type CardProps = {
-  dt: Client | Realtor | Estate;
+  dt: Client | Realtor | Estate | Offer;
   onPress: () => void;
   entity: string;
 };
@@ -24,6 +24,11 @@ type EstateCardProps = {
   onPress: () => void;
 };
 
+type OfferCardProps = {
+  dt: Offer;
+  onPress: () => void;
+};
+
 export const Card: FC<CardProps> = ({ dt, onPress, entity }) => {
   switch (entity) {
     case EntityType.CLIENT:
@@ -32,6 +37,8 @@ export const Card: FC<CardProps> = ({ dt, onPress, entity }) => {
       return <RealtorCard dt={dt as Realtor} onPress={onPress} />;
     case EntityType.ESTATE:
       return <EstateCard dt={dt as Estate} onPress={onPress} />;
+    case EntityType.OFFER:
+      return <OfferCard dt={dt as Offer} onPress={onPress} />;
   }
 };
 
@@ -96,6 +103,22 @@ const EstateCard: FC<EstateCardProps> = ({ dt, onPress }) => {
       {totalArea && (
         <Text className="text-[#546E7A] text-[12px] font-[400]">Площадь: {totalArea}</Text>
       )}
+    </View>
+  );
+};
+
+const OfferCard: FC<OfferCardProps> = ({ dt, onPress }) => {
+  const { client, realtor, estate, price } = dt;
+  const label = estate.addressStreet;
+  const clientFullName = `${client.lastName} ${client.firstName}`;
+  const realtorFullName = `${realtor.lastName} ${realtor.firstName}`;
+
+  return (
+    <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
+      <Text className="text-[16px] font-semibold mb-4">{label}</Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Клиент: {clientFullName}</Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Риэлтор: {realtorFullName}</Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400]">Цена: {price} рублей</Text>
     </View>
   );
 };

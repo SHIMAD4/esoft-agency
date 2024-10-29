@@ -2,15 +2,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header, Icons, Input, Button, CardList } from '@/components';
 import { router } from 'expo-router';
 import { View } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { API } from '@/shared/api';
-import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/hooks/useAppSelector';
-import { handleSaveEstates } from '@/shared/slices/estatesSlice';
 import { Client } from '@/shared/types';
 
 export default function EstatePage() {
-  const dispatch = useAppDispatch();
   const { estates } = useAppSelector((state) => state.estateSlice);
   const [searchData, setSearchData] = useState<Client[]>([]);
 
@@ -27,12 +24,6 @@ export default function EstatePage() {
 
     API.estateBlock.searchEstate(value).then(({ data }) => setSearchData(data));
   };
-
-  useEffect(() => {
-    API.estateBlock
-      .getAllEstates()
-      .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
-  }, []);
 
   return (
     <>

@@ -21,7 +21,10 @@ type Realtor = {
 type Estate = {
   type: string;
   id: string;
-  districts: [];
+  districts: {
+    id: number;
+    name: string;
+  }[];
   latitude: number;
   longitude: number;
   addressCity: string;
@@ -37,4 +40,13 @@ type Estate = {
   };
 };
 
-export { Client, Realtor, Estate };
+type Offer = {
+  type?: string;
+  id: string;
+  client: Client;
+  realtor: Realtor;
+  estate: Estate;
+  price: number;
+};
+
+export { Client, Realtor, Estate, Offer };

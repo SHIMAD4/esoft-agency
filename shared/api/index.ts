@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Offer } from '@/shared/types';
 
 export const ApiInstance = axios.create({
   baseURL: 'http://esoft.api.miv-dev.ru:8000/',
@@ -9,6 +10,8 @@ const appBlock = {
   deleteUserById: (id: string) => ApiInstance.delete(`/users/${id}`),
   getEstateById: (id: string) => ApiInstance.get(`/real-state/${id}`),
   deleteEstateById: (id: string) => ApiInstance.delete(`/real-state/${id}`),
+  getOfferById: (id: string) => ApiInstance.get(`/offers/${id}`),
+  deleteOfferById: (id: string) => ApiInstance.delete(`/offers/${id}`),
 };
 
 // ====== Client ======
@@ -118,9 +121,54 @@ const estateBlock = {
   getFilters: () => ApiInstance.get('/real-state/filters'),
 };
 
+// ====== Deal / Offer ======
+
+type OfferData = {
+  client: string;
+  realtor: string;
+  realState: string;
+  price: string;
+};
+
+const offerBlock = {
+  getAllOffers: () =>
+    ApiInstance.get('/offers').then(({ data }) => {
+      return data.map((item: Offer) => {
+        return {
+          type: 'OFFER',
+          ...item,
+        };
+      });
+    }),
+  addOffer: (data: OfferData) => {
+    const formattedData = {
+      ...data,
+      price: +data.price,
+    };
+
+    return ApiInstance.post('/offers', formattedData);
+  },
+  editOffer: (id: string, data: OfferData) => {
+    const formattedData = {
+      ...data,
+      price: +data.price,
+    };
+
+    return ApiInstance.put(`/offers/${id}`, formattedData);
+  },
+};
+
+// ====== Deal / Demand ======
+
+const demandBlock = {
+  getAllDemands: () => ApiInstance.get('/demands'),
+};
+
 export const API = {
   appBlock,
   clientBlock,
   realtorBlock,
   estateBlock,
+  offerBlock,
+  demandBlock,
 };

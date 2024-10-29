@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   tabBar: {
-    width: 185,
+    width: '60%',
     flexDirection: 'column-reverse',
     marginHorizontal: 24,
     backgroundColor: 'transparent',

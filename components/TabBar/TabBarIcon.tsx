@@ -13,6 +13,8 @@ export function TabBarIcon({ fill, title }: TabBarIconType) {
       return <Icons.UsersIcon size={36} fill={fill ? '#0281D1' : 'none'} />;
     case 'estate':
       return <Icons.EstatesIcon size={36} fill={fill ? '#0281D1' : 'none'} />;
+    case 'deal':
+      return <Icons.DealsIcon size={22} fill={fill ? '#0281D1' : 'none'} />;
     default:
       return null;
   }

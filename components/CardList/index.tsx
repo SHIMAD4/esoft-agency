@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ListRenderItemInfo, View } from 'react-native';
-import { Client, Estate, Realtor } from '@/shared/types';
+import { Client, Estate, Realtor, Offer } from '@/shared/types';
 import { Card } from '../Card';
 import { Button } from '../Button';
 import { BottomSheet } from '../BottomSheet';
@@ -9,7 +9,7 @@ import { Icons } from '../Icons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { EntityType } from '@/scripts/constants';
 
-type Entity = Client | Realtor | Estate;
+type Entity = Client | Realtor | Estate | Offer;
 
 type UserCardProps = {
   data: Entity[];
@@ -66,7 +66,7 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
         );
       case EntityType.ESTATE:
         item = item as Estate;
-        let addressStreet = item.addressStreet;
+        let street = item.addressStreet;
 
         return (
           <Card
@@ -74,7 +74,21 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
             dt={{ ...item }}
             onPress={() => {
               setSelectedLabel(EntityType.ESTATE);
-              setSelectedTitle(addressStreet);
+              setSelectedTitle(street);
+            }}
+          />
+        );
+      case EntityType.OFFER:
+        item = item as Offer;
+        let title = item.estate.addressStreet;
+
+        return (
+          <Card
+            entity={EntityType.OFFER}
+            dt={{ ...item }}
+            onPress={() => {
+              setSelectedLabel(EntityType.OFFER);
+              setSelectedTitle(title);
             }}
           />
         );
@@ -98,6 +112,9 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
         break;
       case EntityType.ESTATE:
         navigateURL = '../estate/editPage';
+        break;
+      case EntityType.OFFER:
+        navigateURL = '../deal/offer/editPage';
         break;
       default:
         return null;

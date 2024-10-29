@@ -8,6 +8,7 @@ import { handleSaveClients } from '@/shared/slices/clientSlice';
 import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
 import { handleSaveEstates } from '@/shared/slices/estatesSlice';
 import { EntityType } from '@/scripts/constants';
+import { handleSaveOffers } from '@/shared/slices/offerSlice';
 
 type BottomSheetProps = {
   title: string;
@@ -73,12 +74,21 @@ export const BottomSheet: FC<BottomSheetProps> = ({
     }, 150);
   };
 
+  const handleDeleteOffer = (id: string) => {
+    API.appBlock.deleteOfferById(id).then((data) => console.log(data));
+
+    setTimeout(() => {
+      API.offerBlock.getAllOffers().then((data) => dispatch(handleSaveOffers({ offers: data })));
+    }, 150);
+  };
+
   const handleDelete = (id: string) => {
-    if (entityToDeleteLabel === EntityType.ESTATE) {
-      handleDeleteEstate(id);
-    } else {
+    if (entityToDeleteLabel === EntityType.CLIENT || entityToDeleteLabel === EntityType.REALTOR) {
       handleDeleteUser(id);
     }
+
+    if (entityToDeleteLabel === EntityType.ESTATE) handleDeleteEstate(id);
+    if (entityToDeleteLabel === EntityType.OFFER) handleDeleteOffer(id);
 
     refRBSheet.current?.close();
   };
