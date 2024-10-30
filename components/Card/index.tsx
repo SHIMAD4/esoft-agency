@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native';
 import { FC } from 'react';
-import { Client, Realtor, Estate, Offer } from '@/shared/types';
+import { Client, Realtor, Estate, Offer, Demand } from '@/shared/types';
 import { EntityType, EstateType } from '@/scripts/constants';
 
 type CardProps = {
-  dt: Client | Realtor | Estate | Offer;
+  dt: Client | Realtor | Estate | Offer | Demand;
   onPress: () => void;
   entity: string;
 };
@@ -29,6 +29,11 @@ type OfferCardProps = {
   onPress: () => void;
 };
 
+type DemandCardProps = {
+  dt: Demand;
+  onPress: () => void;
+};
+
 export const Card: FC<CardProps> = ({ dt, onPress, entity }) => {
   switch (entity) {
     case EntityType.CLIENT:
@@ -39,6 +44,8 @@ export const Card: FC<CardProps> = ({ dt, onPress, entity }) => {
       return <EstateCard dt={dt as Estate} onPress={onPress} />;
     case EntityType.OFFER:
       return <OfferCard dt={dt as Offer} onPress={onPress} />;
+    case EntityType.DEMAND:
+      return <DemandCard dt={dt as Demand} onPress={onPress} />;
   }
 };
 
@@ -110,8 +117,8 @@ const EstateCard: FC<EstateCardProps> = ({ dt, onPress }) => {
 const OfferCard: FC<OfferCardProps> = ({ dt, onPress }) => {
   const { client, realtor, estate, price } = dt;
   const label = estate.addressStreet;
-  const clientFullName = `${client.lastName} ${client.firstName}`;
-  const realtorFullName = `${realtor.lastName} ${realtor.firstName}`;
+  const clientFullName = `${client.firstName} ${client.middleName}`;
+  const realtorFullName = `${realtor.firstName} ${realtor.middleName}`;
 
   return (
     <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
@@ -119,6 +126,82 @@ const OfferCard: FC<OfferCardProps> = ({ dt, onPress }) => {
       <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Клиент: {clientFullName}</Text>
       <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Риэлтор: {realtorFullName}</Text>
       <Text className="text-[#546E7A] text-[12px] font-[400]">Цена: {price} рублей</Text>
+    </View>
+  );
+};
+
+const DemandCard: FC<DemandCardProps> = ({ dt, onPress }) => {
+  const {
+    name,
+    client,
+    realtor,
+    estateType,
+    minPrice,
+    maxPrice,
+    minRooms,
+    maxRooms,
+    minArea,
+    maxArea,
+    minFloors,
+    maxFloors,
+    minFloor,
+    maxFloor,
+  } = dt;
+  let clientFullName = `${client.firstName} ${client.middleName}`;
+  let realtorFullName = `${realtor.firstName} ${realtor.middleName}`;
+  let estate =
+    (estateType === EstateType.APARTMENT && 'Квартира') ||
+    (estateType === EstateType.HOUSE && 'Дом') ||
+    (estateType === EstateType.LAND && 'Земля');
+
+  return (
+    <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
+      <Text className="text-[16px] font-semibold mb-4">{name}</Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Клиент: {clientFullName}</Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Риэлтор: {realtorFullName}</Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Тип объекта: {estate}</Text>
+      {minPrice ? (
+        <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+          Мин. цена: {minPrice} рублей
+        </Text>
+      ) : null}
+      {maxPrice ? (
+        <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+          Макс. цена: {maxPrice} рублей
+        </Text>
+      ) : null}
+      {minFloor ? (
+        <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Мин. этаж: {minFloor}</Text>
+      ) : null}
+      {maxFloor ? (
+        <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Макс. этаж: {maxFloor}</Text>
+      ) : null}
+      {minRooms ? (
+        <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+          Мин. кол-во комнат: {minRooms}
+        </Text>
+      ) : null}
+      {maxRooms ? (
+        <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+          Макс. кол-во комнат: {maxRooms}
+        </Text>
+      ) : null}
+      {minFloors ? (
+        <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+          Мин. этажность: {minFloors}
+        </Text>
+      ) : null}
+      {maxFloors ? (
+        <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+          Макс. этажность: {maxFloors}
+        </Text>
+      ) : null}
+      {minArea ? (
+        <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Мин. площадь: {minArea}</Text>
+      ) : null}
+      {maxArea ? (
+        <Text className="text-[#546E7A] text-[12px] font-[400]">Макс. площадь: {maxArea}</Text>
+      ) : null}
     </View>
   );
 };

@@ -10,5 +10,5 @@ export { BottomSheet } from './BottomSheet';
 export { AddClientForm, EditClientForm } from './Client';
 export { AddRealtorForm, EditRealtorForm } from './Realtor';
 export { AddEstateForm, EditEstateForm, AddFilterForm } from './Estate';
-export { AddOfferForm, EditOfferForm } from './Deal/Offer';
+export { AddOfferForm, EditOfferForm, AddDemandForm, EditDemandForm } from './Deal';
 export { Icons } from './Icons';

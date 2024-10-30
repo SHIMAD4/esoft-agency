@@ -10,6 +10,7 @@ import { handleSaveClients } from '@/shared/slices/clientSlice';
 import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
 import { handleSaveOffers } from '@/shared/slices/offerSlice';
 import { handleSaveEstates } from '@/shared/slices/estatesSlice';
+import { handleSaveDemands } from '@/shared/slices/demandSlice';
 
 export default function HomePage() {
   const Logo = require('../../assets/images/logo.png');
@@ -29,6 +30,7 @@ export default function HomePage() {
       .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
 
     API.offerBlock.getAllOffers().then((data) => dispatch(handleSaveOffers({ offers: data })));
+    API.demandBlock.getAllDemands().then((data) => dispatch(handleSaveDemands({ demands: data })));
   }, []);
 
   return (

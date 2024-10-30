@@ -24,6 +24,7 @@ export enum EntityType {
   REALTOR = 'REALTOR',
   ESTATE = 'ESTATE',
   OFFER = 'OFFER',
+  DEMAND = 'DEMAND',
 }
 
 export enum EstateType {

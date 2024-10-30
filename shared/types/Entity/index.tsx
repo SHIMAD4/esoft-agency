@@ -49,4 +49,23 @@ type Offer = {
   price: number;
 };
 
-export { Client, Realtor, Estate, Offer };
+type Demand = {
+  name: string;
+  type?: string;
+  id: string;
+  client: Client;
+  realtor: Realtor;
+  estateType: string;
+  minPrice: number;
+  maxPrice: number;
+  minArea: number;
+  maxArea: number;
+  minRooms: number;
+  maxRooms: number;
+  minFloor: number;
+  maxFloor: number;
+  minFloors: number;
+  maxFloors: number;
+};
+
+export { Client, Realtor, Estate, Offer, Demand };

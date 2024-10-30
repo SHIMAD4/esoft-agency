@@ -1,17 +1,23 @@
 import axios from 'axios';
-import { Offer } from '@/shared/types';
+import { Demand, Offer } from '@/shared/types';
 
 export const ApiInstance = axios.create({
   baseURL: 'http://esoft.api.miv-dev.ru:8000/',
 });
 
 const appBlock = {
+  // User (Client | Realtor)
   getUserById: (id: string) => ApiInstance.get(`/users/${id}`),
   deleteUserById: (id: string) => ApiInstance.delete(`/users/${id}`),
+  // Estate
   getEstateById: (id: string) => ApiInstance.get(`/real-state/${id}`),
   deleteEstateById: (id: string) => ApiInstance.delete(`/real-state/${id}`),
+  // Offer
   getOfferById: (id: string) => ApiInstance.get(`/offers/${id}`),
   deleteOfferById: (id: string) => ApiInstance.delete(`/offers/${id}`),
+  // Demand
+  getDemandById: (id: string) => ApiInstance.get(`/demands/${id}`),
+  deleteDemandById: (id: string) => ApiInstance.delete(`/demands/${id}`),
 };
 
 // ====== Client ======
@@ -121,7 +127,7 @@ const estateBlock = {
   getFilters: () => ApiInstance.get('/real-state/filters'),
 };
 
-// ====== Deal / Offer ======
+// ====== Offer ======
 
 type OfferData = {
   client: string;
@@ -158,10 +164,68 @@ const offerBlock = {
   },
 };
 
-// ====== Deal / Demand ======
+// ====== Demand ======
+
+type DemandData = {
+  client: string;
+  realtor: string;
+  estateType: string;
+  minPrice: string;
+  maxPrice: string;
+  minFloor: string;
+  maxFloor: string;
+  minFloors: string;
+  maxFloors: string;
+  minRooms: string;
+  maxRooms: string;
+  minArea: string;
+  maxArea: string;
+};
 
 const demandBlock = {
-  getAllDemands: () => ApiInstance.get('/demands'),
+  getAllDemands: () =>
+    ApiInstance.get('/demands').then(({ data }) => {
+      return data.map((item: Demand) => {
+        return {
+          type: 'DEMAND',
+          ...item,
+        };
+      });
+    }),
+  addDemand: (data: DemandData) => {
+    const formattedData = {
+      ...data,
+      minPrice: +data.minPrice,
+      maxPrice: +data.maxPrice,
+      minFloor: +data.minFloor,
+      maxFloor: +data.maxFloor,
+      minFloors: +data.minFloors,
+      maxFloors: +data.maxFloors,
+      minRooms: +data.minRooms,
+      maxRooms: +data.maxRooms,
+      minArea: +data.minArea,
+      maxArea: +data.maxArea,
+    };
+
+    return ApiInstance.post('/demands', formattedData);
+  },
+  editDemand: (id: string, data: DemandData) => {
+    const formattedData = {
+      ...data,
+      minPrice: +data.minPrice,
+      maxPrice: +data.maxPrice,
+      minFloor: +data.minFloor,
+      maxFloor: +data.maxFloor,
+      minFloors: +data.minFloors,
+      maxFloors: +data.maxFloors,
+      minRooms: +data.minRooms,
+      maxRooms: +data.maxRooms,
+      minArea: +data.minArea,
+      maxArea: +data.maxArea,
+    };
+
+    return ApiInstance.put(`/demands/${id}`, formattedData);
+  },
 };
 
 export const API = {

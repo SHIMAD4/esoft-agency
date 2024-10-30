@@ -1,5 +1,5 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { EditClientForm, Header, Icons } from '@/components';
+import { EditDemandForm, Header, Icons } from '@/components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function EditPage() {
@@ -7,14 +7,13 @@ export default function EditPage() {
     <>
       <SafeAreaView className="mx-6 mt-6 mb-9">
         <Header
-          title="Редактирование demand"
+          title="Редактирование"
           icon={<Icons.ArrowIcon rotateToLeft={true} size={16} />}
           link="/(tabs)/deal"
         />
       </SafeAreaView>
       <KeyboardAwareScrollView>
-        {/* TODO: Создать форму изменения сделки */}
-        <EditClientForm />
+        <EditDemandForm />
       </KeyboardAwareScrollView>
     </>
   );

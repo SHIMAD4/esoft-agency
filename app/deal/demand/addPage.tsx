@@ -1,20 +1,19 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Header, AddClientForm, Icons } from '@/components';
+import { Header, AddDemandForm, Icons } from '@/components';
 
 export default function AddPage() {
   return (
     <>
       <SafeAreaView className="mx-6 mt-6 mb-9">
         <Header
-          title="Добавить demand"
+          title="Добавить"
           icon={<Icons.ArrowIcon rotateToLeft={true} size={16} />}
           link="/(tabs)/deal"
         />
       </SafeAreaView>
       <KeyboardAwareScrollView>
-        {/* TODO: Создать форму добавления сделки */}
-        <AddClientForm />
+        <AddDemandForm />
       </KeyboardAwareScrollView>
     </>
   );

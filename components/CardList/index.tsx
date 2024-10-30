@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ListRenderItemInfo, View } from 'react-native';
-import { Client, Estate, Realtor, Offer } from '@/shared/types';
+import { Client, Estate, Realtor, Offer, Demand } from '@/shared/types';
 import { Card } from '../Card';
 import { Button } from '../Button';
 import { BottomSheet } from '../BottomSheet';
@@ -9,7 +9,7 @@ import { Icons } from '../Icons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { EntityType } from '@/scripts/constants';
 
-type Entity = Client | Realtor | Estate | Offer;
+type Entity = Client | Realtor | Estate | Offer | Demand;
 
 type UserCardProps = {
   data: Entity[];
@@ -20,14 +20,15 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
   const [selectedTitle, setSelectedTitle] = useState('');
   const [selectedEntity, setSelectedEntity] = useState('');
   const [selectedLabel, setSelectedLabel] = useState('');
+  const [selectedTitleToDelete, setSelectedTitleToDelete] = useState('');
 
   const renderItem = ({ item }: ListRenderItemInfo<Entity>) => {
-    let fullName: string;
+    let title: string;
 
     switch (item.type) {
       case EntityType.CLIENT:
         item = item as Client;
-        fullName = `${item.firstName} ${item.lastName} ${item.middleName}`;
+        title = `${item.firstName} ${item.lastName} ${item.middleName}`;
 
         return (
           <Card
@@ -40,13 +41,14 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
             }}
             onPress={() => {
               setSelectedLabel(EntityType.CLIENT);
-              setSelectedTitle(fullName);
+              setSelectedTitle(title);
+              setSelectedTitleToDelete('Удалить пользователя');
             }}
           />
         );
       case EntityType.REALTOR:
         item = item as Realtor;
-        fullName = `${item.firstName} ${item.lastName} ${item.middleName}`;
+        title = `${item.firstName} ${item.lastName} ${item.middleName}`;
 
         return (
           <Card
@@ -60,13 +62,14 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
             }}
             onPress={() => {
               setSelectedLabel(EntityType.REALTOR);
-              setSelectedTitle(fullName);
+              setSelectedTitle(title);
+              setSelectedTitleToDelete('Удалить пользователя');
             }}
           />
         );
       case EntityType.ESTATE:
         item = item as Estate;
-        let street = item.addressStreet;
+        title = item.addressStreet;
 
         return (
           <Card
@@ -74,13 +77,14 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
             dt={{ ...item }}
             onPress={() => {
               setSelectedLabel(EntityType.ESTATE);
-              setSelectedTitle(street);
+              setSelectedTitle(title);
+              setSelectedTitleToDelete('Удалить объект');
             }}
           />
         );
       case EntityType.OFFER:
         item = item as Offer;
-        let title = item.estate.addressStreet;
+        title = item.estate.addressStreet;
 
         return (
           <Card
@@ -89,6 +93,22 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
             onPress={() => {
               setSelectedLabel(EntityType.OFFER);
               setSelectedTitle(title);
+              setSelectedTitleToDelete('Удалить предложение');
+            }}
+          />
+        );
+      case EntityType.DEMAND:
+        item = item as Demand;
+        title = item.name;
+
+        return (
+          <Card
+            entity={EntityType.DEMAND}
+            dt={{ ...item }}
+            onPress={() => {
+              setSelectedLabel(EntityType.DEMAND);
+              setSelectedTitle(title);
+              setSelectedTitleToDelete('Удалить потребность');
             }}
           />
         );
@@ -115,6 +135,9 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
         break;
       case EntityType.OFFER:
         navigateURL = '../deal/offer/editPage';
+        break;
+      case EntityType.DEMAND:
+        navigateURL = '../deal/demand/editPage';
         break;
       default:
         return null;
@@ -160,7 +183,7 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
         closeOnRowPress={true}
       />
       <BottomSheet
-        title="Удалить пользователя"
+        title={selectedTitleToDelete}
         description="без возможности восстановления?"
         userFullName={selectedTitle}
         titleToClose="Отмена"

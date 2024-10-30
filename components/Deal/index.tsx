@@ -1,1 +1,2 @@
-export { AddOfferForm } from './Offer';
+export { AddOfferForm, EditOfferForm } from './Offer';
+export { AddDemandForm, EditDemandForm } from './Demand';

@@ -105,7 +105,7 @@ export const AddEstateForm = () => {
             />
             {values.dataType && (
               <>
-                <Text className="text-[18px] font-bold text-center mb-4 mt-9">Адрес</Text>
+                <Text className="text-[18px] font-bold text-center mt-9">Адрес</Text>
                 <Input
                   variant="text"
                   label="Город"

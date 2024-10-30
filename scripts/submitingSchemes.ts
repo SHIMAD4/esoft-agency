@@ -149,9 +149,44 @@ const AddOfferOnSubmitSchema = Yup.object()
     },
   });
 
+const AddDemandOnSubmitSchema = Yup.object()
+  .shape({
+    client: Yup.string().required('Обязательное поле'),
+    realtor: Yup.string().required('Обязательное поле'),
+    realState: Yup.string(),
+    minPrice: Yup.string(),
+    maxPrice: Yup.string(),
+    minFloor: Yup.string(),
+    maxFloor: Yup.string(),
+    minFloors: Yup.string(),
+    maxFloors: Yup.string(),
+    minRooms: Yup.string(),
+    maxRooms: Yup.string(),
+    minArea: Yup.string(),
+    maxArea: Yup.string(),
+  })
+  .test({
+    name: 'allFieldsRequired',
+    test: function (values: { client?: string; realtor?: string }) {
+      const isValid = ['client', 'realtor'].every(
+        (field) =>
+          values[field as keyof typeof values] !== undefined &&
+          values[field as keyof typeof values]?.length !== 0,
+      );
+
+      if (isValid) return true;
+
+      return this.createError({
+        path: 'allFieldsRequired',
+        message: 'Заполните все поля',
+      });
+    },
+  });
+
 export {
   AddClientOnSubmitSchema,
   AddRealtorOnSubmitSchema,
   AddEstateOnSubmitSchema,
   AddOfferOnSubmitSchema,
+  AddDemandOnSubmitSchema,
 };

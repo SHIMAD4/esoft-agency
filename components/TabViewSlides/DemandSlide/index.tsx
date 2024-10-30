@@ -13,7 +13,7 @@ export const DemandSlide: FC = () => {
   };
 
   return (
-    <View className="flex mx-6 h-[500px] pb-[100px]">
+    <View className="flex mx-6 h-[590px] pb-[100px]">
       <Button
         variant="add"
         onPress={handleAddClientClick}
