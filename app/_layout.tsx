@@ -31,6 +31,8 @@ export default function RootLayout() {
       <Stack>
         {/* Tabs */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        {/* User */}
+        <Stack.Screen name="user" options={{ headerShown: false }} />
         {/* Client */}
         <Stack.Screen name="client/addPage" options={{ headerShown: false }} />
         <Stack.Screen name="client/editPage" options={{ headerShown: false }} />
@@ -41,7 +43,6 @@ export default function RootLayout() {
         <Stack.Screen name="estate/addPage" options={{ headerShown: false }} />
         <Stack.Screen name="estate/editPage" options={{ headerShown: false }} />
         <Stack.Screen name="estate/filterPage" options={{ headerShown: false }} />
-        {/* Deal */}
         {/* Offer */}
         <Stack.Screen name="deal/offer/addPage" options={{ headerShown: false }} />
         <Stack.Screen name="deal/offer/editPage" options={{ headerShown: false }} />

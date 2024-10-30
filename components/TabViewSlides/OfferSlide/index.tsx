@@ -4,9 +4,16 @@ import { CardList } from '../../CardList';
 import { FC } from 'react';
 import { router } from 'expo-router';
 import { useAppSelector } from '@/shared/hooks/useAppSelector';
+import { Offer } from '@/shared/types';
 
-export const OfferSlide: FC = () => {
+type OfferSlideProps = {
+  data?: Offer[];
+};
+
+export const OfferSlide: FC<OfferSlideProps> = ({ data }) => {
   const { offers } = useAppSelector((state) => state.offerSlice);
+
+  console.log(data);
 
   const handleAddClientClick = () => {
     router.navigate('../deal/offer/addPage');
@@ -19,7 +26,7 @@ export const OfferSlide: FC = () => {
         onPress={handleAddClientClick}
         style={{ marginTop: 24, marginBottom: 16 }}
       />
-      <CardList data={offers} />
+      <CardList data={data && data.length !== 0 ? data : offers} />
     </View>
   );
 };

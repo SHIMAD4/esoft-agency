@@ -43,6 +43,8 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
               setSelectedLabel(EntityType.CLIENT);
               setSelectedTitle(title);
               setSelectedTitleToDelete('Удалить пользователя');
+              setSelectedEntity(item.id);
+              router.push(`/user/?id=${item.id}`);
             }}
           />
         );
@@ -64,6 +66,8 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
               setSelectedLabel(EntityType.REALTOR);
               setSelectedTitle(title);
               setSelectedTitleToDelete('Удалить пользователя');
+              setSelectedEntity(item.id);
+              router.push(`/user/?id=${item.id}`);
             }}
           />
         );

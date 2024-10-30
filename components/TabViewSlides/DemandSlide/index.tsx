@@ -4,8 +4,13 @@ import { CardList } from '../../CardList';
 import { FC } from 'react';
 import { router } from 'expo-router';
 import { useAppSelector } from '@/shared/hooks/useAppSelector';
+import { Demand } from '@/shared/types';
 
-export const DemandSlide: FC = () => {
+type DemandSlideProps = {
+  data?: Demand[];
+};
+
+export const DemandSlide: FC<DemandSlideProps> = ({ data }) => {
   const { demands } = useAppSelector((state) => state.demandSlice);
 
   const handleAddClientClick = () => {
@@ -19,7 +24,7 @@ export const DemandSlide: FC = () => {
         onPress={handleAddClientClick}
         style={{ marginTop: 24, marginBottom: 16 }}
       />
-      <CardList data={demands} />
+      <CardList data={data && data.length !== 0 ? data : demands} />
     </View>
   );
 };

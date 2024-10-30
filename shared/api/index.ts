@@ -146,6 +146,16 @@ const offerBlock = {
         };
       });
     }),
+  getOfferByUserId: (id: string) => {
+    return ApiInstance.get(`/offers?user-id=${id}`).then(({ data }) => {
+      return data.map((item: Offer) => {
+        return {
+          type: 'OFFER',
+          ...item,
+        };
+      });
+    });
+  },
   addOffer: (data: OfferData) => {
     const formattedData = {
       ...data,
@@ -192,6 +202,16 @@ const demandBlock = {
         };
       });
     }),
+  getDemandByUserId: (id: string) => {
+    return ApiInstance.get(`/demands?user-id=${id}`).then(({ data }) => {
+      return data.map((item: Demand) => {
+        return {
+          type: 'DEMAND',
+          ...item,
+        };
+      });
+    });
+  },
   addDemand: (data: DemandData) => {
     const formattedData = {
       ...data,
