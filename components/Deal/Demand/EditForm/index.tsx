@@ -73,8 +73,6 @@ export const EditDemandForm = () => {
     API.appBlock.getDemandById(id as string).then(({ data }) => setDemand(data));
   }, [id]);
 
-  console.log(demand);
-
   return (
     <Formik
       initialValues={{

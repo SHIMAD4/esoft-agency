@@ -13,8 +13,6 @@ type OfferSlideProps = {
 export const OfferSlide: FC<OfferSlideProps> = ({ data }) => {
   const { offers } = useAppSelector((state) => state.offerSlice);
 
-  console.log(data);
-
   const handleAddClientClick = () => {
     router.navigate('../deal/offer/addPage');
   };

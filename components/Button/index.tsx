@@ -16,10 +16,8 @@ export const Button: FC<ButtonProps> = ({ variant, onPress, ...props }) => {
       return <DefaultButton onPress={onPress} {...props} />;
     case 'add':
       return <AddButtonSquare onPress={onPress} {...props} />;
-    case 'edit':
-      return <EditButtonSquare onPress={onPress} {...props} />;
-    case 'delete':
-      return <DeleteButtonSquare onPress={onPress} {...props} />;
+    case 'hidden':
+      return <CardHiddenButton onPress={onPress} {...props} />;
     case 'filter':
       return <FilterButtonSquare onPress={onPress} {...props} />;
     default:
@@ -52,24 +50,7 @@ const AddButtonSquare: FC<{ onPress?: () => void }> = ({ onPress, ...props }) =>
   );
 };
 
-const DeleteButtonSquare: FC<{ onPress?: () => void; children?: string; className?: string }> = ({
-  onPress,
-  children,
-  className,
-  ...props
-}) => {
-  return (
-    <TouchableOpacity
-      className={clsx('flex justify-center w-[60px] h-full', className)}
-      onPress={onPress}
-      {...props}
-    >
-      <Text>{children}</Text>
-    </TouchableOpacity>
-  );
-};
-
-const EditButtonSquare: FC<{ onPress?: () => void; children?: string; className?: string }> = ({
+const CardHiddenButton: FC<{ onPress?: () => void; children?: string; className?: string }> = ({
   onPress,
   children,
   className,

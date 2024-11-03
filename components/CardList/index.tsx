@@ -21,6 +21,7 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
   const [selectedEntity, setSelectedEntity] = useState('');
   const [selectedLabel, setSelectedLabel] = useState('');
   const [selectedTitleToDelete, setSelectedTitleToDelete] = useState('');
+  const [scrollEnabled, setScrollEnabled] = useState(true);
 
   const renderItem = ({ item }: ListRenderItemInfo<Entity>) => {
     let title: string;
@@ -43,8 +44,6 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
               setSelectedLabel(EntityType.CLIENT);
               setSelectedTitle(title);
               setSelectedTitleToDelete('Удалить пользователя');
-              setSelectedEntity(item.id);
-              router.push(`/user/?id=${item.id}`);
             }}
           />
         );
@@ -66,8 +65,6 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
               setSelectedLabel(EntityType.REALTOR);
               setSelectedTitle(title);
               setSelectedTitleToDelete('Удалить пользователя');
-              setSelectedEntity(item.id);
-              router.push(`/user/?id=${item.id}`);
             }}
           />
         );
@@ -150,7 +147,7 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
     return (
       <View className="flex w-full h-full flex-row-reverse items-center pb-[8px]">
         <Button
-          variant="delete"
+          variant="hidden"
           onPress={() => {
             setSelectedEntity(entityId);
             setIsSheetOpen(true);
@@ -160,7 +157,7 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
           <Icons.DeleteIcon />
         </Button>
         <Button
-          variant="edit"
+          variant="hidden"
           onPress={() => {
             setSelectedEntity(entityId);
             router.push(`${navigateURL}?id=${entityId}`);
@@ -169,6 +166,18 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
         >
           <Icons.EditIcon />
         </Button>
+        {item.type === EntityType.CLIENT || item.type === EntityType.REALTOR ? (
+          <Button
+            variant="hidden"
+            onPress={() => {
+              setSelectedEntity(entityId);
+              router.push(`/user/?id=${entityId}`);
+            }}
+            className="flex justify-center items-center bg-[#00D9BB]"
+          >
+            <Icons.EyeIcon />
+          </Button>
+        ) : null}
       </View>
     );
   };
@@ -178,13 +187,18 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
       <SwipeListView
         data={data}
         renderItem={renderItem}
-        renderHiddenItem={(rowData) => renderHiddenItem(rowData)}
+        renderHiddenItem={renderHiddenItem}
         keyExtractor={(item: Entity) => item.id}
-        rightOpenValue={-115}
+        rightOpenValue={
+          data[0].type === EntityType.CLIENT || data[0].type === EntityType.REALTOR ? -175 : -115
+        }
         disableRightSwipe={true}
         swipeToOpenPercent={1}
-        closeOnRowOpen={true}
-        closeOnRowPress={true}
+        swipeToOpenVelocityContribution={15}
+        closeOnRowBeginSwipe={true}
+        scrollEnabled={scrollEnabled}
+        onRowOpen={() => setScrollEnabled(false)}
+        onRowClose={() => setScrollEnabled(true)}
       />
       <BottomSheet
         title={selectedTitleToDelete}
