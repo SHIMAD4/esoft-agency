@@ -183,10 +183,34 @@ const AddDemandOnSubmitSchema = Yup.object()
     },
   });
 
+const AddDealOnSubmitSchema = Yup.object()
+  .shape({
+    offerId: Yup.string().required('Обязательное поле'),
+    demandId: Yup.string().required('Обязательное поле'),
+  })
+  .test({
+    name: 'allFieldsRequired',
+    test: function (values: { offerId?: string; demandId?: string }) {
+      const isValid = ['offerId', 'demandId'].every(
+        (field) =>
+          values[field as keyof typeof values] !== undefined &&
+          values[field as keyof typeof values]?.length !== 0,
+      );
+
+      if (isValid) return true;
+
+      return this.createError({
+        path: 'allFieldsRequired',
+        message: 'Заполните все поля',
+      });
+    },
+  });
+
 export {
   AddClientOnSubmitSchema,
   AddRealtorOnSubmitSchema,
   AddEstateOnSubmitSchema,
+  AddDealOnSubmitSchema,
   AddOfferOnSubmitSchema,
   AddDemandOnSubmitSchema,
 };

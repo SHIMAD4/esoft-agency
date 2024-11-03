@@ -14,6 +14,8 @@ type ExtendedErrorType = FormikErrors<{
   realtor?: string;
   realState?: string;
   price?: string;
+  demandId?: string;
+  offerId?: string;
 }>;
 
 export { ExtendedErrorType };

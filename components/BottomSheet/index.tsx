@@ -8,9 +8,10 @@ import { handleSaveClients } from '@/shared/slices/clientSlice';
 import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
 import { handleSaveEstates } from '@/shared/slices/estatesSlice';
 import { EntityType } from '@/scripts/constants';
-import { handleSaveOffers } from '@/shared/slices/offerSlice';
-import { handleSaveDemands } from '@/shared/slices/demandSlice';
+import { handleSaveOffers, handleSaveOffersWithoutDeals } from '@/shared/slices/offerSlice';
+import { handleSaveDemands, handleSaveDemandsWithoutDeals } from '@/shared/slices/demandSlice';
 import clsx from 'clsx';
+import { handleSaveDeals } from '@/shared/slices/dealsSlice';
 
 type BottomSheetProps = {
   title: string;
@@ -93,7 +94,7 @@ export const BottomSheet: FC<BottomSheetProps> = ({
   };
 
   const handleDeleteEstate = (id: string) => {
-    API.appBlock
+    API.estateBlock
       .deleteEstateById(id)
       .then((data) => console.log(data))
       .catch((error) => {
@@ -105,14 +106,37 @@ export const BottomSheet: FC<BottomSheetProps> = ({
       });
 
     setTimeout(() => {
+      refRBSheet.current?.close();
+
       API.estateBlock
         .getAllEstates()
         .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
     }, 150);
   };
 
+  const handleDeleteDeal = (id: string) => {
+    API.dealBlock.deleteDealById(id).then((data) => console.log(data));
+
+    setTimeout(() => {
+      refRBSheet.current?.close();
+
+      API.dealBlock
+        .getAllDeals()
+        .then(({ data }) => dispatch(handleSaveDeals({ deals: data })))
+        .catch((error) => console.log(error));
+
+      API.offerBlock
+        .getAllOffersWithoutDeals()
+        .then(({ data }) => dispatch(handleSaveOffersWithoutDeals({ offersWithoutDeals: data })));
+
+      API.demandBlock
+        .getAllDemandsWithoutDeals()
+        .then(({ data }) => dispatch(handleSaveDemandsWithoutDeals({ demandsWithoutDeals: data })));
+    }, 150);
+  };
+
   const handleDeleteOffer = (id: string) => {
-    API.appBlock
+    API.offerBlock
       .deleteOfferById(id)
       .then((data) => console.log(data))
       .catch((error) => {
@@ -124,6 +148,8 @@ export const BottomSheet: FC<BottomSheetProps> = ({
       });
 
     setTimeout(() => {
+      refRBSheet.current?.close();
+
       API.offerBlock
         .getAllOffers()
         .then((data) => dispatch(handleSaveOffers({ offers: data })))
@@ -132,7 +158,7 @@ export const BottomSheet: FC<BottomSheetProps> = ({
   };
 
   const handleDeleteDemand = (id: string) => {
-    API.appBlock
+    API.demandBlock
       .deleteDemandById(id)
       .then((data) => console.log(data))
       .catch((error) => {
@@ -144,6 +170,8 @@ export const BottomSheet: FC<BottomSheetProps> = ({
       });
 
     setTimeout(() => {
+      refRBSheet.current?.close();
+
       API.demandBlock
         .getAllDemands()
         .then((data) => dispatch(handleSaveDemands({ demands: data })));
@@ -158,6 +186,7 @@ export const BottomSheet: FC<BottomSheetProps> = ({
     if (entityToDeleteLabel === EntityType.ESTATE) handleDeleteEstate(id);
     if (entityToDeleteLabel === EntityType.OFFER) handleDeleteOffer(id);
     if (entityToDeleteLabel === EntityType.DEMAND) handleDeleteDemand(id);
+    if (entityToDeleteLabel === EntityType.DEAL) handleDeleteDeal(id);
   };
 
   return (

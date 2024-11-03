@@ -23,6 +23,7 @@ export enum EntityType {
   CLIENT = 'CLIENT',
   REALTOR = 'REALTOR',
   ESTATE = 'ESTATE',
+  DEAL = 'DEAL',
   OFFER = 'OFFER',
   DEMAND = 'DEMAND',
 }

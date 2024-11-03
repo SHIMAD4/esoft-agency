@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ListRenderItemInfo, View } from 'react-native';
-import { Client, Estate, Realtor, Offer, Demand } from '@/shared/types';
+import { Client, Estate, Realtor, Offer, Demand, Deal } from '@/shared/types';
 import { Card } from '../Card';
 import { Button } from '../Button';
 import { BottomSheet } from '../BottomSheet';
@@ -9,7 +9,7 @@ import { Icons } from '../Icons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { EntityType } from '@/scripts/constants';
 
-type Entity = Client | Realtor | Estate | Offer | Demand;
+type Entity = Client | Realtor | Estate | Offer | Demand | Deal;
 
 type UserCardProps = {
   data: Entity[];
@@ -113,6 +113,21 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
             }}
           />
         );
+      case EntityType.DEAL:
+        item = item as Deal;
+        title = item.name;
+
+        return (
+          <Card
+            entity={EntityType.DEAL}
+            dt={{ ...item }}
+            onPress={() => {
+              setSelectedLabel(EntityType.DEAL);
+              setSelectedTitle(title);
+              setSelectedTitleToDelete('Удалить сделку');
+            }}
+          />
+        );
       default:
         return null;
     }
@@ -133,6 +148,9 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
         break;
       case EntityType.ESTATE:
         navigateURL = '../estate/editPage';
+        break;
+      case EntityType.DEAL:
+        navigateURL = '../deal/editPage';
         break;
       case EntityType.OFFER:
         navigateURL = '../deal/offer/editPage';
@@ -190,7 +208,10 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
         renderHiddenItem={renderHiddenItem}
         keyExtractor={(item: Entity) => item.id}
         rightOpenValue={
-          data[0].type === EntityType.CLIENT || data[0].type === EntityType.REALTOR ? -175 : -115
+          (data[0] && data[0].type === EntityType.CLIENT) ||
+          (data[0] && data[0].type === EntityType.REALTOR)
+            ? -175
+            : -115
         }
         disableRightSwipe={true}
         swipeToOpenPercent={1}

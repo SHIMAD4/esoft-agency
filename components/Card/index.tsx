@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native';
 import { FC } from 'react';
-import { Client, Realtor, Estate, Offer, Demand } from '@/shared/types';
+import { Client, Realtor, Estate, Offer, Demand, Deal } from '@/shared/types';
 import { EntityType, EstateType } from '@/scripts/constants';
 
 type CardProps = {
-  dt: Client | Realtor | Estate | Offer | Demand;
+  dt: Client | Realtor | Estate | Offer | Demand | Deal;
   onPress: () => void;
   entity: string;
 };
@@ -21,6 +21,11 @@ type RealtorCardProps = {
 
 type EstateCardProps = {
   dt: Estate;
+  onPress: () => void;
+};
+
+type DealCardProps = {
+  dt: Deal;
   onPress: () => void;
 };
 
@@ -42,6 +47,8 @@ export const Card: FC<CardProps> = ({ dt, onPress, entity }) => {
       return <RealtorCard dt={dt as Realtor} onPress={onPress} />;
     case EntityType.ESTATE:
       return <EstateCard dt={dt as Estate} onPress={onPress} />;
+    case EntityType.DEAL:
+      return <DealCard dt={dt as Deal} onPress={onPress} />;
     case EntityType.OFFER:
       return <OfferCard dt={dt as Offer} onPress={onPress} />;
     case EntityType.DEMAND:
@@ -110,6 +117,42 @@ const EstateCard: FC<EstateCardProps> = ({ dt, onPress }) => {
       {totalArea && (
         <Text className="text-[#546E7A] text-[12px] font-[400]">Площадь: {totalArea}</Text>
       )}
+    </View>
+  );
+};
+
+const DealCard: FC<DealCardProps> = ({ dt, onPress }) => {
+  const { estate, name, seller, companyDeduction, buyer } = dt;
+
+  return (
+    <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
+      <Text className="text-[16px] font-semibold mb-4">{name}</Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+        Стоимость объекта: {estate.price}
+      </Text>
+      {estate.type && (
+        <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+          Тип:{' '}
+          {(estate.type === EstateType.APARTMENT && 'Квартира') ||
+            (estate.type === EstateType.HOUSE && 'Дом') ||
+            (estate.type === EstateType.LAND && 'Земля')}
+        </Text>
+      )}
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+        Стоимость клиента-продавца: {seller.cost}
+      </Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+        Стоимость клиента-покупателя: {buyer.cost}
+      </Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+        Комиссия риэлтора клиента-продавца: {seller.commission}
+      </Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+        Комиссия риэлтора клиента-покупателя: {buyer.commission}
+      </Text>
+      <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">
+        Отчисление компании: {companyDeduction}
+      </Text>
     </View>
   );
 };

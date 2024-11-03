@@ -1,13 +1,14 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SceneMap } from 'react-native-tab-view';
 import { useState } from 'react';
-import { DemandSlide, OfferSlide, Header, CustomTabView, Icons } from '@/components';
+import { DealSlide, DemandSlide, OfferSlide, Header, CustomTabView, Icons } from '@/components';
 
 export default function DealPage() {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'first', title: 'Предложение' },
-    { key: 'second', title: 'Потребность' },
+    { key: 'first', title: 'Сделка' },
+    { key: 'second', title: 'Предложение' },
+    { key: 'third', title: 'Потребность' },
   ]);
 
   return (
@@ -22,8 +23,9 @@ export default function DealPage() {
       <CustomTabView
         navigationState={{ index, routes }}
         scene={SceneMap({
-          first: () => <OfferSlide />,
-          second: () => <DemandSlide />,
+          first: () => <DealSlide />,
+          second: () => <OfferSlide />,
+          third: () => <DemandSlide />,
         })}
         setFunc={setIndex}
       />

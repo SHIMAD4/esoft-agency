@@ -43,6 +43,9 @@ export default function RootLayout() {
         <Stack.Screen name="estate/addPage" options={{ headerShown: false }} />
         <Stack.Screen name="estate/editPage" options={{ headerShown: false }} />
         <Stack.Screen name="estate/filterPage" options={{ headerShown: false }} />
+        {/* Deal */}
+        <Stack.Screen name="deal/addPage" options={{ headerShown: false }} />
+        <Stack.Screen name="deal/editPage" options={{ headerShown: false }} />
         {/* Offer */}
         <Stack.Screen name="deal/offer/addPage" options={{ headerShown: false }} />
         <Stack.Screen name="deal/offer/editPage" options={{ headerShown: false }} />
