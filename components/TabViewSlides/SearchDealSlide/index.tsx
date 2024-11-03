@@ -53,8 +53,6 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
 
     if (filterType === EntityType.OFFER) {
       API.offerBlock.getAllOffersWithoutDeals().then(({ data }) => {
-        console.log(data);
-
         dispatch(handleSaveOffers({ offers: data }));
         setSelectedData(data);
       });
@@ -62,8 +60,6 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
 
     if (filterType === EntityType.DEMAND) {
       API.demandBlock.getAllDemandsWithoutDeals().then(({ data }) => {
-        console.log(data);
-
         dispatch(handleSaveDemands({ demands: data }));
         setSelectedData(data);
       });
@@ -145,9 +141,6 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
   };
 
   useEffect(() => {
-    console.log('offerId', offerId);
-    console.log('demandId', demandId);
-
     if (offerId.length !== 0 && demandId.length !== 0) {
       setShowNextButton(true);
       setShowCreateButtonText(true);
