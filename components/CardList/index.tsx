@@ -8,20 +8,26 @@ import { router } from 'expo-router';
 import { Icons } from '../Icons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { EntityType } from '@/scripts/constants';
+import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
+import { handleSaveQuery } from '@/shared/slices/dealsSlice';
 
 type Entity = Client | Realtor | Estate | Offer | Demand | Deal;
 
 type UserCardProps = {
   data: Entity[];
+  clickableCards?: boolean;
+  swipable?: boolean;
 };
 
-export const CardList: FC<UserCardProps> = ({ data }) => {
+export const CardList: FC<UserCardProps> = ({ data, clickableCards = false, swipable = true }) => {
+  const dispatch = useAppDispatch();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState('');
   const [selectedEntity, setSelectedEntity] = useState('');
   const [selectedLabel, setSelectedLabel] = useState('');
   const [selectedTitleToDelete, setSelectedTitleToDelete] = useState('');
   const [scrollEnabled, setScrollEnabled] = useState(true);
+  const [selectedCardId, setSelectedCardId] = useState('');
 
   const renderItem = ({ item }: ListRenderItemInfo<Entity>) => {
     let title: string;
@@ -91,10 +97,16 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
           <Card
             entity={EntityType.OFFER}
             dt={{ ...item }}
+            selected={selectedCardId}
             onPress={() => {
               setSelectedLabel(EntityType.OFFER);
               setSelectedTitle(title);
               setSelectedTitleToDelete('Удалить предложение');
+              setSelectedCardId(item.id);
+
+              if (clickableCards) {
+                dispatch(handleSaveQuery({ searchUrl: `?offerId=${item.id}` }));
+              }
             }}
           />
         );
@@ -106,10 +118,16 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
           <Card
             entity={EntityType.DEMAND}
             dt={{ ...item }}
+            selected={selectedCardId}
             onPress={() => {
               setSelectedLabel(EntityType.DEMAND);
               setSelectedTitle(title);
               setSelectedTitleToDelete('Удалить потребность');
+              setSelectedCardId(item.id);
+
+              if (clickableCards) {
+                dispatch(handleSaveQuery({ searchUrl: `?demandId=${item.id}` }));
+              }
             }}
           />
         );
@@ -214,6 +232,7 @@ export const CardList: FC<UserCardProps> = ({ data }) => {
             : -115
         }
         disableRightSwipe={true}
+        disableLeftSwipe={!swipable}
         swipeToOpenPercent={1}
         swipeToOpenVelocityContribution={15}
         closeOnRowBeginSwipe={true}

@@ -2,11 +2,13 @@ import { View, Text } from 'react-native';
 import { FC } from 'react';
 import { Client, Realtor, Estate, Offer, Demand, Deal } from '@/shared/types';
 import { EntityType, EstateType } from '@/scripts/constants';
+import clsx from 'clsx';
 
 type CardProps = {
   dt: Client | Realtor | Estate | Offer | Demand | Deal;
   onPress: () => void;
   entity: string;
+  selected?: string;
 };
 
 type UserCardProps = {
@@ -32,14 +34,16 @@ type DealCardProps = {
 type OfferCardProps = {
   dt: Offer;
   onPress: () => void;
+  selected?: string;
 };
 
 type DemandCardProps = {
   dt: Demand;
   onPress: () => void;
+  selected?: string;
 };
 
-export const Card: FC<CardProps> = ({ dt, onPress, entity }) => {
+export const Card: FC<CardProps> = ({ dt, onPress, entity, selected }) => {
   switch (entity) {
     case EntityType.CLIENT:
       return <UserCard dt={dt as Client} onPress={onPress} />;
@@ -50,9 +54,9 @@ export const Card: FC<CardProps> = ({ dt, onPress, entity }) => {
     case EntityType.DEAL:
       return <DealCard dt={dt as Deal} onPress={onPress} />;
     case EntityType.OFFER:
-      return <OfferCard dt={dt as Offer} onPress={onPress} />;
+      return <OfferCard dt={dt as Offer} selected={selected} onPress={onPress} />;
     case EntityType.DEMAND:
-      return <DemandCard dt={dt as Demand} onPress={onPress} />;
+      return <DemandCard dt={dt as Demand} selected={selected} onPress={onPress} />;
   }
 };
 
@@ -157,14 +161,20 @@ const DealCard: FC<DealCardProps> = ({ dt, onPress }) => {
   );
 };
 
-const OfferCard: FC<OfferCardProps> = ({ dt, onPress }) => {
-  const { client, realtor, estate, price } = dt;
+const OfferCard: FC<OfferCardProps> = ({ dt, onPress, selected }) => {
+  const { id, client, realtor, estate, price } = dt;
   const label = estate.addressStreet;
   const clientFullName = `${client.firstName} ${client.middleName}`;
   const realtorFullName = `${realtor.firstName} ${realtor.middleName}`;
 
   return (
-    <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
+    <View
+      className={clsx(
+        'w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]',
+        selected && selected === id && 'border-[2px] border-[#03BFA5]',
+      )}
+      onTouchStart={onPress}
+    >
       <Text className="text-[16px] font-semibold mb-4">{label}</Text>
       <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Клиент: {clientFullName}</Text>
       <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Риэлтор: {realtorFullName}</Text>
@@ -173,8 +183,9 @@ const OfferCard: FC<OfferCardProps> = ({ dt, onPress }) => {
   );
 };
 
-const DemandCard: FC<DemandCardProps> = ({ dt, onPress }) => {
+const DemandCard: FC<DemandCardProps> = ({ dt, onPress, selected }) => {
   const {
+    id,
     name,
     client,
     realtor,
@@ -198,7 +209,13 @@ const DemandCard: FC<DemandCardProps> = ({ dt, onPress }) => {
     (estateType === EstateType.LAND && 'Земля');
 
   return (
-    <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
+    <View
+      className={clsx(
+        'w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]',
+        selected && selected === id && 'border-[2px] border-[#03BFA5]',
+      )}
+      onTouchStart={onPress}
+    >
       <Text className="text-[16px] font-semibold mb-4">{name}</Text>
       <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Клиент: {clientFullName}</Text>
       <Text className="text-[#546E7A] text-[12px] font-[400] mb-2">Риэлтор: {realtorFullName}</Text>

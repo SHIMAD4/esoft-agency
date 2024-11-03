@@ -119,6 +119,8 @@ const offerBlock = {
       });
     });
   },
+  getOffersByDemandId: (id: string) =>
+    ApiInstance.get(`/offers?without-deals=true&demand-id=${id}`),
   addOffer: (data: OfferData) => {
     const formattedData = {
       ...data,
@@ -162,6 +164,8 @@ const demandBlock = {
       });
     });
   },
+  getDemandsByOfferId: (id: string) =>
+    ApiInstance.get(`/demands?without-deals=true&offer-id=${id}`),
   addDemand: (data: DemandData) => {
     const formattedData = {
       ...data,

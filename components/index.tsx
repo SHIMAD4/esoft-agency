@@ -1,7 +1,14 @@
 export { TabBar } from './TabBar';
 export { Header } from './Header';
 export { CustomTabView } from './TabView';
-export { ClientSlide, RealtorSlide, DealSlide, DemandSlide, OfferSlide } from './TabViewSlides';
+export {
+  ClientSlide,
+  RealtorSlide,
+  DealSlide,
+  SearchDealSlide,
+  DemandSlide,
+  OfferSlide,
+} from './TabViewSlides';
 export { Input } from './Input';
 export { Button } from './Button';
 export { CardList } from './CardList';
