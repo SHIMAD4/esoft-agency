@@ -18,6 +18,7 @@ export const CustomTabView: FC<CustomTabViewProps> = memo(({ navigationState, sc
       renderTabBar={(props) => (
         <TabBar
           {...props}
+          scrollEnabled
           activeColor={Colors.Active}
           inactiveColor={Colors.Inactive}
           indicatorStyle={styles.indicatorStyle}
@@ -46,11 +47,13 @@ const styles = StyleSheet.create({
   },
   tabStyle: {
     backgroundColor: 'transparent',
+    width: 130,
   },
   tabBar: {
-    width: '60%',
+    width: '100%',
     flexDirection: 'column-reverse',
     marginHorizontal: 24,
+    paddingRight: 48,
     backgroundColor: 'transparent',
     shadowColor: 'transparent',
   },

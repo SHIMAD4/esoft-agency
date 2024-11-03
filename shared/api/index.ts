@@ -1,5 +1,14 @@
 import axios from 'axios';
 import { Demand, Offer } from '@/shared/types';
+import {
+  ClientData,
+  DealData,
+  DemandData,
+  EstateData,
+  EstateFormattedData,
+  OfferData,
+  RealtorData,
+} from '@/shared/types/Api';
 
 export const ApiInstance = axios.create({
   baseURL: 'http://esoft.api.miv-dev.ru:8000/',
@@ -9,26 +18,9 @@ const appBlock = {
   // User (Client | Realtor)
   getUserById: (id: string) => ApiInstance.get(`/users/${id}`),
   deleteUserById: (id: string) => ApiInstance.delete(`/users/${id}`),
-  // Estate
-  getEstateById: (id: string) => ApiInstance.get(`/real-state/${id}`),
-  deleteEstateById: (id: string) => ApiInstance.delete(`/real-state/${id}`),
-  // Offer
-  getOfferById: (id: string) => ApiInstance.get(`/offers/${id}`),
-  deleteOfferById: (id: string) => ApiInstance.delete(`/offers/${id}`),
-  // Demand
-  getDemandById: (id: string) => ApiInstance.get(`/demands/${id}`),
-  deleteDemandById: (id: string) => ApiInstance.delete(`/demands/${id}`),
 };
 
 // ====== Client ======
-
-type ClientData = {
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  email: string;
-  phone: string;
-};
 
 const clientBlock = {
   getAllUsers: () => ApiInstance.get('/users/search?role=CLIENT'),
@@ -39,13 +31,6 @@ const clientBlock = {
 
 // ====== Realtor ======
 
-type RealtorData = {
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  dealShare: string;
-};
-
 const realtorBlock = {
   getAllUsers: () => ApiInstance.get('/users/search?role=REALTOR'),
   searchRealtor: (query: string) => ApiInstance.get(`/users/search?query=${query}&role=REALTOR`),
@@ -55,37 +40,9 @@ const realtorBlock = {
 
 // ====== Estate ======
 
-type EstateData = {
-  type: string;
-  addressCity: string;
-  addressStreet: string;
-  addressHouse: string;
-  addressNumber: string;
-  latitude: number;
-  longitude: number;
-  floor: number;
-  totalFloors: number;
-  totalRooms: number;
-  totalArea: number;
-  dataType: string;
-};
-
-type EstateFormattedData = {
-  type: string;
-  addressCity: string;
-  addressStreet: string;
-  addressHouse: string;
-  addressNumber: string;
-  latitude: number;
-  longitude: number;
-  floor?: number;
-  totalFloors?: number;
-  totalRooms?: number;
-  totalArea?: number;
-};
-
 const estateBlock = {
   getAllEstates: () => ApiInstance.get('/real-state/search'),
+  getEstateById: (id: string) => ApiInstance.get(`/real-state/${id}`),
   addEstate: (data: EstateData) => {
     const formattedData: EstateFormattedData = {
       type: data.dataType,
@@ -121,20 +78,24 @@ const estateBlock = {
 
     return ApiInstance.put(`/real-state/${id}`, formattedData);
   },
+  deleteEstateById: (id: string) => ApiInstance.delete(`/real-state/${id}`),
   searchEstateByParameters: (parameters: string) =>
     ApiInstance.get(`/real-state/search?${parameters}`),
   searchEstate: (query: string) => ApiInstance.get(`/real-state/search?query=${query}`),
   getFilters: () => ApiInstance.get('/real-state/filters'),
 };
 
-// ====== Offer ======
+// ====== Deal ======
 
-type OfferData = {
-  client: string;
-  realtor: string;
-  realState: string;
-  price: string;
+const dealBlock = {
+  getAllDeals: () => ApiInstance.get('/deals'),
+  addDeal: (data: DealData) => ApiInstance.post('/deals', data),
+  editDeal: (id: string, data: DealData) => ApiInstance.put(`/deals/${id}`, data),
+  getDealById: (id: string) => ApiInstance.get(`/deals/${id}`),
+  deleteDealById: (id: string) => ApiInstance.delete(`/deals/${id}`),
 };
+
+// ====== Offer ======
 
 const offerBlock = {
   getAllOffers: () =>
@@ -146,6 +107,8 @@ const offerBlock = {
         };
       });
     }),
+  getOfferById: (id: string) => ApiInstance.get(`/offers/${id}`),
+  getAllOffersWithoutDeals: () => ApiInstance.get('/offers?without-deals=true'),
   getOfferByUserId: (id: string) => {
     return ApiInstance.get(`/offers?user-id=${id}`).then(({ data }) => {
       return data.map((item: Offer) => {
@@ -172,25 +135,10 @@ const offerBlock = {
 
     return ApiInstance.put(`/offers/${id}`, formattedData);
   },
+  deleteOfferById: (id: string) => ApiInstance.delete(`/offers/${id}`),
 };
 
 // ====== Demand ======
-
-type DemandData = {
-  client: string;
-  realtor: string;
-  estateType: string;
-  minPrice: string;
-  maxPrice: string;
-  minFloor: string;
-  maxFloor: string;
-  minFloors: string;
-  maxFloors: string;
-  minRooms: string;
-  maxRooms: string;
-  minArea: string;
-  maxArea: string;
-};
 
 const demandBlock = {
   getAllDemands: () =>
@@ -202,6 +150,8 @@ const demandBlock = {
         };
       });
     }),
+  getDemandById: (id: string) => ApiInstance.get(`/demands/${id}`),
+  getAllDemandsWithoutDeals: () => ApiInstance.get('/demands?without-deals=true'),
   getDemandByUserId: (id: string) => {
     return ApiInstance.get(`/demands?user-id=${id}`).then(({ data }) => {
       return data.map((item: Demand) => {
@@ -246,6 +196,7 @@ const demandBlock = {
 
     return ApiInstance.put(`/demands/${id}`, formattedData);
   },
+  deleteDemandById: (id: string) => ApiInstance.delete(`/demands/${id}`),
 };
 
 export const API = {
@@ -253,6 +204,7 @@ export const API = {
   clientBlock,
   realtorBlock,
   estateBlock,
+  dealBlock,
   offerBlock,
   demandBlock,
 };

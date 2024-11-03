@@ -36,7 +36,7 @@ export const EditEstateForm = () => {
   });
 
   useEffect(() => {
-    API.appBlock.getEstateById(id as string).then(({ data }) => setEstate(data));
+    API.estateBlock.getEstateById(id as string).then(({ data }) => setEstate(data));
   }, [id]);
 
   return (

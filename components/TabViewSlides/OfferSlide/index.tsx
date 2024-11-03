@@ -13,7 +13,7 @@ type OfferSlideProps = {
 export const OfferSlide: FC<OfferSlideProps> = ({ data }) => {
   const { offers } = useAppSelector((state) => state.offerSlice);
 
-  const handleAddClientClick = () => {
+  const handleAddOfferClick = () => {
     router.navigate('../deal/offer/addPage');
   };
 
@@ -21,7 +21,7 @@ export const OfferSlide: FC<OfferSlideProps> = ({ data }) => {
     <View className="flex mx-6 h-[595px] pb-[100px]">
       <Button
         variant="add"
-        onPress={handleAddClientClick}
+        onPress={handleAddOfferClick}
         style={{ marginTop: 24, marginBottom: 16 }}
       />
       <CardList data={data && data.length !== 0 ? data : offers} />

@@ -11,7 +11,7 @@ export default function EstatePage() {
   const { estates } = useAppSelector((state) => state.estateSlice);
   const [searchData, setSearchData] = useState<Client[]>([]);
 
-  const handleAddClientClick = () => {
+  const handleAddEstateClick = () => {
     router.navigate('../estate/addPage');
   };
 
@@ -40,7 +40,7 @@ export default function EstatePage() {
           style={{ marginBottom: 24 }}
         />
         <View className="flex flex-row justify-between items-center" style={{ marginBottom: 16 }}>
-          <Button variant="add" onPress={handleAddClientClick} />
+          <Button variant="add" onPress={handleAddEstateClick} />
           <Button variant="filter" onPress={handleFilterClick} />
         </View>
       </SafeAreaView>

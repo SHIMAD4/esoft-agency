@@ -10,8 +10,9 @@ import { API } from '@/shared/api';
 import { router } from 'expo-router';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { AddOfferOnSubmitSchema } from '@/scripts/submitingSchemes';
-import { handleSaveOffers } from '@/shared/slices/offerSlice';
+import { handleSaveOffers, handleSaveOffersWithoutDeals } from '@/shared/slices/offerSlice';
 import { useAppSelector } from '@/shared/hooks/useAppSelector';
+import { handleSaveDemandsWithoutDeals } from '@/shared/slices/demandSlice';
 
 export const AddOfferForm = () => {
   const dispatch = useAppDispatch();
@@ -57,6 +58,18 @@ export const AddOfferForm = () => {
             API.offerBlock
               .getAllOffers()
               .then((data) => dispatch(handleSaveOffers({ offers: data })));
+
+            API.offerBlock
+              .getAllOffersWithoutDeals()
+              .then(({ data }) =>
+                dispatch(handleSaveOffersWithoutDeals({ offersWithoutDeals: data })),
+              );
+
+            API.demandBlock
+              .getAllDemandsWithoutDeals()
+              .then(({ data }) =>
+                dispatch(handleSaveDemandsWithoutDeals({ demandsWithoutDeals: data })),
+              );
           }, 150);
         }
       }}

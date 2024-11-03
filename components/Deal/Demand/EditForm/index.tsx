@@ -11,8 +11,9 @@ import { router, useGlobalSearchParams } from 'expo-router';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { AddDemandOnSubmitSchema } from '@/scripts/submitingSchemes';
 import { useAppSelector } from '@/shared/hooks/useAppSelector';
-import { handleSaveDemands } from '@/shared/slices/demandSlice';
+import { handleSaveDemands, handleSaveDemandsWithoutDeals } from '@/shared/slices/demandSlice';
 import { EstateType } from '@/scripts/constants';
+import { handleSaveOffersWithoutDeals } from '@/shared/slices/offerSlice';
 
 export const EditDemandForm = () => {
   const dispatch = useAppDispatch();
@@ -70,7 +71,7 @@ export const EditDemandForm = () => {
   });
 
   useEffect(() => {
-    API.appBlock.getDemandById(id as string).then(({ data }) => setDemand(data));
+    API.demandBlock.getDemandById(id as string).then(({ data }) => setDemand(data));
   }, [id]);
 
   return (
@@ -102,6 +103,18 @@ export const EditDemandForm = () => {
             API.demandBlock
               .getAllDemands()
               .then((data) => dispatch(handleSaveDemands({ demands: data })));
+
+            API.offerBlock
+              .getAllOffersWithoutDeals()
+              .then(({ data }) =>
+                dispatch(handleSaveOffersWithoutDeals({ offersWithoutDeals: data })),
+              );
+
+            API.demandBlock
+              .getAllDemandsWithoutDeals()
+              .then(({ data }) =>
+                dispatch(handleSaveDemandsWithoutDeals({ demandsWithoutDeals: data })),
+              );
           }, 150);
         }
       }}

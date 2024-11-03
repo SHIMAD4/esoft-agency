@@ -12,7 +12,7 @@ export const RealtorSlide: FC = () => {
   const [searchData, setSearchData] = useState<Realtor[]>([]);
   const { realtors } = useAppSelector((state) => state.realtorSlice);
 
-  const handleAddClientClick = () => {
+  const handleAddRealtorClick = () => {
     router.navigate('../realtor/addPage');
   };
 
@@ -30,7 +30,7 @@ export const RealtorSlide: FC = () => {
         onChangeText={handleSearch}
         style={{ marginBottom: 24 }}
       />
-      <Button variant="add" onPress={handleAddClientClick} style={{ marginBottom: 16 }} />
+      <Button variant="add" onPress={handleAddRealtorClick} style={{ marginBottom: 16 }} />
       <CardList data={searchData.length === 0 ? realtors : searchData} />
     </View>
   );

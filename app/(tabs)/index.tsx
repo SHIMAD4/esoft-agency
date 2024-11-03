@@ -8,28 +8,46 @@ import { API } from '@/shared/api';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { handleSaveClients } from '@/shared/slices/clientSlice';
 import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
-import { handleSaveOffers } from '@/shared/slices/offerSlice';
+import { handleSaveOffers, handleSaveOffersWithoutDeals } from '@/shared/slices/offerSlice';
 import { handleSaveEstates } from '@/shared/slices/estatesSlice';
-import { handleSaveDemands } from '@/shared/slices/demandSlice';
+import { handleSaveDemands, handleSaveDemandsWithoutDeals } from '@/shared/slices/demandSlice';
+import { handleSaveDeals } from '@/shared/slices/dealsSlice';
 
 export default function HomePage() {
   const Logo = require('../../assets/images/logo.png');
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // Clients
     API.clientBlock
       .getAllUsers()
       .then(({ data }) => dispatch(handleSaveClients({ clients: data })));
 
+    // Realtors
     API.realtorBlock
       .getAllUsers()
       .then(({ data }) => dispatch(handleSaveRealtors({ realtors: data })));
 
+    // Estates
     API.estateBlock
       .getAllEstates()
       .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
 
+    // Deals
+    API.dealBlock.getAllDeals().then(({ data }) => dispatch(handleSaveDeals({ deals: data })));
+
+    API.offerBlock
+      .getAllOffersWithoutDeals()
+      .then(({ data }) => dispatch(handleSaveOffersWithoutDeals({ offersWithoutDeals: data })));
+
+    API.demandBlock
+      .getAllDemandsWithoutDeals()
+      .then(({ data }) => dispatch(handleSaveDemandsWithoutDeals({ demandsWithoutDeals: data })));
+
+    // Offers
     API.offerBlock.getAllOffers().then((data) => dispatch(handleSaveOffers({ offers: data })));
+
+    // Demands
     API.demandBlock.getAllDemands().then((data) => dispatch(handleSaveDemands({ demands: data })));
   }, []);
 

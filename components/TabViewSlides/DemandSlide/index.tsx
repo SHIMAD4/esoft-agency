@@ -13,7 +13,7 @@ type DemandSlideProps = {
 export const DemandSlide: FC<DemandSlideProps> = ({ data }) => {
   const { demands } = useAppSelector((state) => state.demandSlice);
 
-  const handleAddClientClick = () => {
+  const handleAddDemandClick = () => {
     router.navigate('../deal/demand/addPage');
   };
 
@@ -21,7 +21,7 @@ export const DemandSlide: FC<DemandSlideProps> = ({ data }) => {
     <View className="flex mx-6 h-[590px] pb-[100px]">
       <Button
         variant="add"
-        onPress={handleAddClientClick}
+        onPress={handleAddDemandClick}
         style={{ marginTop: 24, marginBottom: 16 }}
       />
       <CardList data={data && data.length !== 0 ? data : demands} />

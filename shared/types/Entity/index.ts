@@ -40,6 +40,25 @@ type Estate = {
   };
 };
 
+type Deal = {
+  type: string;
+  id: string;
+  name: string;
+  estate: {
+    price: number;
+    type: string;
+  };
+  buyer: {
+    cost: number;
+    commission: number;
+  };
+  seller: {
+    cost: number;
+    commission: number;
+  };
+  companyDeduction: number;
+};
+
 type Offer = {
   type?: string;
   id: string;
@@ -68,4 +87,4 @@ type Demand = {
   maxFloors: number;
 };
 
-export { Client, Realtor, Estate, Offer, Demand };
+export { Client, Realtor, Estate, Offer, Demand, Deal };

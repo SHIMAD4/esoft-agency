@@ -11,8 +11,9 @@ import { router } from 'expo-router';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { AddDemandOnSubmitSchema } from '@/scripts/submitingSchemes';
 import { useAppSelector } from '@/shared/hooks/useAppSelector';
-import { handleSaveDemands } from '@/shared/slices/demandSlice';
+import { handleSaveDemands, handleSaveDemandsWithoutDeals } from '@/shared/slices/demandSlice';
 import { EstateType } from '@/scripts/constants';
+import { handleSaveOffersWithoutDeals } from '@/shared/slices/offerSlice';
 
 export const AddDemandForm = () => {
   const dispatch = useAppDispatch();
@@ -63,6 +64,18 @@ export const AddDemandForm = () => {
             API.demandBlock
               .getAllDemands()
               .then((data) => dispatch(handleSaveDemands({ demands: data })));
+
+            API.offerBlock
+              .getAllOffersWithoutDeals()
+              .then(({ data }) =>
+                dispatch(handleSaveOffersWithoutDeals({ offersWithoutDeals: data })),
+              );
+
+            API.demandBlock
+              .getAllDemandsWithoutDeals()
+              .then(({ data }) =>
+                dispatch(handleSaveDemandsWithoutDeals({ demandsWithoutDeals: data })),
+              );
           }, 150);
         }
       }}
