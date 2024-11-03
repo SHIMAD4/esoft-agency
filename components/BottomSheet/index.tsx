@@ -67,51 +67,61 @@ export const BottomSheet: FC<BottomSheetProps> = ({
     setIsSheetOpen(false);
   };
 
-  const handleDeleteUser = (id: string) => {
-    API.appBlock
+  const handleDeleteUser = async (id: string) => {
+    let errorFlag = false;
+
+    await API.appBlock
       .deleteUserById(id)
-      .then(() => {
-        setTimeout(() => {
-          refRBSheet.current?.close();
-
-          API.clientBlock
-            .getAllUsers()
-            .then(({ data }) => dispatch(handleSaveClients({ clients: data })));
-
-          API.realtorBlock
-            .getAllUsers()
-            .then(({ data }) => dispatch(handleSaveRealtors({ realtors: data })))
-            .catch((error) => console.log(error));
-        }, 150);
-      })
+      .then((data) => console.log(data))
       .catch((error) => {
         if (error.status === 409) {
+          errorFlag = true;
           setError(true);
           setTitleToCloseFormatted('Закрыть');
           setDescriptionFormatted('невозможно. Связан с потребностью или предложением.');
         }
       });
+
+    if (!errorFlag) {
+      setTimeout(() => {
+        refRBSheet.current?.close();
+
+        API.clientBlock
+          .getAllUsers()
+          .then(({ data }) => dispatch(handleSaveClients({ clients: data })));
+
+        API.realtorBlock
+          .getAllUsers()
+          .then(({ data }) => dispatch(handleSaveRealtors({ realtors: data })))
+          .catch((error) => console.log(error));
+      }, 150);
+    }
   };
 
-  const handleDeleteEstate = (id: string) => {
-    API.estateBlock
+  const handleDeleteEstate = async (id: string) => {
+    let errorFlag = false;
+
+    await API.estateBlock
       .deleteEstateById(id)
       .then((data) => console.log(data))
       .catch((error) => {
         if (error.status === 409) {
+          errorFlag = true;
           setError(true);
           setTitleToCloseFormatted('Закрыть');
           setDescriptionFormatted('невозможно. Связан с потребностью или предложением.');
         }
       });
 
-    setTimeout(() => {
-      refRBSheet.current?.close();
+    if (!errorFlag) {
+      setTimeout(() => {
+        refRBSheet.current?.close();
 
-      API.estateBlock
-        .getAllEstates()
-        .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
-    }, 150);
+        API.estateBlock
+          .getAllEstates()
+          .then(({ data }) => dispatch(handleSaveEstates({ estates: data })));
+      }, 150);
+    }
   };
 
   const handleDeleteDeal = (id: string) => {
@@ -135,47 +145,57 @@ export const BottomSheet: FC<BottomSheetProps> = ({
     }, 150);
   };
 
-  const handleDeleteOffer = (id: string) => {
-    API.offerBlock
+  const handleDeleteOffer = async (id: string) => {
+    let errorFlag = false;
+
+    await API.offerBlock
       .deleteOfferById(id)
       .then((data) => console.log(data))
       .catch((error) => {
         if (error.status === 409) {
+          errorFlag = true;
           setError(true);
           setTitleToCloseFormatted('Закрыть');
           setDescriptionFormatted('невозможно. Оно участвует в сделке.');
         }
       });
 
-    setTimeout(() => {
-      refRBSheet.current?.close();
+    if (!errorFlag) {
+      setTimeout(() => {
+        refRBSheet.current?.close();
 
-      API.offerBlock
-        .getAllOffers()
-        .then((data) => dispatch(handleSaveOffers({ offers: data })))
-        .catch((error) => console.log(error));
-    }, 150);
+        API.offerBlock
+          .getAllOffers()
+          .then((data) => dispatch(handleSaveOffers({ offers: data })))
+          .catch((error) => console.log(error));
+      }, 150);
+    }
   };
 
-  const handleDeleteDemand = (id: string) => {
-    API.demandBlock
+  const handleDeleteDemand = async (id: string) => {
+    let errorFlag = false;
+
+    await API.demandBlock
       .deleteDemandById(id)
       .then((data) => console.log(data))
       .catch((error) => {
         if (error.status === 409) {
+          errorFlag = true;
           setError(true);
           setTitleToCloseFormatted('Закрыть');
           setDescriptionFormatted('невозможно. Оно участвует в сделке.');
         }
       });
 
-    setTimeout(() => {
-      refRBSheet.current?.close();
+    if (!errorFlag) {
+      setTimeout(() => {
+        refRBSheet.current?.close();
 
-      API.demandBlock
-        .getAllDemands()
-        .then((data) => dispatch(handleSaveDemands({ demands: data })));
-    }, 150);
+        API.demandBlock
+          .getAllDemands()
+          .then((data) => dispatch(handleSaveDemands({ demands: data })));
+      }, 150);
+    }
   };
 
   const handleDelete = (id: string) => {
