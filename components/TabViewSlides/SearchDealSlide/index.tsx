@@ -182,7 +182,7 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
         ) : null}
       </View>
 
-      <View className="w-full absolute bottom-3">
+      <View className={clsx(selectedFilter && 'w-full mt-[-130px]')}>
         {showNextButton ? (
           <Button
             variant="default"
@@ -190,9 +190,18 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
             buttonClassNames="bg-[#0091EA] rounded-[3px]"
             textClassNames="text-center text-[#FFFFFF] text-[16px] py-[8.5px]"
             onPress={handleNext}
-            style={{ marginTop: 24, marginBottom: 8 }}
+            style={{ marginTop: 24 }}
           />
-        ) : null}
+        ) : (
+          <Button
+            variant="default"
+            text="placeholder"
+            buttonClassNames="bg-[transparent]"
+            textClassNames="text-center text-[transparent] text-[16px] py-[8.5px]"
+            onPress={handleNext}
+            style={{ marginTop: 24 }}
+          />
+        )}
         {showBackButton ? (
           <Button
             variant="default"
@@ -200,6 +209,7 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
             buttonClassNames="border-[1px] border-[#0091EA] rounded-[3px]"
             textClassNames="text-center text-[#0091EA] text-[16px] py-[8.5px]"
             onPress={handleCancel}
+            style={{ marginTop: selectedFilter ? 12 : showNextButton ? 12 : 0 }}
           />
         ) : null}
       </View>
