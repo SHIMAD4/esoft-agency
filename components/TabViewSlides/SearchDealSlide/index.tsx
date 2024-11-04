@@ -14,16 +14,14 @@ import { handleSaveOffers } from '@/shared/slices/offerSlice';
 const FilterButton: FC<{
   text: string;
   isActive: boolean;
-  isFirst?: boolean;
   onPress: () => void;
-}> = ({ text, isActive, onPress, isFirst = false }) => (
+}> = ({ text, isActive, onPress }) => (
   <Button
     variant="default"
     text={text}
     buttonClassNames={clsx(
       'border-[1px] border-[#FF9100] rounded-[3px]',
       isActive ? 'bg-[#FF9100]' : 'bg-transparent',
-      isFirst ? 'mr-[10px]' : '',
     )}
     textClassNames={clsx(
       'text-center text-[16px] px-[30.5px] py-[8px]',
@@ -160,14 +158,13 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
       <Text className="text-[16px] text-center font-bold mt-9 mb-4">{renderFilterPrompt()}</Text>
 
       {!selectedFilter && (
-        <View className="flex flex-row">
+        <View className="flex flex-row justify-between">
           <FilterButton
             text="Потребность"
             isActive={isDemandSelected}
             onPress={() => {
               handleFilterSelection(EntityType.DEMAND);
             }}
-            isFirst
           />
           <FilterButton
             text="Предложение"
@@ -179,18 +176,13 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
         </View>
       )}
 
-      <View
-        className={clsx(
-          selectedFilter && 'h-[410px]',
-          showNextButton && (demandId || offerId) && 'h-[360px]',
-        )}
-      >
+      <View className={clsx(selectedFilter && 'h-full pb-[120px]')}>
         {selectedFilter ? (
           <CardList data={selectedData} clickableCards={true} swipable={false} />
         ) : null}
       </View>
 
-      <View className={clsx(selectedFilter && 'pt-4', showNextButton && 'pt-0')}>
+      <View className="w-full absolute bottom-3">
         {showNextButton ? (
           <Button
             variant="default"

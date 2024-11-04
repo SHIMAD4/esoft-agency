@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   tabStyle: {
     backgroundColor: 'transparent',
-    width: 130,
+    width: 'auto',
   },
   tabBar: {
     width: '100%',
