@@ -42,6 +42,9 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
   const [showCreateButtonText, setShowCreateButtonText] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('');
   const [selectedData, setSelectedData] = useState([]);
+  const [selectedTitle, setSelectedTitle] = useState(
+    'Выберите по какому параметру \n проводить поиск',
+  );
 
   const handleFilterSelection = (filterType: EntityType) => {
     setIsOfferSelected(filterType === EntityType.OFFER);
@@ -122,22 +125,6 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
     }, 150);
   };
 
-  const renderFilterPrompt = () => {
-    if (selectedFilter === EntityType.OFFER) {
-      return 'Выберите подходящее предложение \n для поиска потребности';
-    }
-
-    if (selectedFilter === EntityType.DEMAND) {
-      return 'Выберите подходящую потребность \n для поиска предложений';
-    }
-
-    if (showCreateButtonText) {
-      return 'Подходящие потребности';
-    }
-
-    return 'Выберите по какому параметру \n проводить поиск';
-  };
-
   useEffect(() => {
     if (offerId.length !== 0 && demandId.length !== 0) {
       setShowNextButton(true);
@@ -151,11 +138,24 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
     if (!offerId && demandId) {
       setShowNextButton(true);
     }
-  }, [offerId, demandId]);
 
+    if (selectedFilter === EntityType.OFFER && !offerId && !demandId) {
+      setSelectedTitle('Выберите подходящее предложение \n для поиска потребности');
+    } else if (selectedFilter === EntityType.DEMAND && !offerId && !demandId) {
+      setSelectedTitle('Выберите подходящую потребность \n для поиска предложений');
+    } else if (offerId && !demandId) {
+      setSelectedTitle('Выберите подходящую потребность \n для поиска предложений');
+    } else if (demandId && !offerId) {
+      setSelectedTitle('Выберите подходящее предложение \n для поиска потребности');
+    } else if (showCreateButtonText) {
+      setSelectedTitle('Подходящие потребности');
+    } else {
+      setSelectedTitle('Выберите по какому параметру \n проводить поиск');
+    }
+  }, [selectedFilter, offerId, demandId, showCreateButtonText]);
   return (
     <View className="flex mx-6 h-[590px] pb-[100px]">
-      <Text className="text-[16px] text-center font-bold mt-9 mb-4">{renderFilterPrompt()}</Text>
+      <Text className="h-[45px] text-[16px] text-center font-bold mt-9 mb-4">{selectedTitle}</Text>
 
       {!selectedFilter && (
         <View className="flex flex-row justify-between">
@@ -176,13 +176,13 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
         </View>
       )}
 
-      <View className={clsx(selectedFilter && 'h-full pb-[120px]')}>
+      <View className={clsx(selectedFilter && 'h-full pb-[180px]')}>
         {selectedFilter ? (
           <CardList data={selectedData} clickableCards={true} swipable={false} />
         ) : null}
       </View>
 
-      <View className={clsx(selectedFilter && 'w-full mt-[-130px]')}>
+      <View className={clsx(selectedFilter && 'w-full mt-[-190px]')}>
         {showNextButton ? (
           <Button
             variant="default"
@@ -198,7 +198,6 @@ export const SearchDealSlide: FC<{ goToDealSlide: () => void }> = ({ goToDealSli
             text="placeholder"
             buttonClassNames="bg-[transparent]"
             textClassNames="text-center text-[transparent] text-[16px] py-[8.5px]"
-            onPress={handleNext}
             style={{ marginTop: 24 }}
           />
         )}
