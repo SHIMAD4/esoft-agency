@@ -6,6 +6,7 @@ import {
   DemandData,
   EstateData,
   EstateFormattedData,
+  EventData,
   OfferData,
   RealtorData,
 } from '@/shared/types/Api';
@@ -203,6 +204,17 @@ const demandBlock = {
   deleteDemandById: (id: string) => ApiInstance.delete(`/demands/${id}`),
 };
 
+// ====== Event ======
+
+const eventBlock = {
+  getAllEvents: () => ApiInstance.get('/events/grouped'),
+  getAllUpcomingEvents: () => ApiInstance.get('/events?upcoming=true'),
+  getEventById: (id: string) => ApiInstance.get(`/events/${id}`),
+  addEvent: (data: EventData) => ApiInstance.post('/events', data),
+  editEvent: (id: string, data: EventData) => ApiInstance.put(`/events/${id}`, data),
+  deleteEventById: (id: string) => ApiInstance.delete(`/events/${id}`),
+};
+
 export const API = {
   appBlock,
   clientBlock,
@@ -211,4 +223,5 @@ export const API = {
   dealBlock,
   offerBlock,
   demandBlock,
+  eventBlock,
 };

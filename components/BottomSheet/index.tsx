@@ -12,6 +12,7 @@ import { handleSaveOffers, handleSaveOffersWithoutDeals } from '@/shared/slices/
 import { handleSaveDemands, handleSaveDemandsWithoutDeals } from '@/shared/slices/demandSlice';
 import clsx from 'clsx';
 import { handleSaveDeals } from '@/shared/slices/dealsSlice';
+import { handleSaveEvents, handleSaveUpcomingEvents } from '@/shared/slices/eventsSlice';
 
 type BottomSheetProps = {
   title: string;
@@ -198,6 +199,36 @@ export const BottomSheet: FC<BottomSheetProps> = ({
     }
   };
 
+  const handleDeleteEvent = async (id: string) => {
+    let errorFlag = false;
+
+    await API.eventBlock
+      .deleteEventById(id)
+      .then((data) => console.log(data))
+      .catch((error) => {
+        if (error.status === 409) {
+          errorFlag = true;
+          setError(true);
+          setTitleToCloseFormatted('Закрыть');
+          setDescriptionFormatted('невозможно.');
+        }
+      });
+
+    if (!errorFlag) {
+      setTimeout(() => {
+        refRBSheet.current?.close();
+
+        API.eventBlock
+          .getAllEvents()
+          .then(({ data }) => dispatch(handleSaveEvents({ groupedEvents: data })));
+
+        API.eventBlock
+          .getAllUpcomingEvents()
+          .then(({ data }) => dispatch(handleSaveUpcomingEvents({ upcomingEvents: data })));
+      }, 150);
+    }
+  };
+
   const handleDelete = (id: string) => {
     if (entityToDeleteLabel === EntityType.CLIENT || entityToDeleteLabel === EntityType.REALTOR) {
       handleDeleteUser(id);
@@ -207,6 +238,7 @@ export const BottomSheet: FC<BottomSheetProps> = ({
     if (entityToDeleteLabel === EntityType.OFFER) handleDeleteOffer(id);
     if (entityToDeleteLabel === EntityType.DEMAND) handleDeleteDemand(id);
     if (entityToDeleteLabel === EntityType.DEAL) handleDeleteDeal(id);
+    if (entityToDeleteLabel === EntityType.EVENT) handleDeleteEvent(id);
   };
 
   return (

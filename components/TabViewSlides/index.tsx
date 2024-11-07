@@ -4,3 +4,4 @@ export { DealSlide } from './DealSlide';
 export { SearchDealSlide } from './SearchDealSlide';
 export { OfferSlide } from './OfferSlide';
 export { DemandSlide } from './DemandSlide';
+export { EventsSlide } from './EventsSlide';

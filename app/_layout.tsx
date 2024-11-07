@@ -52,6 +52,10 @@ export default function RootLayout() {
         {/* Demand */}
         <Stack.Screen name="deal/demand/addPage" options={{ headerShown: false }} />
         <Stack.Screen name="deal/demand/editPage" options={{ headerShown: false }} />
+        {/* events */}
+        <Stack.Screen name="events/addPage" options={{ headerShown: false }} />
+        <Stack.Screen name="events/editPage" options={{ headerShown: false }} />
+        <Stack.Screen name="event" options={{ headerShown: false }} />
         {/* Not Found */}
         <Stack.Screen name="+not-found" />
       </Stack>

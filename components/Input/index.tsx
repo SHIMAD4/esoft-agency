@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { SafeAreaView, TextInput, View, Text } from 'react-native';
 import MaskInput from 'react-native-mask-input/src/MaskInput';
-import { PHONEINPUTMASK } from '@/scripts/constants';
+import { PHONEINPUTMASK, DATEINPUTMASK, TIMEINPUTMASK } from '@/scripts/constants';
 import clsx from 'clsx';
 import { Icons } from '../Icons';
 import Dropdown from 'react-native-input-select';
@@ -29,6 +29,8 @@ type SearchInputProps = InputBaseProps & {
 };
 type CustomTextInputProps = InputBaseProps & { placeholder?: string; containerClassNames?: string };
 type PhoneInputProps = InputBaseProps & { placeholder?: string; required?: boolean };
+type DateInputProps = InputBaseProps & { placeholder?: string; required?: boolean };
+type TimeInputProps = InputBaseProps & { placeholder?: string; required?: boolean };
 type NumberInputProps = InputBaseProps & {
   placeholder?: string;
   required?: boolean;
@@ -80,6 +82,30 @@ export const Input: FC<InputProps> = ({
     case 'phone':
       return (
         <PhoneInput
+          placeholder={placeholder}
+          required={required}
+          value={props.value}
+          onChangeText={onChangeText}
+          error={error}
+          extendedError={extendedError}
+          {...props}
+        />
+      );
+    case 'date':
+      return (
+        <DateInput
+          placeholder={placeholder}
+          required={required}
+          value={props.value}
+          onChangeText={onChangeText}
+          error={error}
+          extendedError={extendedError}
+          {...props}
+        />
+      );
+    case 'time':
+      return (
+        <TimeInput
           placeholder={placeholder}
           required={required}
           value={props.value}
@@ -221,6 +247,72 @@ const PhoneInput: FC<PhoneInputProps> = ({
   );
 };
 
+const DateInput: FC<DateInputProps> = ({
+  label,
+  placeholder,
+  required,
+  error,
+  extendedError,
+  containerClassNames,
+  ...props
+}) => {
+  const { value, onChangeText } = props;
+
+  return (
+    <View className={clsx('flex', containerClassNames)} {...props}>
+      {label && <Text className="mb-2 text-[16px] font-bold">{label}</Text>}
+      <MaskInput
+        className={clsx(
+          'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
+          (error || extendedError) && 'border-[#E3002C]',
+        )}
+        value={value}
+        onChangeText={(masked, unmasked) => {
+          onChangeText(masked);
+        }}
+        placeholderTextColor={error || extendedError ? '#E3002C' : undefined}
+        placeholder={placeholder}
+        inputMode="tel"
+        mask={DATEINPUTMASK}
+      />
+      {error && <Text className="mt-1 text-[#FF1644]">{error}</Text>}
+    </View>
+  );
+};
+
+const TimeInput: FC<TimeInputProps> = ({
+  label,
+  placeholder,
+  required,
+  error,
+  extendedError,
+  containerClassNames,
+  ...props
+}) => {
+  const { value, onChangeText } = props;
+
+  return (
+    <View className={clsx('flex', containerClassNames)} {...props}>
+      {label && <Text className="mb-2 text-[16px] font-bold">{label}</Text>}
+      <MaskInput
+        className={clsx(
+          'w-full border-[1px] border-[#CFD8DB] py-6 pl-4 rounded-[3px]',
+          (error || extendedError) && 'border-[#E3002C]',
+        )}
+        value={value}
+        onChangeText={(masked, unmasked) => {
+          onChangeText(masked);
+        }}
+        placeholderTextColor={error || extendedError ? '#E3002C' : undefined}
+        placeholder={placeholder}
+        inputMode="tel"
+        mask={TIMEINPUTMASK}
+      />
+      {error && <Text className="mt-1 text-[#FF1644]">{error}</Text>}
+    </View>
+  );
+};
+
 const EmailInput: FC<EmailInputProps> = ({
   placeholder,
   required,
@@ -275,7 +367,7 @@ const SelectInput: FC<SelectInputProps> = ({
         onValueChange={(value) => onChangeText(value as string)}
         dropdownContainerStyle={{ marginBottom: 0 }}
         dropdownStyle={{
-          borderColor: extendedError || error ? '#E3002C' : '#CFD8DB',
+          borderColor: error ? '#E3002C' : '#CFD8DB',
           borderRadius: 3,
         }}
         dropdownIcon={<Icons.ArrowIcon size={16} rotateToBottom={true} />}

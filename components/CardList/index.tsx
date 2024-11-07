@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ListRenderItemInfo, View } from 'react-native';
-import { Client, Estate, Realtor, Offer, Demand, Deal } from '@/shared/types';
+import { Client, Estate, Realtor, Offer, Demand, Deal, EventType } from '@/shared/types';
 import { Card } from '../Card';
 import { Button } from '../Button';
 import { BottomSheet } from '../BottomSheet';
@@ -11,7 +11,7 @@ import { EntityType } from '@/scripts/constants';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { handleSaveQuery } from '@/shared/slices/dealsSlice';
 
-type Entity = Client | Realtor | Estate | Offer | Demand | Deal;
+type Entity = Client | Realtor | Estate | Offer | Demand | Deal | EventType;
 
 type UserCardProps = {
   data: Entity[];
@@ -146,6 +146,21 @@ export const CardList: FC<UserCardProps> = ({ data, clickableCards = false, swip
             }}
           />
         );
+      case EntityType.EVENT:
+        item = item as EventType;
+        title = item.name;
+
+        return (
+          <Card
+            entity={EntityType.EVENT}
+            dt={{ ...item }}
+            onPress={() => {
+              setSelectedLabel(EntityType.EVENT);
+              setSelectedTitle(title);
+              setSelectedTitleToDelete('Удалить событие');
+            }}
+          />
+        );
       default:
         return null;
     }
@@ -175,6 +190,9 @@ export const CardList: FC<UserCardProps> = ({ data, clickableCards = false, swip
         break;
       case EntityType.DEMAND:
         navigateURL = '../deal/demand/editPage';
+        break;
+      case EntityType.EVENT:
+        navigateURL = '../events/editPage';
         break;
       default:
         return null;
@@ -214,6 +232,18 @@ export const CardList: FC<UserCardProps> = ({ data, clickableCards = false, swip
             <Icons.EyeIcon />
           </Button>
         ) : null}
+        {item.type === EntityType.EVENT ? (
+          <Button
+            variant="hidden"
+            onPress={() => {
+              setSelectedEntity(entityId);
+              router.push(`/event/?id=${entityId}`);
+            }}
+            className="flex justify-center items-center bg-[#00D9BB]"
+          >
+            <Icons.EyeIcon />
+          </Button>
+        ) : null}
       </View>
     );
   };
@@ -227,7 +257,8 @@ export const CardList: FC<UserCardProps> = ({ data, clickableCards = false, swip
         keyExtractor={(item: Entity) => item.id}
         rightOpenValue={
           (data[0] && data[0].type === EntityType.CLIENT) ||
-          (data[0] && data[0].type === EntityType.REALTOR)
+          (data[0] && data[0].type === EntityType.REALTOR) ||
+          (data[0] && data[0].type === EntityType.EVENT)
             ? -175
             : -115
         }

@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
-import { Icons } from '@/components';
+import { CardList, Icons } from '@/components';
 import { HomeCard } from '@/components/HomeCard';
 import { useEffect } from 'react';
 import { API } from '@/shared/api';
@@ -12,10 +12,13 @@ import { handleSaveOffers, handleSaveOffersWithoutDeals } from '@/shared/slices/
 import { handleSaveEstates } from '@/shared/slices/estatesSlice';
 import { handleSaveDemands, handleSaveDemandsWithoutDeals } from '@/shared/slices/demandSlice';
 import { handleSaveDeals } from '@/shared/slices/dealsSlice';
+import { handleSaveEvents, handleSaveUpcomingEvents } from '@/shared/slices/eventsSlice';
+import { useAppSelector } from '@/shared/hooks/useAppSelector';
 
 export default function HomePage() {
   const Logo = require('../../assets/images/logo.png');
   const dispatch = useAppDispatch();
+  const { upcomingEvents } = useAppSelector((state) => state.eventsSlice);
 
   useEffect(() => {
     // Clients
@@ -49,6 +52,11 @@ export default function HomePage() {
 
     // Demands
     API.demandBlock.getAllDemands().then((data) => dispatch(handleSaveDemands({ demands: data })));
+
+    // Events
+    API.eventBlock
+      .getAllUpcomingEvents()
+      .then(({ data }) => dispatch(handleSaveUpcomingEvents({ upcomingEvents: data })));
   }, []);
 
   return (
@@ -59,10 +67,9 @@ export default function HomePage() {
       <Text className="text-2xl text-center font-bold mb-9">
         {'Добро пожаловать,\nв агенство недвижимости'}
       </Text>
-      <View className="flex flex-wrap">
-        <View className="w-full flex flex-row justify-center mb-[18px]">
+      <View className="flex flex-wrap mb-8">
+        <View className="w-full flex flex-row justify-between mb-[18px] px-3.5">
           <HomeCard
-            containerClassName="mr-4"
             title="Пользователи"
             path="/(tabs)/users"
             icon={<Icons.PeopleIcon size={26} />}
@@ -73,16 +80,18 @@ export default function HomePage() {
             icon={<Icons.EstateIcon size={26} />}
           />
         </View>
-        <View className="w-full flex flex-row justify-center mb-[18px]">
-          <HomeCard
-            containerClassName="mr-4"
-            title="Сделки"
-            path="/(tabs)/deal"
-            icon={<Icons.DealIcon size={26} />}
-          />
-          {/* Временный контейнер для центрирования контента */}
-          <View className="w-[160px] h-[100px]"></View>
+        <View className="w-full flex flex-row justify-between mb-[18px] px-3.5">
+          <HomeCard title="Сделки" path="/(tabs)/deal" icon={<Icons.DealIcon size={26} />} />
+          <HomeCard title="События" path="/(tabs)/events" icon={<Icons.EventIcon size={26} />} />
         </View>
+      </View>
+      <View className="h-[210px]">
+        <Text className="text-[18px] font-bold px-1.5 mb-4">События</Text>
+        {upcomingEvents.length !== 0 ? (
+          <CardList data={upcomingEvents} />
+        ) : (
+          <Text className="text-[14px] px-1.5 mt-4">На сегодня нет запланированных событий</Text>
+        )}
       </View>
     </SafeAreaView>
   );

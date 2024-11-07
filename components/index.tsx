@@ -8,6 +8,7 @@ export {
   SearchDealSlide,
   DemandSlide,
   OfferSlide,
+  EventsSlide,
 } from './TabViewSlides';
 export { Input } from './Input';
 export { Button } from './Button';
@@ -25,4 +26,5 @@ export {
   AddDemandForm,
   EditDemandForm,
 } from './Deal';
+export { AddEventForm, EditEventForm } from './Events';
 export { Icons } from './Icons';

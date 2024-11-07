@@ -206,6 +206,34 @@ const AddDealOnSubmitSchema = Yup.object()
     },
   });
 
+const AddEventOnSubmitSchema = Yup.object()
+  .shape({
+    name: Yup.string() || null,
+    startDate: Yup.string().required('Обязательное поле'),
+    startTime: Yup.string().required('Обязательное поле'),
+    endDate: Yup.string(),
+    endTime: Yup.string(),
+    type: Yup.string().required('Обязательное поле'),
+    comment: Yup.string(),
+  })
+  .test({
+    name: 'allFieldsRequired',
+    test: function (values: { startDate?: string; startTime?: string; type?: string }) {
+      const isValid = ['startDate', 'startTime', 'type'].every(
+        (field) =>
+          values[field as keyof typeof values] !== undefined &&
+          values[field as keyof typeof values]?.length !== 0,
+      );
+
+      if (isValid) return true;
+
+      return this.createError({
+        path: 'allFieldsRequired',
+        message: 'Заполните все поля',
+      });
+    },
+  });
+
 export {
   AddClientOnSubmitSchema,
   AddRealtorOnSubmitSchema,
@@ -213,4 +241,5 @@ export {
   AddDealOnSubmitSchema,
   AddOfferOnSubmitSchema,
   AddDemandOnSubmitSchema,
+  AddEventOnSubmitSchema,
 };

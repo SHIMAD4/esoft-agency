@@ -5,6 +5,7 @@ import EstatesReducer from '@/shared/slices/estatesSlice';
 import DealsReducer from '@/shared/slices/dealsSlice';
 import OfferReducer from '@/shared/slices/offerSlice';
 import DemandReducer from '@/shared/slices/demandSlice';
+import EventsReducer from '@/shared/slices/eventsSlice';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     dealsSlice: DealsReducer,
     offerSlice: OfferReducer,
     demandSlice: DemandReducer,
+    eventsSlice: EventsReducer,
   },
 });
 

@@ -87,4 +87,24 @@ type Demand = {
   maxFloors: number;
 };
 
-export { Client, Realtor, Estate, Offer, Demand, Deal };
+type EventData = {
+  name: string;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+  type: string;
+  comment: string;
+};
+
+type EventType = {
+  type: string;
+  id: string;
+  name: string;
+  startAt: string;
+  eventType: 'SHOW' | 'MEETING' | 'CALL';
+  endAt: string;
+  comment: string;
+};
+
+export { Client, Realtor, Estate, Offer, Demand, Deal, EventType, EventData };

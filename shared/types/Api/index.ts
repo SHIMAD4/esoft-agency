@@ -1,3 +1,5 @@
+import { EventType } from '@/shared/types';
+
 type ClientData = {
   firstName: string;
   lastName: string;
@@ -70,6 +72,18 @@ type DemandData = {
   maxArea: string;
 };
 
+type EventData = {
+  name: string | null;
+  startDate: string;
+  startTime: string;
+  endDate: string | null;
+  endTime: string | null;
+  type: string;
+  comment: string | null;
+};
+
+type GroupedEvents = Record<string, EventType[]>;
+
 export {
   ClientData,
   RealtorData,
@@ -78,4 +92,6 @@ export {
   DealData,
   OfferData,
   DemandData,
+  EventData,
+  GroupedEvents,
 };

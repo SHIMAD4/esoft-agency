@@ -16,6 +16,9 @@ type ExtendedErrorType = FormikErrors<{
   price?: string;
   demandId?: string;
   offerId?: string;
+  startDate?: string;
+  startTime?: string;
+  type?: string;
 }>;
 
 export { ExtendedErrorType };

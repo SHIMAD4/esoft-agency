@@ -17,6 +17,27 @@ const PHONEINPUTMASK = [
   /\d/,
 ];
 
+const DATEINPUTMASK = [
+  /\d/, // Year (YY)
+  /\d/, // Year (YY)
+  /\d/, // Year (YY)
+  /\d/, // Year (YY)
+  '-', // Separator
+  /\d/, // Month (MM)
+  /\d/, // Month (MM)
+  '-', // Separator
+  /\d/, // Year (DD)
+  /\d/, // Year (DD)
+];
+
+const TIMEINPUTMASK = [
+  /\d/, // Day (HH)
+  /\d/, // Day (HH)
+  ':', // Separator
+  /\d/, // Month (MM)
+  /\d/, // Month (MM)
+];
+
 const EMAILVALIDITYMASK: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export enum EntityType {
@@ -26,6 +47,19 @@ export enum EntityType {
   DEAL = 'DEAL',
   OFFER = 'OFFER',
   DEMAND = 'DEMAND',
+  EVENT = 'EVENT',
+}
+
+export enum EventColors {
+  SHOW = 'rgba(84, 110, 122, 1)',
+  MEETING = 'rgba(177, 189, 197, 1)',
+  CALL = 'rgba(37, 50, 56, 1)',
+}
+
+export enum EventTitles {
+  SHOW = 'Показ',
+  MEETING = 'Встреча с клиентом',
+  CALL = 'Запланированный звонок',
 }
 
 export enum EstateType {
@@ -34,4 +68,4 @@ export enum EstateType {
   LAND = 'LAND',
 }
 
-export { PHONEINPUTMASK, EMAILVALIDITYMASK };
+export { PHONEINPUTMASK, EMAILVALIDITYMASK, DATEINPUTMASK, TIMEINPUTMASK };

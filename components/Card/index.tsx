@@ -1,11 +1,11 @@
 import { View, Text } from 'react-native';
 import { FC } from 'react';
-import { Client, Realtor, Estate, Offer, Demand, Deal } from '@/shared/types';
-import { EntityType, EstateType } from '@/scripts/constants';
+import { Client, Realtor, Estate, Offer, Demand, Deal, EventType } from '@/shared/types';
+import { EntityType, EstateType, EventColors } from '@/scripts/constants';
 import clsx from 'clsx';
 
 type CardProps = {
-  dt: Client | Realtor | Estate | Offer | Demand | Deal;
+  dt: Client | Realtor | Estate | Offer | Demand | Deal | EventType;
   onPress: () => void;
   entity: string;
   selected?: string;
@@ -43,6 +43,11 @@ type DemandCardProps = {
   selected?: string;
 };
 
+type EventCardProps = {
+  dt: EventType;
+  onPress: () => void;
+};
+
 export const Card: FC<CardProps> = ({ dt, onPress, entity, selected }) => {
   switch (entity) {
     case EntityType.CLIENT:
@@ -57,6 +62,8 @@ export const Card: FC<CardProps> = ({ dt, onPress, entity, selected }) => {
       return <OfferCard dt={dt as Offer} selected={selected} onPress={onPress} />;
     case EntityType.DEMAND:
       return <DemandCard dt={dt as Demand} selected={selected} onPress={onPress} />;
+    case EntityType.EVENT:
+      return <EventCard dt={dt as EventType} onPress={onPress} />;
   }
 };
 
@@ -262,6 +269,24 @@ const DemandCard: FC<DemandCardProps> = ({ dt, onPress, selected }) => {
       {maxArea ? (
         <Text className="text-[#546E7A] text-[12px] font-[400]">Макс. площадь: {maxArea}</Text>
       ) : null}
+    </View>
+  );
+};
+
+const EventCard: FC<EventCardProps> = ({ dt, onPress }) => {
+  const { name, eventType, startAt, endAt } = dt;
+  const startTime = startAt.split('T')[1].slice(0, -3);
+  const endTime = endAt ? endAt.split('T')[1].slice(0, -3) : '';
+  const time = endTime ? `${startTime} - ${endTime}` : `${startTime}`;
+
+  return (
+    <View
+      className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]"
+      style={{ backgroundColor: EventColors[eventType] }}
+      onTouchStart={onPress}
+    >
+      <Text className="text-white text-[16px] font-semibold mb-4">{name}</Text>
+      <Text className="text-white text-[12px] font-[400]">{time}</Text>
     </View>
   );
 };
