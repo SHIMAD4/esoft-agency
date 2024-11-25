@@ -1,7 +1,7 @@
+import { ClientSlide, CustomTabView, Header, Icons, RealtorSlide } from '@/components';
+import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SceneMap } from 'react-native-tab-view';
-import { useState } from 'react';
-import { ClientSlide, RealtorSlide, Header, CustomTabView, Icons } from '@/components';
 
 export default function UsersPage() {
   const [index, setIndex] = useState(0);

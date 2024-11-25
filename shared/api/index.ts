@@ -19,6 +19,7 @@ const appBlock = {
   // User (Client | Realtor)
   getUserById: (id: string) => ApiInstance.get(`/users/${id}`),
   deleteUserById: (id: string) => ApiInstance.delete(`/users/${id}`),
+  saveAvatarById: (id: string, data: FormData) => ApiInstance.post(`/users/${id}/avatar`, data),
 };
 
 // ====== Client ======

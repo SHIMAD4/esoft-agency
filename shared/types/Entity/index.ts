@@ -6,6 +6,7 @@ type Client = {
   email: string;
   phone: string;
   id: string;
+  avatar: string;
 };
 
 type Realtor = {
@@ -16,6 +17,7 @@ type Realtor = {
   fullName: string;
   dealShare: string;
   id: string;
+  avatar: string;
 };
 
 type Estate = {

@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { Client, ExtendedErrorType } from '@/shared/types';
@@ -11,6 +11,7 @@ import { API } from '@/shared/api';
 import { handleSaveClients } from '@/shared/slices/clientSlice';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { AddClientOnSubmitSchema } from '@/scripts/submitingSchemes';
+import { Icons } from '@/components';
 
 export const EditClientForm = () => {
   const dispatch = useAppDispatch();
@@ -23,6 +24,7 @@ export const EditClientForm = () => {
     middleName: '',
     phone: '',
     email: '',
+    avatar: '',
   });
 
   useEffect(() => {
@@ -37,6 +39,7 @@ export const EditClientForm = () => {
         middleName: user.middleName || '',
         phone: user.phone || '',
         email: user.email || '',
+        avatar: user.avatar || '',
       }}
       enableReinitialize={true}
       onSubmit={(data, errors) => {
@@ -80,6 +83,22 @@ export const EditClientForm = () => {
 
         return (
           <View className="mx-6 gap-y-4">
+            <View className="flex justify-center items-center w-full mb-2">
+              {values.avatar ? (
+                <Image
+                  source={{ uri: user.avatar }}
+                  style={{ width: 100, height: 100, borderRadius: 50 }}
+                />
+              ) : user.avatar ? (
+                <Image
+                  source={{ uri: user.avatar }}
+                  style={{ width: 100, height: 100, borderRadius: 50 }}
+                />
+              ) : (
+                <Icons.DefaultAvatar size={100} />
+              )}
+              <Text className="mt-2 text-[#0091EA]">Выбрать фотографию</Text>
+            </View>
             <Input
               variant="text"
               placeholder="Фамилия"

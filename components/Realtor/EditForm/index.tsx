@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { router, useGlobalSearchParams } from 'expo-router';
 import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { AddRealtorOnSubmitSchema } from '@/scripts/submitingSchemes';
+import { Icons } from '@/components';
 
 export const EditRealtorForm = () => {
   const dispatch = useAppDispatch();
@@ -23,6 +24,7 @@ export const EditRealtorForm = () => {
     firstName: '',
     lastName: '',
     middleName: '',
+    avatar: '',
   });
 
   useEffect(() => {
@@ -36,6 +38,7 @@ export const EditRealtorForm = () => {
         firstName: user.firstName || '',
         middleName: user.middleName || '',
         dealShare: user.dealShare.toString() || '',
+        avatar: user.avatar || '',
       }}
       enableReinitialize={true}
       onSubmit={(data, errors) => {
@@ -80,6 +83,10 @@ export const EditRealtorForm = () => {
 
         return (
           <View className="mx-6 gap-y-4">
+            <View className="flex justify-center items-center w-full mb-2">
+              <Icons.DefaultAvatar size={100} />
+              <Text className="mt-2 text-[#0091EA]">Выбрать фотографию</Text>
+            </View>
             <Input
               variant="text"
               placeholder="Фамилия"

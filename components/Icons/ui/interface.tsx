@@ -1,5 +1,5 @@
 import { withDefaultProps } from '@/components/Icons/lib';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Circle, Ellipse, G, Mask, Path } from 'react-native-svg';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -144,5 +144,18 @@ export const CrossIcon = withDefaultProps(({ size, fill, ...props }) => (
       d="M14.25 4.8075L13.1925 3.75L9 7.9425L4.8075 3.75L3.75 4.8075L7.9425 9L3.75 13.1925L4.8075 14.25L9 10.0575L13.1925 14.25L14.25 13.1925L10.0575 9L14.25 4.8075Z"
       fill="#37464F"
     />
+  </Svg>
+));
+
+export const DefaultAvatar = withDefaultProps(({ size, fill, ...props }) => (
+  <Svg width={size} height={size} viewBox="0 0 101 100" fill="none" {...props}>
+    <Circle cx="50.5" cy="50" r="50" fill="#EBEFF1" />
+    <Mask id="mask0_693_6538" maskUnits="userSpaceOnUse" x="0" y="0" width="101" height="100">
+      <Circle cx="50.5" cy="50" r="50" fill="#C4C4C4" />
+    </Mask>
+    <G mask="url(#mask0_693_6538)">
+      <Ellipse cx="50.4995" cy="88.0001" rx="38" ry="22" fill="#546E7A" />
+    </G>
+    <Ellipse cx="50.5005" cy="42.5002" rx="18" ry="18" fill="#546E7A" />
   </Svg>
 ));
