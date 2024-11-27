@@ -1,9 +1,9 @@
-import { View, TouchableOpacity } from 'react-native';
+import { type FC } from 'react';
+import { View, TouchableOpacity, AccessibilityState } from 'react-native';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { TabBarIcon } from './TabBarIcon';
-import React from 'react';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
 
-export const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
+export const TabBar: FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
   return (
     <View style={{ flexDirection: 'row' }}>
       {state.routes.map((route, index) => {
@@ -39,9 +39,8 @@ export const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) =>
         return (
           <TouchableOpacity
             accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityState={isFocused ? { selected: true } : ({} as AccessibilityState)}
             accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
             key={route.key}

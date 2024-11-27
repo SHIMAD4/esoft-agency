@@ -1,6 +1,6 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SceneMap } from 'react-native-tab-view';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   DealSlide,
   DemandSlide,
@@ -13,8 +13,8 @@ import {
 import { handleClearQuery, handleSaveDeals } from '@/shared/slices/dealsSlice';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { API } from '@/shared/api';
-import { handleSaveDemands } from '@/shared/slices/demandSlice';
-import { handleSaveOffers } from '@/shared/slices/offerSlice';
+import { handleSaveDemands, handleSaveDemandsWithoutDeals } from '@/shared/slices/demandSlice';
+import { handleSaveOffers, handleSaveOffersWithoutDeals } from '@/shared/slices/offerSlice';
 
 export default function DealPage() {
   const dispatch = useAppDispatch();
@@ -27,6 +27,25 @@ export default function DealPage() {
   ]);
 
   const goToDealSlide = () => setIndex(0);
+
+  useEffect(() => {
+    // Deals
+    API.dealBlock.getAllDeals().then(({ data }) => dispatch(handleSaveDeals({ deals: data })));
+
+    API.offerBlock
+      .getAllOffersWithoutDeals()
+      .then(({ data }) => dispatch(handleSaveOffersWithoutDeals({ offersWithoutDeals: data })));
+
+    API.demandBlock
+      .getAllDemandsWithoutDeals()
+      .then(({ data }) => dispatch(handleSaveDemandsWithoutDeals({ demandsWithoutDeals: data })));
+
+    // Offers
+    API.offerBlock.getAllOffers().then((data) => dispatch(handleSaveOffers({ offers: data })));
+
+    // Demands
+    API.demandBlock.getAllDemands().then((data) => dispatch(handleSaveDemands({ demands: data })));
+  }, []);
 
   return (
     <>

@@ -10,6 +10,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { EntityType } from '@/scripts/constants';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { handleSaveQuery } from '@/shared/slices/dealsSlice';
+import { Text } from 'react-native';
 
 type Entity = Client | Realtor | Estate | Offer | Demand | Deal | EventType;
 
@@ -250,27 +251,31 @@ export const CardList: FC<UserCardProps> = ({ data, clickableCards = false, swip
 
   return (
     <View className="flex flex-col">
-      <SwipeListView
-        data={data}
-        renderItem={renderItem}
-        renderHiddenItem={renderHiddenItem}
-        keyExtractor={(item: Entity) => item.id}
-        rightOpenValue={
-          (data[0] && data[0].type === EntityType.CLIENT) ||
-          (data[0] && data[0].type === EntityType.REALTOR) ||
-          (data[0] && data[0].type === EntityType.EVENT)
-            ? -175
-            : -115
-        }
-        disableRightSwipe={true}
-        disableLeftSwipe={!swipable}
-        swipeToOpenPercent={1}
-        swipeToOpenVelocityContribution={15}
-        closeOnRowBeginSwipe={true}
-        scrollEnabled={scrollEnabled}
-        onRowOpen={() => setScrollEnabled(false)}
-        onRowClose={() => setScrollEnabled(true)}
-      />
+      {data.length === 0 ? (
+        <Text>Загрузка...</Text>
+      ) : (
+        <SwipeListView
+          data={data}
+          renderItem={renderItem}
+          renderHiddenItem={renderHiddenItem}
+          keyExtractor={(item: Entity) => item.id}
+          rightOpenValue={
+            (data[0] && data[0].type === EntityType.CLIENT) ||
+            (data[0] && data[0].type === EntityType.REALTOR) ||
+            (data[0] && data[0].type === EntityType.EVENT)
+              ? -175
+              : -115
+          }
+          disableRightSwipe={true}
+          disableLeftSwipe={!swipable}
+          swipeToOpenPercent={1}
+          swipeToOpenVelocityContribution={15}
+          closeOnRowBeginSwipe={true}
+          scrollEnabled={scrollEnabled}
+          onRowOpen={() => setScrollEnabled(false)}
+          onRowClose={() => setScrollEnabled(true)}
+        />
+      )}
       <BottomSheet
         title={selectedTitleToDelete}
         description="без возможности восстановления?"

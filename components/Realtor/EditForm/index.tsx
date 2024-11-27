@@ -11,7 +11,7 @@ import { router, useGlobalSearchParams } from 'expo-router';
 import { handleSaveRealtors } from '@/shared/slices/realtorSlice';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { AddRealtorOnSubmitSchema } from '@/scripts/submitingSchemes';
-import { Icons } from '@/components';
+import { Icons } from '../../Icons';
 import * as ImagePicker from 'expo-image-picker';
 
 export const EditRealtorForm = () => {

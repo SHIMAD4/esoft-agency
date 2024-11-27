@@ -11,7 +11,7 @@ import { API } from '@/shared/api';
 import { handleSaveClients } from '@/shared/slices/clientSlice';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { AddClientOnSubmitSchema } from '@/scripts/submitingSchemes';
-import { Icons } from '@/components';
+import { Icons } from '../../Icons';
 import * as ImagePicker from 'expo-image-picker';
 
 export const EditClientForm = () => {

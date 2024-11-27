@@ -68,12 +68,25 @@ export const Card: FC<CardProps> = ({ dt, onPress, entity, selected }) => {
 };
 
 const UserCard: FC<UserCardProps> = ({ dt, onPress }) => {
-  const { firstName, lastName, middleName, phone, email } = dt;
+  let { firstName, lastName, middleName, phone, email } = dt;
+
+  if (firstName === null) {
+    firstName = '';
+  } else if (lastName === null) {
+    lastName = '';
+  } else if (middleName === null) {
+    middleName = '';
+  }
+
   const fullName = `${firstName} ${middleName} ${lastName}`;
 
   return (
     <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
-      <Text className="text-[16px] font-semibold mb-4">{fullName}</Text>
+      <Text className="text-[16px] font-semibold mb-4">
+        {firstName.length !== 0 && lastName.length !== 0 && middleName.length !== 0
+          ? fullName
+          : 'Нет данных'}
+      </Text>
       {phone && <Text className="text-[#546E7A] text-[12px] font-[400]">{phone}</Text>}
       {email && <Text className="text-[#546E7A] text-[12px] font-[400] mt-[8px]">{email}</Text>}
     </View>
@@ -81,12 +94,25 @@ const UserCard: FC<UserCardProps> = ({ dt, onPress }) => {
 };
 
 const RealtorCard: FC<RealtorCardProps> = ({ dt, onPress }) => {
-  const { firstName, lastName, middleName, dealShare } = dt;
+  let { firstName, lastName, middleName, dealShare } = dt;
+
+  if (firstName === null) {
+    firstName = '';
+  } else if (lastName === null) {
+    lastName = '';
+  } else if (middleName === null) {
+    middleName = '';
+  }
+
   const fullName = `${firstName} ${middleName} ${lastName}`;
 
   return (
     <View className="w-full bg-[#f5f4f8] p-4 mb-2 rounded-[3px]" onTouchStart={onPress}>
-      <Text className="text-[16px] font-semibold mb-4">{fullName}</Text>
+      <Text className="text-[16px] font-semibold mb-4">
+        {firstName.length !== 0 && lastName.length !== 0 && middleName.length !== 0
+          ? fullName
+          : 'Нет данных'}
+      </Text>
       <Text className="text-[#546E7A] text-[12px] font-[400]">Комиссия: {dealShare}%</Text>
     </View>
   );
