@@ -67,6 +67,10 @@ const formatDate = (dateString: string): string => {
 
   const date = new Date(dateString);
 
+  if (isNaN(date.getTime())) {
+    throw new Error('Invalid date string');
+  }
+
   const dayOfWeek = daysOfWeek[date.getDay()];
   const day = date.getDate();
   const month = months[date.getMonth()];
