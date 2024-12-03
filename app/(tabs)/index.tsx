@@ -6,7 +6,7 @@ import { HomeCard } from '@/components/HomeCard';
 import { useAppSelector } from '@/shared/hooks/useAppSelector';
 
 export default function HomePage() {
-  const Logo = require('../../assets/images/logo.png');
+  const Logo = require('../../assets/images/logo.jpg');
   const { upcomingEvents } = useAppSelector((state) => state.eventsSlice);
 
   return (

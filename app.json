@@ -1,15 +1,40 @@
 {
   "expo": {
-    "name": "esoft-agency",
+    "name": "Esoft Agency",
     "slug": "esoft-agency",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "ios": {
-      "supportsTablet": true
+    "icon": "./assets/icons/app-icon.png",
+    "splash": {
+      "image": "./assets/images/logo.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     },
-    "android": {},
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.fireruviy.esoftagency",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app requires access to the camera to take photos.",
+        "NSPhotoLibraryUsageDescription": "This app requires access to your photo library to select pictures."
+      }
+    },
+    "android": {
+      "package": "com.fireruviy.esoftagency",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/logo.jpg",
+        "backgroundColor": "#ffffff"
+      }
+    },
     "plugins": [
       "expo-router",
       [
@@ -24,7 +49,15 @@
     "extra": {
       "eas": {
         "projectId": "d9ee2e61-321b-42b8-9ef2-c65d0357c76a"
-      }
+      },
+      "apiUrl": ""
+    },
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     },
     "newArchEnabled": true,
     "owner": "fireruviy"
