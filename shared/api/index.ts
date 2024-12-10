@@ -12,7 +12,7 @@ import {
 } from '@/shared/types/Api';
 
 export const ApiInstance = axios.create({
-  baseURL: 'http://esoft.api.miv-dev.ru:8000/',
+  baseURL: process.env.API_URL,
 });
 
 const appBlock = {
